@@ -1,10 +1,11 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue'
+import {useNuxtApp} from "#app";
 
 
 const props = defineProps({
   show: Boolean,
-  student: Object
+  admins: Object
 });
 
 const emit = defineEmits(['update:show'])
@@ -17,6 +18,7 @@ const studentFields = [
   {key: 'staff_ID', label: 'User name',},
   {key: 'staff_type', label: 'Admin type',},
   {label: 'WhatsApp No', key: 'phone'},
+  {label: 'Password', key: 'password'},
   {label: 'Email Address', key: 'email'},
 ];
 
@@ -25,17 +27,51 @@ const closePopup = () => {
   closePopup()
 }
 
-const updateStaffInfo = () => {
-  console.log('Updated student info:', props.student)
-  closePopup()
-}
+let {$axios} = useNuxtApp()
+const api = $axios()
+
+const updateAdminInfo = async () => {
+  try {
+    const response = await api.patch(`/users/${props.admins.id}/`,
+        { ...props.admins }
+    );
+    console.log('Success:', response.data);
+    alert("Student info updated successfully");
+    emit('update:show', false);
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+    } else {
+      console.error('Error:', error.message);
+    }
+  }
+};
+
+const deleteAdmin = async () => {
+  try {
+    const response = await api.delete(
+        `/users/${props.admins.id}/`
+    );
+    console.log('Student deleted:', response.data);
+    alert("Student deleted successfully");
+    emit('update:show', false);
+  } catch (error) {
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+    } else {
+      console.error('Error:', error.message);
+    }
+  }
+};
+
+
 </script>
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
     <div class="popup-container" @click.stop>
       <div class="popup-header">
-        <span style="font-size: 1.5rem">Welcome to {{ props.student.name }}</span>
+        <span style="font-size: 1.5rem">Welcome to {{ props.admins.name }}</span>
         <span @click="closePopup" class="close-btn">
           <UIcon
               name="fontisto-close"
@@ -56,18 +92,18 @@ const updateStaffInfo = () => {
           <span class="student-key-info">
             <input
                 v-if="field.key !== 'status'"
-                v-model="student[field.key]"
+                v-model="admins[field.key]"
                 class="control-input"
             />
-            <span v-else>{{ student[field.key] }}</span>
+            <span v-else>{{ admins[field.key] }}</span>
           </span>
         </div>
       </div>
       <hr class="divider">
       <div class="popup-footer">
         <div class="popup-bts">
-          <button class="delete-admin" id="deleteAdmin">Delete Admin</button>
-          <button @click="updateStaffInfo" class="change-admin-info" id="changeAdminInfo">Change Admin Info</button>
+          <button @click="deleteAdmin" class="delete-admin" id="deleteAdmin">Delete Admin</button>
+          <button @click="updateAdminInfo" class="change-admin-info" id="changeAdminInfo">Change Admin Info</button>
         </div>
         <div>
           <h2>Thank you </h2>

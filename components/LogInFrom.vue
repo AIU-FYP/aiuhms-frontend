@@ -1,8 +1,9 @@
 <script setup>
-import {reactive,} from 'vue';
-import {z} from 'zod';
-import {navigateTo} from '#app';
+import { reactive, ref } from 'vue';
+import { z } from 'zod';
+import { navigateTo, useNuxtApp } from '#app';
 
+// Define the form questions
 const previousQuestions = [
   {
     label: "Username",
@@ -20,6 +21,7 @@ const previousQuestions = [
   },
 ];
 
+// Define the validation schema
 const formSchema = z.object({
   "username":
       z.string()
@@ -35,18 +37,26 @@ const formSchema = z.object({
           .nonempty("Password is required"),
 });
 
+// Create reactive form state
 const form = reactive({
   username: '',
   password: ''
 });
+
 const errors = reactive({
   username: '',
   password: ''
 });
 
-const auth = useAuth();
+// Create reactive state for loading and error messages
+const isLoading = ref(false);
 const errorMessage = ref('');
 
+// Create the authentication function
+const { $axios } = useNuxtApp();
+const api = $axios();
+
+// Function to validate individual fields
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -56,29 +66,42 @@ function validateField(field) {
   }
 }
 
+// Function to validate the whole form
 function validateForm() {
   validateField("username");
   validateField("password");
 }
 
-const isLoading = ref(false);
-
+// Function to handle form submission
 async function handleSubmit() {
   validateForm();
 
   if (!errors.username && !errors.password) {
     try {
-      await auth.login(form.username, form.password);
-      navigateTo('/admin');
       isLoading.value = true;
+      // Simulate an API request
+      const response = await api.post('/login', {
+        username: form.username,
+        password: form.password,
+      });
 
+      // Save the token in localStorage (or cookies)
+      saveToken(response.data.token);
+
+      // Navigate to the admin dashboard
+      navigateTo('/admin');
     } catch (error) {
-      errorMessage.value = error.message;
+      errorMessage.value = error.response?.data?.message || 'Login failed.';
+    } finally {
       isLoading.value = false;
     }
   }
 }
 
+// Function to save token (to localStorage)
+function saveToken(token) {
+  localStorage.setItem('auth_token', token);
+}
 </script>
 
 <template>
@@ -89,9 +112,7 @@ async function handleSubmit() {
       </div>
       <div class="log-in-form">
         <span class="user-icon">
-          <UIcon
-              name="mdi-user-outline"
-          />
+          <UIcon name="mdi-user-outline" />
         </span>
         <h2 class="form-title">AIU Hostel Management System</h2>
         <div class="form-container">
@@ -108,9 +129,11 @@ async function handleSubmit() {
                 <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
               </div>
             </div>
-            <button class="login-submit" type="submit">Log In</button>
+            <button class="login-submit" type="submit" :disabled="isLoading">Log In</button>
             <LoaderSection :visible="isLoading" />
           </form>
+          <!-- Error message display -->
+          <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
         </div>
       </div>
     </div>
@@ -118,7 +141,6 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
-
 .log-in {
   height: 100vh;
   display: flex;
@@ -233,5 +255,4 @@ async function handleSubmit() {
   color: var(--text-hovor-color);
   transition: .4s ease-in-out;
 }
-
 </style>

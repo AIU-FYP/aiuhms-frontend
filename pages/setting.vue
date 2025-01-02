@@ -10,7 +10,7 @@ const auth = useAuth()
 
 <template>
   <AdminHeader/>
-  <AdminForm/>
+  <AdminDashboard/>
   <AdminFooter/>
 </template>
 

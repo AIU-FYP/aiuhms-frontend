@@ -28,7 +28,7 @@ const columns = [
   { key: 'extend', label: 'Extend', sortable: false },
 ];
 
-const people = ref<User[]>([]);
+const admins = ref<User[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const totalItems = ref(0);
@@ -39,16 +39,16 @@ const api = $axios()
 const fetchData = async () => {
   try {
     const response = await api.get("/users/");
-    people.value = response.data.map((person: any, index: number) => ({
-      id: index + 1, // Generate an ID if it doesn't exist in the response
-      username: person.username || '',
-      password: person.password || '',
-      name: person.profile?.name || '',
-      position: person.profile?.position || '',
-      staff_ID: person.profile?.staff_ID || '',
-      phone: person.profile?.phone || '',
-      email: person.profile?.email || '',
-      staff_type: person.profile?.staff_type || null,
+    admins.value = response.data.map((admin: any, index: number) => ({
+      id: index + 1,
+      username: admin.username || '',
+      password: admin.password || '',
+      name: admin.profile?.name || '',
+      position: admin.profile?.position || '',
+      staff_ID: admin.profile?.staff_ID || '',
+      phone: admin.profile?.phone || '',
+      email: admin.profile?.email || '',
+      staff_type: admin.profile?.staff_type || null,
     }));
     totalItems.value = response.data.length;
   } catch (error) {
@@ -56,13 +56,10 @@ const fetchData = async () => {
   }
 };
 
-
-
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
 
 onMounted(fetchData)
-
 
 definePageMeta({
   middleware: 'auth',
@@ -75,11 +72,11 @@ const openPopup = (row: User) => {
 
 const filteredRows = computed(() => {
   if (!q.value) {
-    return people.value;
+    return admins.value;
   }
 
-  return people.value.filter((person) => {
-    return Object.values(person).some((value) => {
+  return admins.value.filter((admin) => {
+    return Object.values(admin).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase());
     });
   });
@@ -109,7 +106,7 @@ onMounted(fetchData)
             <div class="header">
 
               <div class="search-container">
-                <UInput v-model="q" placeholder="Filter students..."/>
+                <UInput v-model="q" placeholder="Filter admins..."/>
               </div>
             </div>
 
@@ -119,7 +116,7 @@ onMounted(fetchData)
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
-                    :student="currentStudent"
+                    :admins="currentStudent"
                 />
               </template>
             </UTable>

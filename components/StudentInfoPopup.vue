@@ -1,6 +1,7 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue';
 import axios from 'axios';
+import {useNuxtApp} from "#app";
 
 const props = defineProps({
   show: Boolean,
@@ -33,10 +34,12 @@ const closePopup = () => {
   emit('update:show', false);
 };
 
+let {$axios} = useNuxtApp()
+const api = $axios()
+
 const updateStudentInfo = async () => {
   try {
-    const response = await axios.patch(
-        `http://127.0.0.1:8000/api/students/${props.student.id}/`,
+    const response = await api.patch(`/students/${props.student.id}/`,
         { ...props.student }
     );
     console.log('Success:', response.data);
@@ -53,12 +56,12 @@ const updateStudentInfo = async () => {
 
 const deleteStudent = async () => {
   try {
-    const response = await axios.delete(
-        `http://127.0.0.1:8000/api/students/${props.student.id}/`
+    const response = await api.delete(
+        `/students/${props.student.id}/`
     );
     console.log('Student deleted:', response.data);
     alert("Student deleted successfully");
-    emit('update:show', false); // Close the popup after deletion
+    emit('update:show', false);
   } catch (error) {
     if (error.response) {
       console.error('Error response:', error.response.data);

@@ -28,6 +28,7 @@ const emit = defineEmits(['update:show']);
 const closePopup = () => {
   emit('update:show', false);
 };
+
 let {$axios} = useNuxtApp()
 const api = $axios()
 
