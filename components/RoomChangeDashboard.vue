@@ -197,7 +197,7 @@ onMounted(fetchData)
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">Extend</a>
+                <a @click="openPopup(row)" class="extend-btn">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"

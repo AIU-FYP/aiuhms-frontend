@@ -25,7 +25,7 @@ const columns = [
   { key: 'staff_ID', label: 'Staff ID' },
   { key: 'phone', label: 'Phone' },
   { key: 'staff_type', label: 'Staff Type' },
-  { key: 'extend', label: 'Extend', sortable: false },
+  { key: 'extend', label: 'View', sortable: false },
 ];
 
 const admins = ref<User[]>([]);
@@ -112,7 +112,7 @@ onMounted(fetchData)
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">Extend</a>
+                <a @click="openPopup(row)" class="extend-btn">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
