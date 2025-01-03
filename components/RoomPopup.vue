@@ -30,6 +30,22 @@ const closePopup = () => {
 
       <hr class="divider"/>
 
+      <div class="status">
+        <div class="box-status">
+          <span class="status-span occupied"></span>
+          <span>Occupied</span>
+        </div>
+        <div class="box-status">
+          <span class="status-span available"></span>
+          <span>Available</span>
+        </div>
+        <div class="box-status">
+          <span class="status-span under-maintenance"></span>
+          <span>Under Maintenance</span>
+        </div>
+      </div>
+
+
       <div class="popup-content">
         <div class="container">
 
@@ -140,6 +156,43 @@ span {
   margin: 20px 0;
   border: 2px solid var(--main-color);
 }
+
+.status {
+  display: inline-flex;
+  margin: 0 auto;
+}
+
+.status .box-status {
+  min-width: 150px;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  margin-right: 20px; /* Add spacing between statuses */
+}
+
+.status div span {
+  display: block;
+  align-items: center;
+}
+
+.status-span {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.status-span.occupied {
+  background-color: red;
+}
+
+.status-span.available {
+  background-color: green;
+}
+
+.status-span.under-maintenance {
+  background-color: var(--main-color);
+}
+
 
 .levels{
   border: 2px solid var(--main-color);

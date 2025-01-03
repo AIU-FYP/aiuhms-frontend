@@ -18,7 +18,7 @@ const columns = [
   {key: 'gender', label: 'Gender', sortable: true},
   {key: 'date', label: 'Date', sortable: true},
   {key: 'name', label: 'Block Name', sortable: true},
-  {key: 'extend', label: 'Extend', sortable: false,}
+  {key: 'extend', label: 'View', sortable: false,}
 ]
 
 const hostels = ref<Hostel[]>([]);
@@ -78,7 +78,7 @@ const navigationButtons = [
     name: "Hostels",
     icon: "bx-building",
     links: [
-      {text: "Add new Hostel", url: "/new-hostel-form"},
+      {text: "Add new Building", url: "/new-hostel-form"},
       {text: "Manage Rooms", url: "/room-dashboard"},
     ],
   },
@@ -159,7 +159,7 @@ onMounted(fetchData)
           </div>
           <ul v-if="visibleButtonIndex === index">
             <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url)">{{ link.text }}</a>
+              <a @click.prevent="navigateToPage(link.url)" style="cursor: pointer">{{ link.text }}</a>
             </li>
           </ul>
         </div>
@@ -178,7 +178,7 @@ onMounted(fetchData)
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">Extend</a>
+                <a @click="openPopup(row)" class="extend-btn"> View </a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
