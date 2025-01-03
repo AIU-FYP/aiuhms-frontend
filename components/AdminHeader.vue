@@ -2,12 +2,10 @@
 import { ref } from 'vue';
 import {navigateTo } from '#app';
 
-const auth = useAuth();
-
-const handleLogout = () => {
-  auth.logout();
+function handleLogout() {
+  useCookie('token').value = null;
   navigateTo('/login');
-};
+}
 
 const isLoading = ref(false);
 
@@ -25,7 +23,6 @@ const handleSettingsNavigation = async () => {
 
 <template>
   <div class="header-admin-section">
-    <LoaderSection v-if="isLoading" />
     <div class="container">
       <div class="container-box">
 

@@ -2,34 +2,40 @@
 import {onMounted, ref} from 'vue'
 import {useNuxtApp} from '#app'
 
-interface Person {
-  id: number
-  date: string
-  name: string
-  studentIdNumber: string
-  roomNumber: string
-  whatsappNumber: string
-  emailAddress: string
-  gender: string
-  extend?: boolean | string
+interface Profile {
+  id: number;
+  name: string;
+  position: string;
+  staff_ID: string;
+  phone: string;
+  email: string;
+  staff_type: string;
 }
 
-const people = ref<Person[]>([]);
+interface Person {
+  id: number;
+  username: string;
+  profile: Profile;
+}
+
+
+const users = ref<Person[]>([]);
 
 let {$axios} = useNuxtApp()
 const api = $axios()
 
 const fetchData = async () => {
   try {
-    const response = await api.get("/Students")
-    people.value = response.data.map((person: Person) => ({
-      ...person,
+    const response = await api.get("/users");
+    users.value = response.data.map((user: Person) => ({
+      ...user,
       date: new Date().toLocaleDateString()
-    }))
+    }));
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error('Error fetching data:', error);
   }
 }
+
 const isLoading = ref(false);
 const router = useRouter();
 
@@ -96,32 +102,32 @@ const dashboardItems = [
       {
         subTitle: "Male Students",
         icon: "fa-male",
-        totalNum:"100"
+        totalNum: "100"
       },
       {
         subTitle: "Female Students",
         icon: "fa-female",
-        totalNum:"87"
+        totalNum: "87"
       },
       {
         subTitle: "Available Rooms",
         icon: "fa-bed",
-        totalNum:"12"
+        totalNum: "12"
       },
       {
         subTitle: "Occupied Rooms",
         icon: "ic-baseline-clear",
-        totalNum:"23"
+        totalNum: "23"
       },
       {
         subTitle: "Maintenance Requests",
         icon: "la-building-solid",
-        totalNum:"34"
+        totalNum: "34"
       },
       {
         subTitle: "Change Room Requests",
         icon: "la-building-solid",
-        totalNum:"1212"
+        totalNum: "1212"
       },
     ],
   },
@@ -158,8 +164,6 @@ onMounted(() => {
   <div class="admin-dashboard">
     <div class="container">
 
-      <Loader v-if="isLoading"/>
-
       <aside class="sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
           <div class="btn-container">
@@ -186,7 +190,8 @@ onMounted(() => {
 
         <section class="dashboard-info-content">
           <div class="welcome-info">
-            <h2>Welcome back </h2>
+            <h2>Welcome back, {{ users[0]?.profile.name || 'User' }}</h2>
+
           </div>
           <div class="image-container">
             <img src="/images/login.webp" alt="welcome-image">
@@ -243,7 +248,7 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-.dashboard-content{
+.dashboard-content {
   flex: 6;
 }
 
@@ -252,7 +257,7 @@ onMounted(() => {
     display: block;
   }
 
-  .container{
+  .container {
     flex-direction: column;
   }
 
@@ -260,7 +265,6 @@ onMounted(() => {
     min-height: 30vh;
   }
 }
-
 
 
 .btn-container {

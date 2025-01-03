@@ -1,10 +1,8 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue'
-
-const props = defineProps({
+defineProps({
   show: Boolean
-})
-
+});
 const emit = defineEmits(['update:show'])
 
 const closePopup = () => {

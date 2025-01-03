@@ -3,7 +3,6 @@ import { reactive, ref } from 'vue';
 import { z } from 'zod';
 import { navigateTo, useNuxtApp } from '#app';
 
-// Define the form questions
 const previousQuestions = [
   {
     label: "Username",
@@ -21,7 +20,6 @@ const previousQuestions = [
   },
 ];
 
-// Define the validation schema
 const formSchema = z.object({
   "username":
       z.string()
@@ -37,7 +35,6 @@ const formSchema = z.object({
           .nonempty("Password is required"),
 });
 
-// Create reactive form state
 const form = reactive({
   username: '',
   password: ''
@@ -48,15 +45,12 @@ const errors = reactive({
   password: ''
 });
 
-// Create reactive state for loading and error messages
 const isLoading = ref(false);
 const errorMessage = ref('');
 
-// Create the authentication function
 const { $axios } = useNuxtApp();
 const api = $axios();
 
-// Function to validate individual fields
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -66,31 +60,33 @@ function validateField(field) {
   }
 }
 
-// Function to validate the whole form
 function validateForm() {
   validateField("username");
   validateField("password");
 }
 
-// Function to handle form submission
 async function handleSubmit() {
   validateForm();
 
   if (!errors.username && !errors.password) {
     try {
       isLoading.value = true;
-      // Simulate an API request
-      const response = await api.post('/login', {
+      const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
       });
 
-      // Save the token in localStorage (or cookies)
-      saveToken(response.data.token);
+      alert("Login successful");
 
-      // Navigate to the admin dashboard
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
+
+      useCookie('token').value = response.data.access;
+
       navigateTo('/admin');
+      console.log('Navigated to /admin');
     } catch (error) {
+      console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     } finally {
       isLoading.value = false;
@@ -98,10 +94,7 @@ async function handleSubmit() {
   }
 }
 
-// Function to save token (to localStorage)
-function saveToken(token) {
-  localStorage.setItem('auth_token', token);
-}
+
 </script>
 
 <template>
@@ -130,9 +123,8 @@ function saveToken(token) {
               </div>
             </div>
             <button class="login-submit" type="submit" :disabled="isLoading">Log In</button>
-            <LoaderSection :visible="isLoading" />
           </form>
-          <!-- Error message display -->
+
           <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
         </div>
       </div>
