@@ -167,7 +167,7 @@ span {
   display: inline-flex;
   align-items: center;
   text-align: center;
-  margin-right: 20px; /* Add spacing between statuses */
+  margin-right: 20px;
 }
 
 .status div span {

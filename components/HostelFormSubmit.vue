@@ -49,7 +49,7 @@ const navigationButtons = [
     name: "Hostels",
     icon: "bx-building",
     links: [
-      { text: "Add new Hostel", url: "/new-hostel-form" },
+      { text: "Add new Building", url: "/new-hostel-form" },
       { text: "Manage Rooms", url: "/room-dashboard" },
     ],
   },
@@ -59,30 +59,11 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 
-const previousQuestions = [
-  { label: "Hostel Name", type: "text", placeholder: "Enter Hostel Name", required: true },
-  { label: "How many zone", type: "select", options: ["2", "3", "4"], placeholder: "Select Zone Count", required: true },
-  { label: "Gender", type: "select", options: ["Male", "Female"], placeholder: "Select Gender", required: true },
-  {
-    label: "Number of Rooms for Each Level",
-    type: "multi-select",
-    levels: [
-      { label: "Level 1", key: "level1" },
-      { label: "Level 2", key: "level2" },
-      { label: "Level 3", key: "level3" },
-      { label: "Level 4", key: "level4" },
-    ],
-    placeholder: "Select Rooms for Each Level",
-    required: true,
-  },
-];
-
 </script>
 
 <template>
   <div class="admin-dashboard">
     <div class="container">
-      <LoaderSection v-if="isLoading" />
 
       <aside class="sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">

@@ -103,22 +103,56 @@ const previousQuestions = [
   },
   {
     label: "Level No",
-    type: "text",
-    placeholder: "Select Level No (e.g., Level one)",
+    type: "select",
+    options:[
+      { value : "01" , label : "Level one"},
+      { value : "02" , label : "Level two"},
+      { value : "03" , label : "Level three"},
+      { value : "04" , label : "Level four"}
+    ],
+    placeholder: "Select Level No",
     model: ref(""),
     id :"level_number"
   },
   {
     label: "Room No",
-    type: "text",
+    type: "select",
     placeholder: "Select Room No (e.g., 02)",
+    options : [
+      { value: "1", label: "01" },
+      { value: "2", label: "02" },
+      { value: "3", label: "03" },
+      { value: "4", label: "04" },
+      { value: "5", label: "05" },
+      { value: "6", label: "06" },
+      { value: "7", label: "07" },
+      { value: "8", label: "08" },
+      { value: "9", label: "09" },
+      { value: "10", label: "10" },
+      { value: "11", label: "11" },
+      { value: "12", label: "12" },
+      { value: "13", label: "13" },
+      { value: "14", label: "14" },
+      { value: "15", label: "15" },
+      { value: "16", label: "16" },
+      { value: "17", label: "17" },
+      { value: "18", label: "18" },
+      { value: "19", label: "19" },
+      { value: "20", label: "20" },
+    ],
     model: ref(""),
     id : "room"
   },
   {
     label: "Which Zone",
-    type: "text",
-    placeholder: "How many seats are in the room?",
+    type: "select",
+    placeholder: "Which Zone?",
+    options: [
+      { value : "1" , label : "Zone A"},
+      { value : "2" , label : "Zone B"},
+      { value : "3" , label : "Zone C"},
+      { value : "4" , label : "Zone D"},
+    ],
     id :"room_zone",
   },
 ];
@@ -126,7 +160,9 @@ const previousQuestions = [
 const formSchema = z.object({
   "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
   "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
-  "passport": z.string().regex(/^\d{6,15}$/, "Invalid Passport Number format").nonempty("Passport Number is required"),
+  "passport": z.string()
+      .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format")
+      .nonempty("Passport Number is required"),
   "arrival_date": z.string().nonempty("Date of Birth is required"),
   "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format").nonempty("WhatsApp number is required"),
   "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'").nonempty("Email address is required"),
@@ -135,9 +171,9 @@ const formSchema = z.object({
   "nationality": z.string().optional(),
   "major": z.string().min(3, "Name must be at least 3 characters long").nonempty("Major is required"),
   "block_name": z.string().min(2, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "room": z.string().min(2, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "level_number": z.string().min(2, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "room_zone": z.string().min(2, "Name must be at least 8 characters long").nonempty("Name is required"),
+  "room": z.string().optional(),
+  "level_number": z.string().optional(),
+  "room_zone": z.string().optional(),
 });
 
 previousQuestions.forEach((question) => {

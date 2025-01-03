@@ -65,7 +65,7 @@ const navigationButtons = [
     name: "Hostels",
     icon: "bx-building",
     links: [
-      {text: "Add new Hostel", url: "/new-hostel-form"},
+      {text: "Add new Building", url: "/new-hostel-form"},
       {text: "Manage Rooms", url: "/room-dashboard"},
     ],
   },

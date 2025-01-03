@@ -11,9 +11,9 @@ const isPopupVisible = ref(false);
 
 const previousQuestions = [
   {
-    label: "Hostel name",
+    label: "Building Name",
     type: "text",
-    placeholder: "Hostel name",
+    placeholder: "Building name",
     id : "name"
   },
   {
@@ -24,7 +24,7 @@ const previousQuestions = [
     id : "gender"
   },
   {
-    label: "How many zone",
+    label: "Capacity",
     type: "select",
     options: [{value: "1", label: "One"},{value: "2", label: "Two"}, {value: "3", label: "Three"}, {value: "4", label: "Four"}],
     placeholder: "Select Zone Count",
@@ -49,6 +49,7 @@ const previousQuestions = [
 const formSchema = z.object({
   "name": z.string().min(3, "Name must be at least 3 characters long").nonempty("Hostel Name is required"),
   "gender" : z.string().nonempty("Gender is required"),
+  "capacity" : z.string().nonempty("Capacity is required"),
 });
 
 previousQuestions.forEach((question) => {
@@ -139,10 +140,10 @@ async function handleSubmit() {
   <div class="new-student-sec">
     <div class="container">
       <div class="form-header">
-        <h2>New Hostel Form</h2>
+        <h2>New Building Form</h2>
       </div>
       <div class="box-form">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="handleSubmit" >
           <div class="form-container">
             <div class="info" v-for="(question, index) in previousQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
