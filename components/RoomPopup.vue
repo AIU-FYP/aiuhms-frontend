@@ -22,7 +22,7 @@ const closePopup = () => {
     <div class="popup-container" @click.stop>
 
       <div class="popup-header">
-        <span style="font-size: 1.5rem"> Welcome to {{ hostel.name }} Hostel, a second Home for {{ hostel.gender }} student</span>
+        <span style="font-size: 1.5rem">  Welcome to {{ hostel.name.toUpperCase() }} Hostel, a second Home for {{ hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1).toLowerCase() }} student</span>
         <span @click="closePopup" class="close-btn">
           <UIcon name="fontisto-close"/>
         </span>

@@ -1,249 +1,270 @@
-<template>
-  <div class="settings-page">
-    <div class="container">
-      <aside class="sidebar">
-        <h1>Account Settings</h1>
-        <nav>
-          <ul class="menu">
-            <li>
-              <UIcon name="mdi-password" class="icon"/>
-              <router-link to="change-admin-password">Change Password</router-link>
-            </li>
-            <li>
-              <UIcon name="subway-admin-1" class="icon"/>
-              <router-link to="new-admin">Add New Admin</router-link>
-            </li>
-            <li>
-              <UIcon name="grommet-icons-user-admin" class="icon"/>
-              <router-link to="admin-dashboard">Admin dashboard</router-link>
-            </li>
-            <li>
-              <UIcon name="eos-icons-admin" class="icon"/>
-              <router-link to="admin">Admin</router-link>
-            </li>
-            <li>
-              <UIcon name="uiw-logout" class="icon"/>
-              <router-link to="login">Log Out</router-link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <main class="content">
-        <h2>Add new admin</h2>
-        <form @submit.prevent="handleSubmit">
-          <div v-for="(question, index) in previousQuestions" :key="index" class="form-group">
-            <div class="form-control">
-              <label class="question-title" :for="question.label">{{ question.label }}:</label>
+<!--<script setup>-->
+<!--import { defineProps, reactive, watch } from 'vue';-->
+<!--import { z } from 'zod';-->
+<!--import { useNuxtApp, useCookie } from "#app"; // Import useCookie for cookies-->
 
-              <input
-                  v-if="question.type === 'text' || question.type === 'password'"
-                  :type="question.type"
-                  v-model="form[question.label]"
-                  :placeholder="question.placeholder"
-                  :id="question.label"
-              />
+<!--const previousQuestions = [-->
+<!--  {-->
+<!--    label: "Current Password",-->
+<!--    type: "password",-->
+<!--    placeholder: "Enter Current Password",-->
+<!--    id: "password",-->
+<!--  },-->
+<!--  {-->
+<!--    label: "New Password",-->
+<!--    type: "password",-->
+<!--    placeholder: "Enter New Password",-->
+<!--    id: "new_password"-->
+<!--  },-->
+<!--  {-->
+<!--    label: "Confirm New Password",-->
+<!--    type: "password",-->
+<!--    placeholder: "Confirm New Password",-->
+<!--    id: "conform_new_password"-->
+<!--  },-->
+<!--];-->
 
-              <select
-                  v-if="question.type === 'select'"
-                  v-model="form[question.label]"
-                  :id="question.label"
-              >
-                <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option" :value="option">{{ option }}</option>
-              </select>
+<!--const formSchema = z.object({-->
+<!--  "password": z-->
+<!--      .string()-->
+<!--      .min(12, "Must be at least 12 characters")-->
+<!--      .regex(/[a-zA-Z]/, "Must include at least one letter")-->
+<!--      .regex(/\d/, "Must include at least one number")-->
+<!--      .regex(/[@$!%*?&]/, "Must include at least one special character (@$!%*?&)"),-->
+<!--  "new_password": z-->
+<!--      .string()-->
+<!--      .min(12, "Must be at least 12 characters")-->
+<!--      .regex(/[a-zA-Z]/, "Must include at least one letter")-->
+<!--      .regex(/\d/, "Must include at least one number")-->
+<!--      .regex(/[@$!%*?&]/, "Must include at least one special character (@$!%*?&)"),-->
+<!--  "conform_new_password": z-->
+<!--      .string()-->
+<!--      .refine(value => value === form["new_password"], "Passwords must match"),-->
+<!--});-->
 
-              <span v-if="errors[question.label]" class="error">{{ errors[question.label] }}</span>
-            </div>
-          </div>
-          <button type="submit" class="submit-btn">Save Changes</button>
-        </form>
-      </main>
-    </div>
-  </div>
-</template>
+<!--const form = reactive({});-->
+<!--const errors = reactive({});-->
 
-<script setup>
-import {reactive, watch} from 'vue';
-import {z} from 'zod';
+<!--previousQuestions.forEach((question) => {-->
+<!--  form[question.id] = "";-->
+<!--  errors[question.id] = "";-->
+<!--});-->
 
-const previousQuestions = [
-  { label: "Current Password", type: "password", placeholder: "Enter Current Password" },
-  { label: "New Password", type: "password", placeholder: "Enter New Password" },
-  { label: "Confirm New Password", type: "password", placeholder: "Confirm New Password" },
-];
+<!--function validateField(field) {-->
+<!--  try {-->
+<!--    formSchema.shape[field].parse(form[field]);-->
+<!--    errors[field] = "";-->
+<!--  } catch (error) {-->
+<!--    errors[field] = error.errors ? error.errors[0].message : error.message;-->
+<!--  }-->
+<!--}-->
 
-const formSchema = z.object({
-  "Current Password": z
-      .string()
-      .min(12, "Must be at least 12 characters")
-      .regex(/[a-zA-Z]/, "Must include at least one letter")
-      .regex(/\d/, "Must include at least one number")
-      .regex(/[@$!%*?&]/, "Must include at least one special character (@$!%*?&)"),
-  "New Password": z
-      .string()
-      .min(12, "Must be at least 12 characters")
-      .regex(/[a-zA-Z]/, "Must include at least one letter")
-      .regex(/\d/, "Must include at least one number")
-      .regex(/[@$!%*?&]/, "Must include at least one special character (@$!%*?&)"),
-  "Confirm New Password": z
-      .string()
-      .refine(value => value === form["New Password"], "Passwords must match"),
-});
+<!--previousQuestions.forEach((question) => {-->
+<!--  watch(-->
+<!--      () => form[question.id],-->
+<!--      () => validateField(question.id)-->
+<!--  );-->
+<!--});-->
 
-const form = reactive({});
-const errors = reactive({});
+<!--const adminId = useCookie('admin_id').value;-->
 
-previousQuestions.forEach((question) => {
-  form[question.label] = "";
-  errors[question.label] = "";
-});
+<!--const props = defineProps({-->
+<!--  show: Boolean,-->
+<!--  admins: Object-->
+<!--});-->
 
-function validateField(field) {
-  try {
-    formSchema.shape[field].parse(form[field]);
-    errors[field] = "";
-  } catch (error) {
-    errors[field] = error.errors ? error.errors[0].message : error.message;
-  }
-}
+<!--let { $axios } = useNuxtApp()-->
+<!--const api = $axios()-->
 
-previousQuestions.forEach((question) => {
-  watch(
-      () => form[question.label],
-      () => validateField(question.label)
-  );
-});
+<!--const handleSubmit = async () => {-->
+<!--  try {-->
+<!--    // Use the retrieved adminId from cookies-->
+<!--    const response = await api.patch(`/users/${adminId}/`, {-->
+<!--      password: form.password,-->
+<!--      new_password: form.new_password,-->
+<!--    });-->
+
+<!--    console.log('Success:', response.data);-->
+<!--    alert("Password changed successfully");-->
+<!--  } catch (error) {-->
+<!--    if (error.response) {-->
+<!--      console.error('Error response:', error.response.data);-->
+<!--    } else {-->
+<!--      console.error('Error:', error.message);-->
+<!--    }-->
+<!--  }-->
+<!--};-->
+<!--</script>-->
+
+<!--<template>-->
+<!--  <div class="settings-page">-->
+<!--    <div class="container">-->
+<!--      <aside class="sidebar">-->
+<!--        <h1>Account Settings</h1>-->
+<!--        <nav>-->
+<!--          <ul class="menu">-->
+<!--            <li>-->
+<!--              <UIcon name="mdi-password" class="icon"/>-->
+<!--              <router-link to="change-admin-password">Change Password</router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <UIcon name="subway-admin-1" class="icon"/>-->
+<!--              <router-link to="new-admin">Add New Admin</router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <UIcon name="grommet-icons-user-admin" class="icon"/>-->
+<!--              <router-link to="admin-dashboard">Admin dashboard</router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <UIcon name="eos-icons-admin" class="icon"/>-->
+<!--              <router-link to="admin">Admin</router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <UIcon name="uiw-logout" class="icon"/>-->
+<!--              <router-link to="login">Log Out</router-link>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </nav>-->
+<!--      </aside>-->
+<!--      <main class="content">-->
+<!--        <h2>Change Admin Password</h2>-->
+<!--        <form @submit.prevent="handleSubmit">-->
+<!--          <div v-for="(question, index) in previousQuestions" :key="index" class="form-group">-->
+<!--            <div class="form-control">-->
+<!--              <label class="question-title" :for="question.label">{{ question.label }}:</label>-->
+
+<!--              <input-->
+<!--                  v-if="question.type === 'text' || question.type === 'password'"-->
+<!--                  :type="question.type"-->
+<!--                  v-model="form[question.id]"-->
+<!--                  :placeholder="question.placeholder"-->
+<!--                  :id="question.id"-->
+<!--              />-->
+<!--              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <button type="submit" class="submit-btn">Save Changes</button>-->
+<!--        </form>-->
+<!--      </main>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</template>-->
 
 
-function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
-  const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    console.log("Form Data:", { ...form });
-    alert("Form submitted successfully!");
-  } else {
-    alert("Please correct the errors in the form.");
-    validationResults.error.errors.forEach((err) => {
-      if (err.path) errors[err.path[0]] = err.message;
-    });
-  }
-}
-</script>
+<!--<style scoped>-->
+<!--.settings-page {-->
+<!--  display: flex;-->
+<!--  padding: 20px;-->
+<!--}-->
 
-<style scoped>
-.settings-page {
-  display: flex;
-  padding: 20px;
-}
+<!--.container {-->
+<!--  display: flex;-->
+<!--  gap: 20px;-->
+<!--  width: 100%;-->
+<!--  margin: 0 auto;-->
+<!--}-->
 
-.container {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  margin: 0 auto;
-}
+<!--.sidebar {-->
+<!--  flex: 1;-->
+<!--  background-color: var(&#45;&#45;main-color);-->
+<!--  padding: 20px;-->
+<!--  color: var(&#45;&#45;text-color);-->
+<!--  border-radius: 1rem;-->
+<!--  min-height: 81vh;-->
+<!--}-->
 
-.sidebar {
-  flex: 1;
-  background-color: var(--main-color);
-  padding: 20px;
-  color: var(--text-color);
-  border-radius: 1rem;
-  min-height: 81vh;
-}
+<!--.sidebar h1 {-->
+<!--  font-size: 1.5rem;-->
+<!--  margin-bottom: 1rem;-->
+<!--}-->
 
-.sidebar h1 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
+<!--.menu {-->
+<!--  list-style: none;-->
+<!--  padding: 0;-->
+<!--}-->
 
-.menu {
-  list-style: none;
-  padding: 0;
-}
+<!--.menu li {-->
+<!--  display: flex;-->
+<!--  align-items: center;-->
+<!--  padding: .5rem;-->
+<!--  margin-bottom: 15px;-->
+<!--  font-size: 1rem;-->
+<!--  cursor: pointer;-->
+<!--  background-color: transparent;-->
+<!--}-->
 
-.menu li {
-  display: flex;
-  align-items: center;
-  padding: .5rem;
-  margin-bottom: 15px;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: transparent;
-}
+<!--.menu li:hover {-->
+<!--  background-color: var(&#45;&#45;main-hovor-color);-->
+<!--  transition: .3s ease-in-out;-->
+<!--}-->
 
-.menu li:hover {
-  background-color: var(--main-hovor-color);
-  transition: .3s ease-in-out;
-}
+<!--.menu li .icon {-->
+<!--  margin-right: 10px;-->
+<!--}-->
 
-.menu li .icon {
-  margin-right: 10px;
-}
+<!--.menu li a {-->
+<!--  text-decoration: none;-->
+<!--}-->
 
-.menu li a {
-  text-decoration: none;
-}
+<!--.content {-->
+<!--  flex: 3;-->
+<!--  background-color: #ecf0f1;-->
+<!--  padding: 20px;-->
+<!--  border-radius: 1rem;-->
+<!--}-->
 
-.content {
-  flex: 3;
-  background-color: #ecf0f1;
-  padding: 20px;
-  border-radius: 1rem;
-}
+<!--.content h2 {-->
+<!--  font-size: 1.5rem;-->
+<!--  margin-bottom: 20px;-->
+<!--  color: var(&#45;&#45;main-hovor-color);-->
+<!--}-->
 
-.content h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: var(--main-hovor-color);
-}
+<!--.form-group {-->
+<!--  margin-bottom: 20px;-->
+<!--}-->
 
-.form-group {
-  margin-bottom: 20px;
-}
+<!--.form-group label {-->
+<!--  display: block;-->
+<!--  margin-bottom: 5px;-->
+<!--}-->
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-}
+<!--.form-group input,-->
+<!--.form-group select{-->
+<!--  width: 100%;-->
+<!--  padding: 10px;-->
+<!--  border: 2px solid var(&#45;&#45;text-color);-->
+<!--  border-radius: 5px;-->
+<!--  outline: none;-->
+<!--}-->
 
-.form-group input,
-.form-group select{
-  width: 100%;
-  padding: 10px;
-  border: 2px solid var(--text-color);
-  border-radius: 5px;
-  outline: none;
-}
+<!--.error {-->
+<!--  color: red;-->
+<!--  font-size: 0.9rem;-->
+<!--  margin-top: 5px;-->
+<!--}-->
 
-.error {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
+<!--.submit-btn {-->
+<!--  padding: 10px 20px;-->
+<!--  background-color: var(&#45;&#45;main-hovor-color);-->
+<!--  color: var(&#45;&#45;text-color);-->
+<!--  border: none;-->
+<!--  border-radius: .5rem;-->
+<!--  cursor: pointer;-->
+<!--}-->
 
-.submit-btn {
-  padding: 10px 20px;
-  background-color: var(--main-hovor-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: .5rem;
-  cursor: pointer;
-}
+<!--.submit-btn:hover {-->
+<!--  background-color: var(&#45;&#45;main-color);-->
+<!--  color: var(&#45;&#45;text-hovor-color);-->
+<!--  transition: .3s ease-in-out;-->
+<!--}-->
 
-.submit-btn:hover {
-  background-color: var(--main-color);
-  color: var(--text-hovor-color);
-  transition: .3s ease-in-out;
-}
+<!--@media (max-width: 768px) {-->
+<!--  .container {-->
+<!--    flex-direction: column;-->
+<!--  }-->
 
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    margin-bottom: 20px;
-  }
-}
-</style>
+<!--  .sidebar {-->
+<!--    margin-bottom: 20px;-->
+<!--  }-->
+<!--}-->
+<!--</style>-->

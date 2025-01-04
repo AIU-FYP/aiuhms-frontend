@@ -18,7 +18,7 @@ const columns = [
   {key: 'gender', label: 'Gender', sortable: true},
   {key: 'date', label: 'Date', sortable: true},
   {key: 'name', label: 'Block Name', sortable: true},
-  {key: 'extend', label: 'Extend', sortable: false,}
+  {key: 'extend', label: 'View', sortable: false,}
 ]
 
 const hostels = ref<Hostel[]>([]);
@@ -178,7 +178,7 @@ onMounted(fetchData)
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">Extend</a>
+                <a @click="openPopup(row)" class="extend-btn">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
@@ -205,12 +205,7 @@ onMounted(fetchData)
                 />
               </button>
             </div>
-
-
             <hr class="divider"/>
-            <div class="footer">
-              <h2 class="footer-megs" style="text-align: center">Thank you !</h2>
-            </div>
           </div>
         </div>
       </main>

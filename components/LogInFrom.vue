@@ -23,7 +23,7 @@ const previousQuestions = [
 const formSchema = z.object({
   "username":
       z.string()
-          .regex(/^AIU\d{8}$/, "Username must start with 'AIU' followed by 8 digits")
+          .min( "Username must start with 'AIU' followed by 8 digits")
           .nonempty("Username is required"),
   "password":
       z.string()

@@ -27,7 +27,7 @@ const previousQuestions = [
     label: "Capacity",
     type: "select",
     options: [{value: "1", label: "One"},{value: "2", label: "Two"}, {value: "3", label: "Three"}, {value: "4", label: "Four"}],
-    placeholder: "Select Zone Count",
+    placeholder: "Select capacity",
     required: true,
     id : "capacity"
   },
@@ -47,7 +47,10 @@ const previousQuestions = [
 ];
 
 const formSchema = z.object({
-  "name": z.string().min(3, "Name must be at least 3 characters long").nonempty("Hostel Name is required"),
+  "name": z
+      .string()
+      .regex(/^\d{2}[A-Z]$/, "Hostel name must be two numbers followed by one uppercase letter")
+      .nonempty("Hostel Name is required"),
   "gender" : z.string().nonempty("Gender is required"),
   "capacity" : z.string().nonempty("Capacity is required"),
 });

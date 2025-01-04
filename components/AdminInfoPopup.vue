@@ -2,7 +2,6 @@
 import {defineEmits, defineProps} from 'vue'
 import {useNuxtApp} from "#app";
 
-
 const props = defineProps({
   show: Boolean,
   admins: Object
