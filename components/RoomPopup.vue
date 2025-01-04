@@ -15,6 +15,19 @@ const convertToLetter = (zoneNumber) => {
 const closePopup = () => {
   emit("update:show", false);
 };
+
+const bedStatusColor = (status) => {
+  switch (status.toLowerCase()) {
+    case 'available':
+      return 'green';
+    case 'occupied':
+      return 'red';
+    case 'under maintenance':
+      return 'gray';
+    default:
+      return 'transparent';
+  }
+};
 </script>
 
 <template>
@@ -22,7 +35,9 @@ const closePopup = () => {
     <div class="popup-container" @click.stop>
 
       <div class="popup-header">
-        <span style="font-size: 1.5rem">  Welcome to {{ hostel.name.toUpperCase() }} Hostel, a second Home for {{ hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1).toLowerCase() }} student</span>
+        <span style="font-size: 1.5rem">
+          Welcome to {{ hostel.name }} Hostel, a second Home for {{ hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1).toLowerCase() }} student
+        </span>
         <span @click="closePopup" class="close-btn">
           <UIcon name="fontisto-close"/>
         </span>
@@ -45,44 +60,27 @@ const closePopup = () => {
         </div>
       </div>
 
-
       <div class="popup-content">
         <div class="container">
-
           <div v-for="level in hostel.levels" :key="level.number" class="levels">
-
             <span class="level-label">Level {{ level.number }}</span>
 
             <div class="level-box">
               <div v-for="room in level.room_details" :key="room.number" class="room-box">
                 <div class="box">
                   <div class="capacity-container">
-
-
-                    <div
-                        v-for="zone in room.capacity"
-                        :key="zone"
-                        class="capacity-part"
-                    >
-
-                      <UIcon
-                          name="mdi-bed"
-                          class="icon"
-                      />
-                      <span> {{ convertToLetter(zone) }}</span>
+                    <div v-for="bed in room.beds" :key="bed.id" class="capacity-part" :style="{ backgroundColor: bedStatusColor(bed.status) }">
+                      <UIcon name="mdi-bed" class="icon"/>
+                      <span>{{ convertToLetter(bed.id) }}</span>
                     </div>
-
                   </div>
 
                   <div class="room-box">
-                    <span class="room-number"> Room :{{ room.number }}</span>
+                    <span class="room-number">Room: {{ room.number }}</span>
                   </div>
-
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
@@ -91,7 +89,6 @@ const closePopup = () => {
 </template>
 
 <style scoped>
-
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -193,16 +190,14 @@ span {
   background-color: var(--main-color);
 }
 
-
-.levels{
-  border: 2px solid var(--main-color);
+.levels {
+  border-bottom: 2px solid var(--main-color);
   margin: 10px;
 }
 
 .level-label {
-  font-size: 1.2rem;
-  color: var(--text-hovor-color);
-  background-color: var(--main-color);
+  font-size: 1.5rem;
+  color: var(--main-color);
   padding: 0 50px 10px 50px;
 }
 
@@ -214,7 +209,6 @@ span {
   max-height: 350px;
   overflow-y: auto;
   gap: 20px;
-
 }
 
 .level-box div {
@@ -236,15 +230,14 @@ span {
 
 .capacity-part {
   display: block;
-  width:20px;
+  width: 20px;
   height: 20px;
   margin-right: 5px;
-  background-color: red;
   border-radius: 4px;
 }
 
 .capacity-part .icon,
-.capacity-part span{
+.capacity-part span {
   color: var(--text-hovor-color);
   font-size: 1rem;
 }
@@ -255,8 +248,6 @@ span {
     flex-direction: column;
   }
 }
-
-
 
 @media (max-width: 800px) {
   .popup-bts button {
@@ -270,5 +261,4 @@ h2 {
   text-align: center;
   text-transform: capitalize;
 }
-
 </style>
