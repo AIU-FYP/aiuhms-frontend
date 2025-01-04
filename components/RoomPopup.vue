@@ -1,5 +1,6 @@
 <script setup>
-import {defineEmits, defineProps} from "vue";
+import { defineEmits, defineProps } from "vue";
+import { useNuxtApp } from "#app";
 
 const props = defineProps({
   show: Boolean,
@@ -18,32 +19,57 @@ const closePopup = () => {
 
 const bedStatusColor = (status) => {
   switch (status.toLowerCase()) {
-    case 'available':
-      return 'green';
-    case 'occupied':
-      return 'red';
-    case 'under maintenance':
-      return 'gray';
+    case "available":
+      return "green";
+    case "occupied":
+      return "red";
+    case "under maintenance":
+      return "gray";
     default:
-      return 'transparent';
+      return "transparent";
   }
 };
+
+let { $axios } = useNuxtApp();
+const api = $axios();
+
+const updateBedStatus = async (bed, newStatus) => {
+  try {
+    await api.patch(`/beds/${bed.id}/`, { status: 'under maintenance' });
+    console.log('Bed ID:', bed.id);
+    bed.status = newStatus;
+
+    console.log("Bed status updated successfully:", response.data);
+    alert("Bed status updated successfully!");
+  } catch (error) {
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+    } else {
+      console.error("Error:", error.message);
+    }
+    alert("Error updating bed status. Please try again.");
+  }
+};
+
+
 </script>
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
     <div class="popup-container" @click.stop>
-
       <div class="popup-header">
-        <span style="font-size: 1.5rem">
-          Welcome to {{ hostel.name }} Hostel, a second Home for {{ hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1).toLowerCase() }} student
+        <span>
+          Welcome to {{ hostel.name }} Hostel,
+          {{
+            hostel.gender.charAt(0).toUpperCase() + hostel.gender.slice(1).toLowerCase()
+          }} students
         </span>
         <span @click="closePopup" class="close-btn">
-          <UIcon name="fontisto-close"/>
+          <UIcon name="fontisto-close" />
         </span>
       </div>
 
-      <hr class="divider"/>
+      <hr class="divider" />
 
       <div class="status">
         <div class="box-status">
@@ -64,15 +90,22 @@ const bedStatusColor = (status) => {
         <div class="container">
           <div v-for="level in hostel.levels" :key="level.number" class="levels">
             <span class="level-label">Level {{ level.number }}</span>
-
             <div class="level-box">
               <div v-for="room in level.room_details" :key="room.number" class="room-box">
                 <div class="box">
                   <div class="capacity-container">
-                    <div v-for="bed in room.beds" :key="bed.id" class="capacity-part" :style="{ backgroundColor: bedStatusColor(bed.status) }">
-                      <UIcon name="mdi-bed" class="icon"/>
-                      <span>{{ convertToLetter(bed.id) }}</span>
+                    <div
+                        v-for="bed in room.beds"
+                        :key="bed.id"
+                        class="capacity-part"
+                        :style="{ backgroundColor: bedStatusColor(bed.status) }"
+                        @click="updateBedStatus(bed, 'under maintenance')"
+                    >
+                      <UIcon name="mdi-bed" class="icon" />
+                      <span>{{ convertToLetter(bed.bed_number) }}</span>
+                      <span>{{ bed.status }}</span>
                     </div>
+
                   </div>
 
                   <div class="room-box">
@@ -88,7 +121,9 @@ const bedStatusColor = (status) => {
   </div>
 </template>
 
+
 <style scoped>
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -115,8 +150,9 @@ const bedStatusColor = (status) => {
 
 @media (max-width: 1200px) {
   .popup-container {
-    width: 90%;
-    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
   }
 }
 
@@ -125,6 +161,7 @@ const bedStatusColor = (status) => {
     width: 100%;
     max-width: 100%;
     border-radius: 0;
+    font-size: 1rem;
   }
 }
 
@@ -190,6 +227,20 @@ span {
   background-color: var(--main-color);
 }
 
+@media (max-width: 800px) {
+  .status {
+    display: block;
+    margin: 0;
+  }
+
+  .status .box-status {
+    min-width: 100px;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem auto;
+  }
+}
+
 .levels {
   border-bottom: 2px solid var(--main-color);
   margin: 10px;
@@ -216,6 +267,13 @@ span {
   height: auto;
   text-align: center;
   color: black;
+}
+
+@media (max-width: 1200px) {
+  .level-box div{
+    margin: auto;
+    gap: 20px;
+  }
 }
 
 .room-number {
