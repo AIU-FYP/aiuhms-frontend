@@ -20,20 +20,6 @@ const people = ref<Person[]>([]);
 let {$axios} = useNuxtApp()
 const api = $axios()
 
-// const fetchData = async () => {
-//   try {
-//     const response = await api.get("/Students/")
-//     people.value = response.data.map((person: Person) => ({
-//       ...person,
-//       date: new Date().toLocaleDateString()
-//     }))
-//   } catch (error) {
-//     console.error('Error fetching data:', error)
-//   }
-// }
-
-// onMounted(fetchData)
-
 const visibleButtonIndex = ref<number | null>(null);
 
 const navigationButtons = [

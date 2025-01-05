@@ -46,7 +46,7 @@ const formSchema = z.object({
   "block_name": z.string().nonempty("Block Name is required"),
   "level_number": z.string().nonempty("Level Number is required"),
   "room": z.string().nonempty("Room is required"),
-  "room_zone": z.string().optional(),
+  "bed": z.number().optional(),
 });
 
 let {$axios} = useNuxtApp()
@@ -146,7 +146,7 @@ const previousQuestions = computed(() => {
       type: "select",
       placeholder: "Select Room No (e.g., 02)",
       options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number === Number(form['level_number']))?.room_details.map(r => ({
-        value: r.number ,// Ensure room numbers are strings
+        value: r.number ,
         label: `Room ${r.number}`
       })) || [],
       model: ref(""),
@@ -157,10 +157,10 @@ const previousQuestions = computed(() => {
       type: "select",
       placeholder: "Which Zone?",
       options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number.toString() === form['level_number'])?.room_details.find(r => r.number.toString() === form['room'])?.beds.map(b => ({
-        value: b.id.toString(),
+        value: b.id,
         label: `Zone ${b.bed_number} (${b.status})`
       })) || [],
-      id: "room_zone",
+      id: "bed",
     }
 
   ]
