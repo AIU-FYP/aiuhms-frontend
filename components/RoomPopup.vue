@@ -23,8 +23,8 @@ const bedStatusColor = (status) => {
       return "green";
     case "occupied":
       return "red";
-    case "under maintenance":
-      return "gray";
+    case "under_maintenance":
+      return "blue";
     default:
       return "transparent";
   }
@@ -33,13 +33,11 @@ const bedStatusColor = (status) => {
 let { $axios } = useNuxtApp();
 const api = $axios();
 
-const updateBedStatus = async (bed, newStatus) => {
+const toggleBedStatus = async (bed, newStatus) => {
   try {
-    await api.patch(`/beds/${bed.id}/`, { status: 'under maintenance' });
+    await api.patch(`/beds/${bed.id}/`, { status: newStatus });
     console.log('Bed ID:', bed.id);
     bed.status = newStatus;
-
-    console.log("Bed status updated successfully:", response.data);
     alert("Bed status updated successfully!");
   } catch (error) {
     if (error.response) {
@@ -99,11 +97,10 @@ const updateBedStatus = async (bed, newStatus) => {
                         :key="bed.id"
                         class="capacity-part"
                         :style="{ backgroundColor: bedStatusColor(bed.status) }"
-                        @click="updateBedStatus(bed, 'under maintenance')"
+                        @click="toggleBedStatus(bed, bed.status === 'available' ? 'under_maintenance' : 'available')"
                     >
                       <UIcon name="mdi-bed" class="icon" />
                       <span>{{ convertToLetter(bed.bed_number) }}</span>
-                      <span>{{ bed.status }}</span>
                     </div>
 
                   </div>
@@ -292,6 +289,7 @@ span {
   height: 20px;
   margin-right: 5px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .capacity-part .icon,
