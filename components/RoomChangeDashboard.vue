@@ -78,6 +78,8 @@ const navigationButtons = [
     links: [
       {text: "Register Student", url: "/student-registration-form"},
       {text: "Manage Student", url: "/student-registration-dashboard"},
+      {text: "Graduated Student", url: "/graduated-students"},
+
     ],
   },
   {
