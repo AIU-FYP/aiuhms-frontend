@@ -53,7 +53,6 @@ const fetchData = async () => {
   }
 };
 
-
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
 

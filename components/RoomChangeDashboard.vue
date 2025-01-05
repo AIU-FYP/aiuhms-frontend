@@ -15,7 +15,6 @@ interface RequestFields {
   extend?: boolean | string
 }
 
-
 const columns = [
   {key: 'id', label: 'id'},
   {key: "date", label: 'Date',},
@@ -27,6 +26,8 @@ const columns = [
 ]
 
 const fetchData = async () => {
+
+  isLoading.value= true;
   try {
     const response = await api.get("/change-room-requests/");
     requests.value = response.data.map((request: RequestFields) => ({
@@ -36,6 +37,9 @@ const fetchData = async () => {
     totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
+  }
+  finally {
+    isLoading.value = false;
   }
 }
 
@@ -61,9 +65,8 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const totalItems = ref(0);
 const q = ref('');
-
 const api = $axios()
-
+const isLoading = ref(false);
 const isPopupVisible = ref(false);
 const currentRequest = ref({});
 
@@ -78,8 +81,6 @@ const navigationButtons = [
     links: [
       {text: "Register Student", url: "/student-registration-form"},
       {text: "Manage Student", url: "/student-registration-dashboard"},
-      {text: "Graduated Student", url: "/graduated-students"},
-
     ],
   },
   {
@@ -112,16 +113,14 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 
-const isLoading = ref(false);
 const router = useRouter();
 
 async function navigateToPage(url: string) {
-  isLoading.value = true;
   try {
     setTimeout(async () => {
       await router.push(url);
       isLoading.value = false;
-    }, 2000);
+    });
   } catch (error) {
     console.error('Navigation error:', error);
     isLoading.value = false;
@@ -157,7 +156,6 @@ const handlePageChange = (newPage: number) => {
 
 onMounted(fetchData)
 
-
 </script>
 
 <template>
@@ -186,7 +184,11 @@ onMounted(fetchData)
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <main class="dashboard-content" v-if="isLoading">
+        <loader/>
+      </main>
+
+      <main class="dashboard-content" v-else>
         <div class="sub-container">
 
           <div class="content">
@@ -226,7 +228,6 @@ onMounted(fetchData)
                 />
               </button>
             </div>
-
 
             <hr class="divider"/>
           </div>
