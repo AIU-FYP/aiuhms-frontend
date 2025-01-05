@@ -19,7 +19,14 @@ function constructApi(baseUrl: string) {
     });
 
     api.interceptors.request.use((config) => {
+        const accessToken = useCookie('token').value;
+        if (accessToken) {
+            config.headers = config.headers || {};
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+        }
         return config;
+    }, (error) => {
+        return Promise.reject(error);
     });
     return api;
 }
