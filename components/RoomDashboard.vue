@@ -30,6 +30,9 @@ const q = ref('');
 const api = $axios()
 
 const fetchData = async () => {
+
+  isLoading.value = true
+
   try {
     const response = await api.get("/hostels/");
     hostels.value = response.data.map((hostel: Hostel) => ({
@@ -39,6 +42,8 @@ const fetchData = async () => {
     totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -56,8 +61,6 @@ const navigationButtons = [
     links: [
       {text: "Register Student", url: "/student-registration-form"},
       {text: "Manage Student", url: "/student-registration-dashboard"},
-      {text: "Graduated Student", url: "/graduated-students"},
-
     ],
   },
   {
@@ -94,7 +97,6 @@ const isLoading = ref(false);
 const router = useRouter();
 
 async function navigateToPage(url: string) {
-  isLoading.value = true;
   try {
     setTimeout(async () => {
       await router.push(url);
@@ -167,7 +169,11 @@ onMounted(fetchData)
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <main class="dashboard-content" v-if="isLoading">
+        <loader/>
+      </main>
+
+      <main class="dashboard-content" v-else>
         <div class="sub-container">
 
           <div class="content">
