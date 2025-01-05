@@ -27,6 +27,7 @@ const columns = [
   {key: 'extend', label: 'View', sortable: false,}
 ]
 
+const isLoading = ref(false);
 const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -36,6 +37,8 @@ const q = ref('');
 const api = $axios()
 
 const fetchData = async () => {
+
+  isLoading.value = true;
   try {
     const response = await api.get("/maintenance-requests/");
     requests.value = response.data.map((request: StudentRequest) => ({
@@ -45,7 +48,10 @@ const fetchData = async () => {
     totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
+  } finally {
+    isLoading.value = false;
   }
+
 }
 
 const isPopupVisible = ref(false);
@@ -62,8 +68,6 @@ const navigationButtons = [
     links: [
       {text: "Register Student", url: "/student-registration-form"},
       {text: "Manage Student", url: "/student-registration-dashboard"},
-      {text: "Graduated Student", url: "/graduated-students"},
-
     ],
   },
   {
@@ -96,19 +100,16 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 
-const isLoading = ref(false);
 const router = useRouter();
 
 async function navigateToPage(url: string) {
-  isLoading.value = true;
+  isLoading.value = false;
   try {
     setTimeout(async () => {
       await router.push(url);
-      isLoading.value = false;
-    }, 2000);
+    });
   } catch (error) {
     console.error('Navigation error:', error);
-    isLoading.value = false;
   }
 }
 
@@ -173,7 +174,9 @@ onMounted(fetchData)
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <loader v-if="isLoading"/>
+
+      <main class="dashboard-content" v-else>
         <div class="sub-container">
 
           <div class="content">
@@ -214,8 +217,6 @@ onMounted(fetchData)
                 />
               </button>
             </div>
-
-
             <hr class="divider"/>
           </div>
         </div>

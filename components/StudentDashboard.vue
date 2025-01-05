@@ -38,7 +38,7 @@ const api = $axios()
 
 
 const fetchData = async () => {
-  isLoading.value = true; // Start loading
+  isLoading.value = true;
   try {
     const response = await api.get("/students/");
     people.value = response.data.map((person: Person) => ({
