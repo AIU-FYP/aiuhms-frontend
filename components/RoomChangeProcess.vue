@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 const items = [
   {
@@ -33,27 +32,32 @@ const items = [
   }
 ];
 
-const activeIndex = ref(null)
+const activeIndex = ref<number | null>(null)
 
-const toggleFaq = (index) => {
+const toggleFaq = (index: number) => {
   activeIndex.value = activeIndex.value === index ? null : index
 }
 </script>
 
 <template>
-  <div class="process-maintenance-room">
+  <div class="room-change-request">
     <div class="container">
       <div></div>
-      <div class="process-maintenance-room-section">
+      <div class="room-change-request-section">
         <h2>How do students request to change room?</h2>
         <div
-            class="process-item"
+            class="room-change-request-item"
             v-for="(item, index) in items"
             :key="index"
             @click="toggleFaq(index)"
+            :aria-expanded="activeIndex === index"
+            role="button"
+            tabindex="0"
+            @keydown.enter="toggleFaq(index)"
+            @keydown.space.prevent="toggleFaq(index)"
         >
-          <div class="info">
-            <h3 class="title">
+          <div class="room-change-request-info">
+            <h3 class="room-change-request-title">
               <span>
                 <UIcon
                     name="lucide-university"
@@ -66,13 +70,11 @@ const toggleFaq = (index) => {
               <UIcon v-else name="ep-arrow-down-bold" />
             </h3>
           </div>
-          <p class="description" v-if="activeIndex === index">{{ item.content }}</p>
+          <p class="room-change-request-description" v-show="activeIndex === index" :class="{ 'fade-in': activeIndex === index }">{{ item.content }}</p>
         </div>
-        <a class="link-btn">
-          <router-link to="/change-room-form">
-            Request To Change Room Form
-          </router-link>
-        </a>
+        <router-link to="/change-room-form" class="room-change-request-link-btn">
+          Request To Change Room Form
+        </router-link>
       </div>
       <div></div>
     </div>
@@ -80,14 +82,13 @@ const toggleFaq = (index) => {
 </template>
 
 <style scoped>
-
-.process-maintenance-room {
+.room-change-request {
   padding: 1rem 0;
-  margin: 0 10rem ;
-  align-items: center;
+  margin: 0 auto;
+  max-width: 800px;
 }
 
-.process-maintenance-room h2 {
+.room-change-request h2 {
   text-align: center;
   font-size: 2rem;
   font-weight: normal;
@@ -96,58 +97,84 @@ const toggleFaq = (index) => {
   margin: 2rem 0;
 }
 
-@media (max-width: 820px) {
-  .process-maintenance-room h2 {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-  .process-maintenance-room {
-    padding: 1em;
-    margin: 0 1rem ;
-  }
-}
-
-.process-item {
+.room-change-request-item {
   background-color: #f5f5f5;
   color: var(--primary-hover-color);
   margin-bottom: 1.5rem;
   border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
 }
 
-.info {
+.room-change-request-item:focus,
+.room-change-request-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.room-change-request-info {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   padding: .5rem 1rem;
-  cursor: pointer;
 }
 
-.title {
+.room-change-request-title {
   font-size: 1.5rem;
 }
 
-.description {
+.room-change-request-description {
   padding: .5rem 1rem;
   font-size: 1rem;
   font-weight: normal;
   color: var(--primary-hover-color);
   text-align: justify;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
-@media (max-width: 800px) {
-  .title {
-    font-size: 1rem;
-  }
-  .description{
-    font-size: .8rem;
-  }
+.room-change-request-description.fade-in {
+  opacity: 1;
+  max-height: 300px;
 }
 
-.link-btn{
-  display: flex;
+.room-change-request-link-btn {
+  display: inline-block;
   font-size: 1.2rem;
   color: var(--primary-color);
   margin: 1rem 0;
+  text-align: center;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
+.room-change-request-link-btn:hover {
+  background-color: var(--primary-color);
+  color: var(--text-light-color);
+}
+
+@media (max-width: 820px) {
+  .room-change-request h2 {
+    font-size: 1.5rem;
+  }
+
+  .room-change-request {
+    padding: 1em;
+    margin: 0 1rem;
+  }
+
+  .room-change-request-description {
+    font-size: 0.9rem;
+  }
+
+  .room-change-request-link-btn {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+  }
+}
 </style>

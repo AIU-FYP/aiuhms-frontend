@@ -122,7 +122,6 @@ const toggleFaq = (index: number) => {
 
 .title {
   font-size: 1.2rem;
-  font-weight: bold;
 }
 
 .description {
@@ -145,8 +144,8 @@ const toggleFaq = (index: number) => {
   display: inline-block;
   margin-top: 2rem;
   text-align: center;
-  color: white;
-  background-color: var(--primary-color);
+  background-color: #f5f5f5;
+  color: var(--primary-hover-color);
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
   font-size: 1rem;
@@ -155,7 +154,9 @@ const toggleFaq = (index: number) => {
 }
 
 .link-btn:hover {
-  background-color: var(--primary-hover-color);
+  background-color: var(--primary-color);
+  color: var(--text-light-color);
+  transition:  0.3s ease-in-out;
 }
 
 @media (max-width: 820px) {
