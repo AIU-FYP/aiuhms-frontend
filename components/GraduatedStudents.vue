@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
-import Popup from '~/components/StudentInfoPopup.vue'
+import Popup from '~/components/GraduatedStudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
 
 let {$axios} = useNuxtApp()
