@@ -2,39 +2,21 @@
 import {onMounted, ref} from 'vue'
 import {useNuxtApp} from '#app'
 
-interface Profile {
-  id: number;
-  name: string;
-  position: string;
-  staff_ID: string;
-  phone: string;
-  email: string;
-  staff_type: string;
-}
-
 interface Person {
-  id: number;
-  username: string;
-  profile: Profile;
+  id: number
+  date: string
+  name: string
+  studentIdNumber: string
+  roomNumber: string
+  whatsappNumber: string
+  emailAddress: string
+  gender: string
+  extend?: boolean | string
 }
 
-
-const users = ref<Person[]>([]);
 
 let {$axios} = useNuxtApp()
 const api = $axios()
-
-const fetchData = async () => {
-  try {
-    const response = await api.get("/users");
-    users.value = response.data.map((user: Person) => ({
-      ...user,
-      date: new Date().toLocaleDateString()
-    }));
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
-}
 
 const isLoading = ref(false);
 const router = useRouter();
@@ -51,8 +33,6 @@ async function navigateToPage(url: string) {
     isLoading.value = false;
   }
 }
-
-onMounted(fetchData)
 
 const visibleButtonIndex = ref<number | null>(null);
 
@@ -95,43 +75,65 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 
-const dashboardItems = [
+interface HostelStats {
+  student_statistics: {
+    male_students: number;
+    female_students: number;
+    total_students: number;
+  };
+  occupancy_statistics: {
+    total_capacity: number;
+    occupied_beds: number;
+    available_beds: number;
+    occupancy_rate: number;
+  };
+  request_statistics: {
+    maintenance_requests: number;
+    change_room_requests: number;
+    total_requests: number;
+  };
+}
+
+
+const stats = ref<HostelStats | null>(null)
+
+const dashboardItems = computed(() => [
   {
     title: "Main Dashboard",
     maintenanceStats: [
       {
         subTitle: "Male Students",
         icon: "fa-male",
-        totalNum: "100"
+        totalNum: stats.value?.student_statistics.male_students ?? 0
       },
       {
         subTitle: "Female Students",
         icon: "fa-female",
-        totalNum: "87"
+        totalNum: stats.value?.student_statistics.female_students ?? 0
       },
       {
         subTitle: "Available Rooms",
         icon: "fa-bed",
-        totalNum: "12"
+        totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
       },
       {
         subTitle: "Occupied Rooms",
         icon: "ic-baseline-clear",
-        totalNum: "23"
+        totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
       },
       {
         subTitle: "Maintenance Requests",
         icon: "la-building-solid",
-        totalNum: "34"
+        totalNum: stats.value?.request_statistics.maintenance_requests ?? 0
       },
       {
         subTitle: "Change Room Requests",
         icon: "la-building-solid",
-        totalNum: "1212"
+        totalNum: stats.value?.request_statistics.change_room_requests ?? 0
       },
     ],
   },
-];
+])
 
 const currentNumber = ref(0);
 
@@ -153,8 +155,21 @@ const animateNumber = () => {
   }, stepTime);
 };
 
+const isFetching = ref(true);
+
+const fetchStats = async () => {
+  try {
+    const { data } = await api.get('/hostels/stats/')
+    stats.value = data
+    isFetching.value = false
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 onMounted(() => {
   animateNumber();
+  fetchStats();
 })
 
 
@@ -163,6 +178,8 @@ onMounted(() => {
 <template>
   <div class="admin-dashboard">
     <div class="container">
+
+      <Loader v-if="isLoading"/>
 
       <aside class="sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
@@ -190,27 +207,36 @@ onMounted(() => {
 
         <section class="dashboard-info-content">
           <div class="welcome-info">
-            <h2>Welcome back, {{ users[0]?.profile.name || 'User' }}</h2>
-
+            <h2>Welcome back </h2>
           </div>
           <div class="image-container">
             <img src="/images/login.webp" alt="welcome-image">
           </div>
         </section>
 
-        <section v-for="item in dashboardItems" :key="item.title" class="analysis-section">
+        <div v-if="isFetching" class="loading">
+          Loading stats...
+        </div>
+        <section
+            v-else
+            v-for="item in dashboardItems"
+            :key="item.title"
+            class="analysis-section"
+        >
           <div class="stat-cards">
-            <div v-for="(stat, index) in item.maintenanceStats" :key="index" class="stat-card">
+            <div
+                v-for="(stat, index) in item.maintenanceStats"
+                :key="index"
+                class="stat-card"
+            >
               <div class="box">
                 <h4>{{ stat.subTitle }}</h4>
                 <span class="stat-icon">
-              <UIcon
-                  :name="stat.icon"
-              />
+              <UIcon :name="stat.icon" />
             </span>
               </div>
               <div class="num">
-                <span>{{ currentNumber }}</span>
+                <span>{{ stat.totalNum }}</span>
               </div>
             </div>
           </div>
@@ -248,7 +274,7 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-.dashboard-content {
+.dashboard-content{
   flex: 6;
 }
 
@@ -257,7 +283,7 @@ onMounted(() => {
     display: block;
   }
 
-  .container {
+  .container{
     flex-direction: column;
   }
 
@@ -265,6 +291,7 @@ onMounted(() => {
     min-height: 30vh;
   }
 }
+
 
 
 .btn-container {
