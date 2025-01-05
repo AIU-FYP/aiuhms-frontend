@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {onMounted, ref} from 'vue'
+import {ref} from 'vue'
 import {useNuxtApp} from '#app'
 
 interface Person {
@@ -20,19 +20,19 @@ const people = ref<Person[]>([]);
 let {$axios} = useNuxtApp()
 const api = $axios()
 
-const fetchData = async () => {
-  try {
-    const response = await api.get("/Students/")
-    people.value = response.data.map((person: Person) => ({
-      ...person,
-      date: new Date().toLocaleDateString()
-    }))
-  } catch (error) {
-    console.error('Error fetching data:', error)
-  }
-}
+// const fetchData = async () => {
+//   try {
+//     const response = await api.get("/Students/")
+//     people.value = response.data.map((person: Person) => ({
+//       ...person,
+//       date: new Date().toLocaleDateString()
+//     }))
+//   } catch (error) {
+//     console.error('Error fetching data:', error)
+//   }
+// }
 
-onMounted(fetchData)
+// onMounted(fetchData)
 
 const visibleButtonIndex = ref<number | null>(null);
 

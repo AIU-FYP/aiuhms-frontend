@@ -2,7 +2,8 @@
 import {computed, reactive, ref, watch} from 'vue';
 import Popup from '~/components/AdminSubmitPopup.vue'
 import {z} from 'zod';
-import { religions, dropdownOptions,} from "~/utils/dropdownOptions.js";
+import {religions, dropdownOptions,} from "~/utils/dropdownOptions.js";
+import {useNuxtApp} from "#app";
 
 const form = reactive({});
 const errors = reactive({});
@@ -29,134 +30,6 @@ const filteredReligions = computed(() => {
 
 const isPopupVisible = ref(false);
 
-const previousQuestions = [
-  {
-    label: "Name",
-    type: "text",
-    placeholder: "Enter your name",
-    id:"name",
-  },
-  {
-    label: "Student ID",
-    type: "text",
-    placeholder: "Enter your student ID (e.g., AIU21011234)",
-    id: "student_id",
-  },
-  {
-    label: "Passport No",
-    type: "text",
-    placeholder: "Enter your passport No",
-    id: "passport",
-  },
-  {
-    label: "Date of Arrive",
-    type: "date",
-    placeholder: "Select your date of birth",
-    id: "arrival_date",
-  },
-  {
-    label: "WhatsApp No",
-    type: "text",
-    placeholder: "Enter your WhatsApp No",
-    id : "phone",
-  },
-  {
-    label: "Email Address (Student Email Only)",
-    type: "text",
-    placeholder: "Enter your email address",
-    id : "email",
-  },
-  {
-    label: "Gender",
-    type: "select",
-    options: [{value : "male" ,label :"Male"}, {value : "female" ,label :"Female"}],
-    placeholder: "Select your gender",
-    model: ref(""),
-    id: "gender",
-  },
-  {
-    label: "Religion",
-    type: "select",
-    options: filteredReligions.value,
-    placeholder: "Select Your religion",
-    id :"religion",
-  },
-  {
-    label: "Nationality",
-    type: "select",
-    options: filteredNationalities.value,
-    placeholder: "Select Your nationality",
-    id : "nationality",
-  },
-  {
-    label: "Program/Major",
-    type: "text",
-    placeholder: "Enter your program or major",
-    id : "major",
-  },
-  {
-    label: "Block Name",
-    type: "text",
-    placeholder: "Select Block Name (e.g., 25i)",
-    model: ref(""),
-    id :"block_name"
-  },
-  {
-    label: "Level No",
-    type: "select",
-    options:[
-      { value : "01" , label : "Level one"},
-      { value : "02" , label : "Level two"},
-      { value : "03" , label : "Level three"},
-      { value : "04" , label : "Level four"}
-    ],
-    placeholder: "Select Level No",
-    model: ref(""),
-    id :"level_number"
-  },
-  {
-    label: "Room No",
-    type: "select",
-    placeholder: "Select Room No (e.g., 02)",
-    options : [
-      { value: "1", label: "01" },
-      { value: "2", label: "02" },
-      { value: "3", label: "03" },
-      { value: "4", label: "04" },
-      { value: "5", label: "05" },
-      { value: "6", label: "06" },
-      { value: "7", label: "07" },
-      { value: "8", label: "08" },
-      { value: "9", label: "09" },
-      { value: "10", label: "10" },
-      { value: "11", label: "11" },
-      { value: "12", label: "12" },
-      { value: "13", label: "13" },
-      { value: "14", label: "14" },
-      { value: "15", label: "15" },
-      { value: "16", label: "16" },
-      { value: "17", label: "17" },
-      { value: "18", label: "18" },
-      { value: "19", label: "19" },
-      { value: "20", label: "20" },
-    ],
-    model: ref(""),
-    id : "room"
-  },
-  {
-    label: "Which Zone",
-    type: "select",
-    placeholder: "Which Zone?",
-    options: [
-      { value : "1" , label : "Zone A"},
-      { value : "2" , label : "Zone B"},
-      { value : "3" , label : "Zone C"},
-      { value : "4" , label : "Zone D"},
-    ],
-    id :"room_zone",
-  },
-];
-
 const formSchema = z.object({
   "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
   "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
@@ -170,13 +43,130 @@ const formSchema = z.object({
   "religion": z.string().optional(),
   "nationality": z.string().optional(),
   "major": z.string().min(3, "Name must be at least 3 characters long").nonempty("Major is required"),
-  "block_name": z.string().min(2, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "room": z.string().optional(),
-  "level_number": z.string().optional(),
+  "block_name": z.string().nonempty("Block Name is required"),
+  "level_number": z.string().nonempty("Level Number is required"),
+  "room": z.string().nonempty("Room is required"),
   "room_zone": z.string().optional(),
 });
 
-previousQuestions.forEach((question) => {
+let {$axios} = useNuxtApp()
+const api = $axios()
+
+const selectedHostelIndex = ref(0)
+const allHostels = ref([])
+const selectedHostel = computed(() => allHostels[selectedHostelIndex])
+
+const previousQuestions = computed(() => {
+  return [
+    {
+      label: "Name",
+      type: "text",
+      placeholder: "Enter your name",
+      id: "name",
+    },
+    {
+      label: "Student ID",
+      type: "text",
+      placeholder: "Enter your student ID (e.g., AIU21011234)",
+      id: "student_id",
+    },
+    {
+      label: "Passport No",
+      type: "text",
+      placeholder: "Enter your passport No",
+      id: "passport",
+    },
+    {
+      label: "Date of Arrive",
+      type: "date",
+      placeholder: "Select your date of birth",
+      id: "arrival_date",
+    },
+    {
+      label: "WhatsApp No",
+      type: "text",
+      placeholder: "Enter your WhatsApp No",
+      id: "phone",
+    },
+    {
+      label: "Email Address (Student Email Only)",
+      type: "text",
+      placeholder: "Enter your email address",
+      id: "email",
+    },
+    {
+      label: "Gender",
+      type: "select",
+      options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
+      placeholder: "Select your gender",
+      model: ref(""),
+      id: "gender",
+    },
+    {
+      label: "Religion",
+      type: "select",
+      options: filteredReligions.value,
+      placeholder: "Select Your religion",
+      id: "religion",
+    },
+    {
+      label: "Nationality",
+      type: "select",
+      options: filteredNationalities.value,
+      placeholder: "Select Your nationality",
+      id: "nationality",
+    },
+    {
+      label: "Program/Major",
+      type: "text",
+      placeholder: "Enter your program or major",
+      id: "major",
+    },
+    {
+      label: "Block Name",
+      type: "select",
+      placeholder: "Select Block Name (e.g., 25i)",
+      model: ref(""),
+      id: "block_name",
+      options: allHostels.value.filter(h => h.gender === form['gender']).map(h => ({value: h.name, label: h.name})),
+    },
+    {
+      label: "Level No",
+      type: "select",
+      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.map(l => ({
+        value: l.number.toString(),
+        label: `Level ${l.number}`
+      })) || [],
+      placeholder: "Select Level No",
+      model: ref(""),
+      id: "level_number"
+    },
+    {
+      label: "Room No",
+      type: "select",
+      placeholder: "Select Room No (e.g., 02)",
+      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number === Number(form['level_number']))?.room_details.map(r => ({
+        value: r.number ,// Ensure room numbers are strings
+        label: `Room ${r.number}`
+      })) || [],
+      model: ref(""),
+      id: "room"
+    },
+    {
+      label: "Which Zone",
+      type: "select",
+      placeholder: "Which Zone?",
+      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number.toString() === form['level_number'])?.room_details.find(r => r.number.toString() === form['room'])?.beds.map(b => ({
+        value: b.id.toString(),
+        label: `Zone ${b.bed_number} (${b.status})`
+      })) || [],
+      id: "room_zone",
+    }
+
+  ]
+});
+
+previousQuestions.value.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -190,9 +180,25 @@ function validateField(field) {
   }
 }
 
-previousQuestions.forEach((question) => {
+previousQuestions.value.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
+
+const isLoading = ref(true)
+
+onMounted(async () => {
+  try {
+    const {data} = await api.get('/hostels/')
+    console.log(data)
+    allHostels.value = data
+    selectedHostel.value = data[0]
+  } catch (e) {
+    console.log('error fetching hostels')
+  } finally {
+    isLoading.value = false
+  }
+})
+
 
 async function handleSubmit() {
   const api = useApi();
@@ -201,9 +207,12 @@ async function handleSubmit() {
   const validationResults = formSchema.safeParse(form);
   console.log('Form data:', form);
   if (validationResults.success) {
+    if (form.room) {
+      form.room = form.room.toString();
+    }
     try {
       console.log("Sending API Request...");
-      const response = await api.post("/students/", { ...form });
+      const response = await api.post("/students/", {...form});
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
@@ -211,6 +220,7 @@ async function handleSubmit() {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);
       if (error.response) {
+        console.log(form);
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
         console.log("Response Data:", response.data.value);
@@ -233,7 +243,8 @@ async function handleSubmit() {
 
 <template>
   <div class="new-student-sec">
-    <div class="container">
+    <Loader v-if="isLoading"/>
+    <div class="container" v-else>
       <div class="form-header">
         <h2>Student Registration Form</h2>
       </div>
@@ -259,7 +270,10 @@ async function handleSubmit() {
                   @change="validateField(question.id)"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option.label" :value="option.value">{{ option.label }}</option>
+                <option v-for="option in question.options" :key="option.label" :value="option.value">{{
+                    option.label
+                  }}
+                </option>
               </select>
               <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 

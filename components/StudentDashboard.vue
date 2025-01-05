@@ -33,10 +33,12 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const totalItems = ref(0);
 const q = ref('');
-
+const isLoading = ref(true);
 const api = $axios()
 
+
 const fetchData = async () => {
+  isLoading.value = true; // Start loading
   try {
     const response = await api.get("/students/");
     people.value = response.data.map((person: Person) => ({
@@ -46,8 +48,11 @@ const fetchData = async () => {
     totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
+  } finally {
+    isLoading.value = false;
   }
-}
+};
+
 
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
@@ -97,7 +102,6 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 
-const isLoading = ref(false);
 const router = useRouter();
 
 async function navigateToPage(url: string) {
@@ -151,7 +155,6 @@ onMounted(fetchData)
 <template>
   <div class="admin-dashboard">
     <div class="container">
-
       <aside class="sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
           <div class="btn-container">
@@ -174,7 +177,9 @@ onMounted(fetchData)
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <Loader v-if="isLoading"/>
+
+      <main class="dashboard-content" v-else>
         <div class="sub-container">
 
           <div class="content">
@@ -217,9 +222,6 @@ onMounted(fetchData)
 
 
             <hr class="divider"/>
-            <div class="footer">
-              <h2 class="footer-megs" style="text-align: center">Thank you !</h2>
-            </div>
           </div>
         </div>
       </main>

@@ -1,6 +1,5 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue';
-import axios from 'axios';
 import {useNuxtApp} from "#app";
 
 const props = defineProps({
