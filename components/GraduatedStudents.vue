@@ -215,7 +215,6 @@ onMounted(fetchData)
 
             <hr class="divider"/>
             <div class="footer">
-              <h2 class="footer-megs" style="text-align: center">Thank you !</h2>
             </div>
           </div>
         </div>

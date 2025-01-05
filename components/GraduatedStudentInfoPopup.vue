@@ -98,13 +98,10 @@ const deleteStudent = async () => {
       <hr class="divider">
       <div class="popup-footer">
         <div class="popup-bts">
-          <button @click="deleteStudent" class="delete-student">Delete Student</button>
+          <button @click="deleteStudent" class="delete-student">Active Student</button>
           <button @click="updateStudentInfo" class="change-student-info">
             Change Student Info
           </button>
-        </div>
-        <div>
-          <h2>Thank you</h2>
         </div>
       </div>
     </div>

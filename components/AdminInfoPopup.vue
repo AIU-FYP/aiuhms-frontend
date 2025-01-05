@@ -104,9 +104,6 @@ const deleteAdmin = async () => {
           <button @click="deleteAdmin" class="delete-admin" id="deleteAdmin">Delete Admin</button>
           <button @click="updateAdminInfo" class="change-admin-info" id="changeAdminInfo">Change Admin Info</button>
         </div>
-        <div>
-          <h2>Thank you </h2>
-        </div>
       </div>
     </div>
   </div>
