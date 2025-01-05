@@ -189,7 +189,7 @@ function handleSubmit() {
   z-index: 1001;
   border-radius: 0;
   overflow-y: auto;
-  background-color: var(--text-hovor-color);
+  background-color: var(--text-hover-color);
 }
 
 @media (max-width: 1200px) {
@@ -218,7 +218,7 @@ function handleSubmit() {
   display: block;
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   border-radius: 1rem;
 }
 
@@ -226,7 +226,7 @@ function handleSubmit() {
   font-size: 1.5rem;
   text-align: start;
   margin: 0 1rem;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 
 
@@ -245,14 +245,14 @@ function handleSubmit() {
   display: block;
   text-align: start;
   padding: .5rem 0;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .login-form input,
 .login-form select {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--primary-color);
   border-radius: 5px;
   outline: none;
 }
@@ -267,14 +267,14 @@ function handleSubmit() {
   width: 50%;
   padding: .5rem;
   margin: 2rem auto 0;
-  background-color: var(--text-color);
-  color: var(--main-color);
+  background-color: var(--text-light-color);
+  color: var(--primary-color);
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
 .submit:hover {
-  background-color: var(--main-hovor-color);
-  color: var(--text-color);
+  background-color: var(--primary-hover-color);
+  color: var(--text-light-color);
   transition: .3s ease-in-out;
 }
 
@@ -284,7 +284,7 @@ function handleSubmit() {
     font-size: 1.2rem;
     text-align: start;
     margin: 0 1rem;
-    color: var(--text-hovor-color);
+    color: var(--text-hover-color);
   }
 
   .log-in-form label {

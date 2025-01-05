@@ -83,14 +83,14 @@ span {
 
 h2 {
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   line-height: 2.5rem;
 }
 
 p {
   font-size: 1.2rem;
   line-height: 2rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   text-align: justify;
   margin: 5% 3%;
 
@@ -98,7 +98,7 @@ p {
 
 .divider {
   margin: 5% 3%;
-  border: 1px solid var(--main-color);;
+  border: 1px solid var(--primary-color);;
 }
 
 

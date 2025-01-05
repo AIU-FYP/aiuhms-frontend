@@ -15,7 +15,7 @@ const currentYear = new Date().getFullYear();
 <style scoped>
 .footer-admin-section {
   margin: auto;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .footer-container {
@@ -25,12 +25,12 @@ const currentYear = new Date().getFullYear();
   text-align: center;
   font-size: 1.2rem;
   padding: .5rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
   max-width: 1300px;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 a:hover {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 </style>

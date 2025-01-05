@@ -259,9 +259,9 @@ async function handleSubmit() {
 
 .sidebar {
   flex: 1;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   padding: 20px;
-  color: var(--text-color);
+  color: var(--text-light-color);
   border-radius: 1rem;
   min-height: 81vh;
 }
@@ -287,7 +287,7 @@ async function handleSubmit() {
 }
 
 .menu li:hover {
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -309,7 +309,7 @@ async function handleSubmit() {
 .content h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
 }
 
 .form-group {
@@ -325,7 +325,7 @@ async function handleSubmit() {
 .form-group select{
   width: 100%;
   padding: 10px;
-  border: 2px solid var(--text-color);
+  border: 2px solid var(--text-light-color);
   border-radius: 5px;
   outline: none;
 }
@@ -338,16 +338,16 @@ async function handleSubmit() {
 
 .submit-btn {
   padding: 10px 20px;
-  background-color: var(--main-hovor-color);
-  color: var(--text-color);
+  background-color: var(--primary-hover-color);
+  color: var(--text-light-color);
   border: none;
   border-radius: .5rem;
   cursor: pointer;
 }
 
 .submit-btn:hover {
-  background-color: var(--main-color);
-  color: var(--text-hovor-color);
+  background-color: var(--primary-color);
+  color: var(--text-hover-color);
   transition: .3s ease-in-out;
 }
 

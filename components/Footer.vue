@@ -134,7 +134,7 @@ const currentYear = new Date().getFullYear();
 
 .footer {
   padding: 1em 0;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .main-container {
@@ -181,16 +181,16 @@ const currentYear = new Date().getFullYear();
 
 .box span {
   font-size: 3rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .box > p {
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .divider {
   margin: 1rem 0;
-  border: 2px solid var(--text-hovor-color);
+  border: 2px solid var(--text-hover-color);
 }
 
 .links,
@@ -201,7 +201,7 @@ const currentYear = new Date().getFullYear();
 .links h2,
 .subscribe-section h2,
 .others-links-section h2 {
-  color: var(--text-color);
+  color: var(--text-light-color);
   font-size: 1.5rem;
   margin: 15px 0;
 }
@@ -214,19 +214,19 @@ const currentYear = new Date().getFullYear();
 
 .links ul li a span,
 .others-links-section li a span {
-  color: var(--text-color);
+  color: var(--text-light-color);
   margin-right: .5rem;
 }
 
 .links ul li a,
 .others-links-section li a {
-  color: var(--text-color);
+  color: var(--text-light-color);
   margin-right: .5rem;
 }
 
 .links ul li a:hover,
 .others-links-section li a:hover {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -254,7 +254,7 @@ const currentYear = new Date().getFullYear();
 }
 
 .subscribe-title {
-  color: var(--text-color);
+  color: var(--text-light-color);
   margin-bottom: 10px;
   margin-top: -20px;
   font-size: 1.5rem;
@@ -264,22 +264,22 @@ const currentYear = new Date().getFullYear();
   padding: .5rem;
   font-size: 1rem;
   width: 12rem;
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--text-light-color);
   border-radius: 5px;
 }
 
 .subscribe-button button {
   padding: .5rem;
   font-size: 1rem;
-  background-color: var(--text-color);
-  color: var(--main-color);
+  background-color: var(--text-light-color);
+  color: var(--primary-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .subscribe-button button:hover {
-  background-color: var(--text-color);
+  background-color: var(--text-light-color);
   transition: .3s ease-in-out;
 
 }
@@ -302,14 +302,14 @@ const currentYear = new Date().getFullYear();
   text-align: center;
   font-size: 1.5rem;
   padding: 5px;
-  border: 2px solid var(--text-color);
+  border: 2px solid var(--text-light-color);
   border-radius: 50%;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .social-icons ul li:hover {
-  color: var(--text-hovor-color);
-  border: 2px solid var(--text-hovor-color);
+  color: var(--text-hover-color);
+  border: 2px solid var(--text-hover-color);
   transition: .3s ease-in-out;
 
 }
@@ -327,16 +327,16 @@ const currentYear = new Date().getFullYear();
 .footer-bottom {
   text-align: start;
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
   padding: 2rem 0;
 }
 
 .footer-bottom a {
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 a:hover {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 
 

@@ -64,9 +64,9 @@ definePageMeta({
 
 .sidebar {
   flex: 1;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   padding: 20px;
-  color: var(--text-color);
+  color: var(--text-light-color);
   border-radius: 10px;
   min-height: 81vh;
 }
@@ -92,7 +92,7 @@ definePageMeta({
 }
 
 .menu li:hover {
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -114,7 +114,7 @@ definePageMeta({
 .content h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
 }
 
 @media (max-width: 768px) {

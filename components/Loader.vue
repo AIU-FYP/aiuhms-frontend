@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const isLoading = ref(true);
 
@@ -31,9 +31,9 @@ onMounted(() => {
 }
 
 .spinner {
-  border: 5px solid var(--main-hovor-color);
+  border: 5px solid var(--primary-hover-color);
   border-radius: 50%;
-  border-top: 5px solid var(--text-hovor-color);
+  border-top: 5px solid var(--text-hover-color);
   width: 50px;
   height: 50px;
   animation: spin 1s linear infinite;

@@ -153,13 +153,13 @@ const showSlides = (n) => {
 .team h2 {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--main-color);
+  color: var(--primary-color);
   padding: 0 2rem;
 }
 
 .divider{
   margin: 1rem auto;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
   width: 100%;
 }
 
@@ -201,12 +201,12 @@ const showSlides = (n) => {
 .team-member h3 {
   font-size: 1rem;
   padding: .5rem 0;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .team-member h5 {
   font-size: 1rem;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 @media (max-width: 800px) {

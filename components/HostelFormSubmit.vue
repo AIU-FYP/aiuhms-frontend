@@ -96,7 +96,7 @@ function toggleLinkVisibility(index: number) {
 <style scoped>
 .admin-dashboard {
   display: block;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .container {
@@ -104,15 +104,15 @@ function toggleLinkVisibility(index: number) {
   flex-wrap: nowrap;
   flex-direction: row;
   padding: 0;
-  border-top: 3px solid var(--text-hovor-color);
-  border-bottom: 3px solid var(--text-hovor-color);
+  border-top: 3px solid var(--text-hover-color);
+  border-bottom: 3px solid var(--text-hover-color);
   width: 100%;
   margin: 0 auto;
 }
 
 .sidebar {
   flex: 2;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
@@ -145,12 +145,12 @@ function toggleLinkVisibility(index: number) {
 }
 
 .btn-container:hover {
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
 }
 
 .sidebar-button {
   font-size: 1rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
   margin-bottom: 0.5rem;
   text-align: start;
   border-radius: .5rem;
@@ -158,7 +158,7 @@ function toggleLinkVisibility(index: number) {
 }
 
 .sidebar-button:hover {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 
 .sidebar ul li {
@@ -169,13 +169,13 @@ function toggleLinkVisibility(index: number) {
   text-align: start;
   text-transform: capitalize;
   font-weight: normal;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   background-color: transparent;
 }
 
 .sidebar li:hover {
-  color: var(--text-hovor-color);
-  background-color: var(--main-hovor-color);
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 

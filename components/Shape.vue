@@ -9,7 +9,7 @@
 
 <style scoped>
 .shape{
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 .top {
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), 50% 100%, 0 calc(100% - 50px));

@@ -51,7 +51,7 @@ const images=[
 .container h1 {
   font-size: 2.5rem;
   margin-left: 20px;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
 }
 
 @media (max-width: 800px) {
@@ -66,7 +66,7 @@ const images=[
 
 .divider{
   margin: 1rem auto;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
   width: 100%;
 }
 
@@ -87,13 +87,13 @@ const images=[
 
 h3 {
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
 p {
   font-size: 1rem;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
   text-align: justify;
 }
 

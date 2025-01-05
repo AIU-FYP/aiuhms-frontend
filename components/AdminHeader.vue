@@ -63,7 +63,7 @@ const handleSettingsNavigation = async () => {
 
 <style scoped>
 .header-admin-section {
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .container {
@@ -87,7 +87,7 @@ const handleSettingsNavigation = async () => {
 
 .title {
   font-size: 1.5rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .bar-btn {
@@ -96,7 +96,7 @@ const handleSettingsNavigation = async () => {
 
 .bar-btn a {
   font-size: 1rem;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   background-color: transparent;
   border: none;
   outline: none;
@@ -114,7 +114,7 @@ const handleSettingsNavigation = async () => {
 }
 
 .bar-btn a:hover {
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -134,8 +134,8 @@ const handleSettingsNavigation = async () => {
   .bar-btn {
     margin: 0;
     border-radius: 0.5rem;
-    background-color: var(--main-color);
-    color: var(--text-hovor-color);
+    background-color: var(--primary-color);
+    color: var(--text-hover-color);
   }
 
 
@@ -146,7 +146,7 @@ const handleSettingsNavigation = async () => {
   }
 
   .sublist a:hover {
-    background-color: var(--main-hovor-color);
+    background-color: var(--primary-hover-color);
   }
 
 
@@ -165,7 +165,7 @@ const handleSettingsNavigation = async () => {
 
   .title {
     font-size: 1.5rem;
-    color: var(--text-color);
+    color: var(--text-light-color);
   }
 
   .bar-btn {
@@ -174,7 +174,7 @@ const handleSettingsNavigation = async () => {
 
   .bar-btn button {
     font-size: 1.2rem;
-    color: var(--text-hovor-color);
+    color: var(--text-hover-color);
     background-color: transparent;
     border: none;
     outline: none;
@@ -184,7 +184,7 @@ const handleSettingsNavigation = async () => {
   }
 
   .bar-btn button:hover {
-    background-color: var(--main-hovor-color);
+    background-color: var(--primary-hover-color);
     transition: .3s ease-in-out;
   }
 

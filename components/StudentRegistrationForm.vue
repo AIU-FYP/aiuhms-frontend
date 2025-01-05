@@ -325,11 +325,11 @@ async function handleSubmit() {
   text-align: center;
   margin: 0;
   padding: .5rem 0;
-  background-color: var(--text-color);
+  background-color: var(--text-light-color);
   border: none;
   outline: none;
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .container .box-form {
@@ -359,14 +359,14 @@ async function handleSubmit() {
 
 .form-container .question-title {
   font-size: 1rem;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
 }
 
 .form-container input,
 .form-container select {
   width: 100%;
   padding: .5rem 1rem;
-  border: 2px solid var(--text-color);
+  border: 2px solid var(--text-light-color);
   border-radius: 5px;
   outline: none;
 }
@@ -383,12 +383,12 @@ async function handleSubmit() {
   padding: .5rem 2rem;
   font-size: 1.2rem;
   border-radius: 1rem 0;
-  background-color: var(--main-hovor-color);
-  color: var(--text-hovor-color);
+  background-color: var(--primary-hover-color);
+  color: var(--text-hover-color);
 }
 
 .submit:hover {
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 

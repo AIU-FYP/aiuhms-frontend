@@ -25,7 +25,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   overflow: hidden;
   background: linear-gradient(135deg, #133E87FF, #4B8AE6, #82B4F9);
 }
@@ -66,9 +66,9 @@
 .students-btn .btn-animate {
   padding: 0.6rem 1.2rem;
   border-radius: 1rem;
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease, background-color 0.3s ease;
@@ -76,7 +76,7 @@
 
 .students-btn .btn-animate:hover {
   transform: scale(1.1);
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .main-container .image-container {
@@ -106,7 +106,7 @@ h2 {
 h1 {
   font-size: 3rem;
   margin-top: -1rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   opacity: 0;
   animation: slideUp 1.2s ease forwards;
 }

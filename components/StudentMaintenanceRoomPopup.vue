@@ -1,6 +1,5 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue';
-import axios from 'axios';
 import {useNuxtApp} from "#app";
 
 const requestFields = [
@@ -66,7 +65,7 @@ const updateStatus = async (newStatus) => {
         <div class="box" v-for="field in requestFields" :key="field.key">
           <span class="student-label-info">
             <span>
-              <UIcon style="color: var(--main-color)" name="ph-student"/>
+              <UIcon style="color: var(--primary-color)" name="ph-student"/>
             </span>
             {{ field.label }}
           </span>
@@ -77,7 +76,7 @@ const updateStatus = async (newStatus) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   class="link"
-                  style="color: var(--main-color); text-decoration: underline; cursor: pointer;"
+                  style="color: var(--primary-color); text-decoration: underline; cursor: pointer;"
               >
                 Supporting Document
               </a>
@@ -132,7 +131,7 @@ const updateStatus = async (newStatus) => {
   max-height: 90vh;
   position: relative;
   overflow-y: auto;
-  border: 3px solid var(--main-color);
+  border: 3px solid var(--primary-color);
 }
 
 @media (max-width: 1200px) {
@@ -169,7 +168,7 @@ span {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .close-btn:hover {
@@ -179,7 +178,7 @@ span {
 
 .divider {
   margin: 3% 2%;
-  border: 2px solid var(--main-color);;
+  border: 2px solid var(--primary-color);;
 }
 
 .popup-content {
@@ -194,7 +193,7 @@ span {
 .student-key-info {
   text-align: start;
   text-transform: capitalize;
-  color: var(--main-color);
+  color: var(--primary-color);
   font-size: 1rem;
   width: 50%;
   padding: .5rem;
@@ -241,13 +240,13 @@ span {
 
 .popup-bts .work-done{
   border-radius: 0 1rem;
-  border: 2px solid var(--main-hovor-color);
+  border: 2px solid var(--primary-hover-color);
 }
 
 .popup-bts .work-done:hover {
-  background: var(--button-hovor-color);
-  border: 2px solid var(--button-hovor-color);
-  color: var(--text-hovor-color);
+  background: var(--button-hover-color);
+  border: 2px solid var(--button-hover-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 
@@ -258,7 +257,7 @@ span {
 
 .popup-bts .reject-request:hover {
   background: red;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 

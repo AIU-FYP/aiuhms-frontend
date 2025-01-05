@@ -188,7 +188,7 @@ span {
 
 .divider {
   margin: 20px 0;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
 }
 
 .status {
@@ -224,7 +224,7 @@ span {
 }
 
 .status-span.under-maintenance {
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 @media (max-width: 800px) {
@@ -242,13 +242,13 @@ span {
 }
 
 .levels {
-  border-bottom: 2px solid var(--main-color);
+  border-bottom: 2px solid var(--primary-color);
   margin: 10px;
 }
 
 .level-label {
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   padding: 0 50px 10px 50px;
 }
 
@@ -296,7 +296,7 @@ span {
 
 .capacity-part .icon,
 .capacity-part span {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   font-size: 1rem;
 }
 

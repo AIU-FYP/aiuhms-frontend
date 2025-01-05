@@ -162,7 +162,7 @@ async function handleSubmit() {
   padding: 2rem .5rem;
   margin-top: 2rem;
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 @media (max-width: 1200px) {
@@ -187,9 +187,9 @@ async function handleSubmit() {
   margin: -5rem auto 1rem;
   text-align: center;
   font-size: 5rem;
-  background-color: var(--text-color);
-  color: var(--main-color);
-  border: .3rem solid var(--text-color);
+  background-color: var(--text-light-color);
+  color: var(--primary-color);
+  border: .3rem solid var(--text-light-color);
   border-radius: 50%;
   box-shadow: rgba(0, 0, 0, 0.3) 0 5px 15px;
 }
@@ -198,13 +198,13 @@ async function handleSubmit() {
   font-size: 1.2rem;
   text-align: center;
   padding: .5rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .log-in-form > h2 {
   font-size: 1.5rem;
   text-align: center;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .login-form {
@@ -214,14 +214,14 @@ async function handleSubmit() {
 }
 
 .login-form label {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 
 .login-form input {
   width: 100%;
   padding: 0.5rem;
   margin: .5rem 0;
-  border: 1px solid var(--text-hovor-color);
+  border: 1px solid var(--text-hover-color);
   outline: none;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
@@ -236,15 +236,15 @@ async function handleSubmit() {
   width: 90%;
   padding: .5rem;
   margin: -2rem auto 0 auto;
-  background-color: var(--text-color);
-  color: var(--main-color);
+  background-color: var(--text-light-color);
+  color: var(--primary-color);
   box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
   border-radius: 1rem;
 }
 
 .login-submit:hover {
-  background-color: var(--main-hovor-color);
-  color: var(--text-hovor-color);
+  background-color: var(--primary-hover-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 </style>

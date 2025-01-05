@@ -66,7 +66,7 @@ const updateStatus = async (newStatus) => {
         <div class="box" v-for="field in requestFields" :key="field.key">
           <span class="student-label-info">
             <UIcon
-                style="color: var(--main-color)"
+                style="color: var(--primary-color)"
                 name="ph-student"
             />
             {{ field.label }}</span>
@@ -77,7 +77,7 @@ const updateStatus = async (newStatus) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   class="link"
-                  style="color: var(--main-color); text-decoration: underline; cursor: pointer;"
+                  style="color: var(--primary-color); text-decoration: underline; cursor: pointer;"
               >Supporting Document</a>
             </span>
             <span v-else-if="field.key === 'reason' " class="truncate-single">
@@ -158,7 +158,7 @@ span {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .close-btn:hover {
@@ -168,7 +168,7 @@ span {
 
 .divider {
   margin: 3% 2%;
-  border: 2px solid var(--main-color);;
+  border: 2px solid var(--primary-color);;
 }
 
 .popup-content {
@@ -183,7 +183,7 @@ span {
 .student-key-info {
   text-align: start;
   text-transform: capitalize;
-  color: var(--main-color);
+  color: var(--primary-color);
   font-size: 1rem;
   width: 50%;
   padding: .5rem;
@@ -228,12 +228,12 @@ span {
 
 .popup-bts .accept-change-request {
   border-radius: 0 1rem;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
 }
 
 .popup-bts .accept-change-request:hover {
-  background: var(--main-color);
-  color: var(--text-hovor-color);
+  background: var(--primary-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 
@@ -244,7 +244,7 @@ span {
 
 .popup-bts .reject-change-request:hover {
   background: red;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 

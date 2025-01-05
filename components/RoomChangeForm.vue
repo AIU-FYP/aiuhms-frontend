@@ -284,7 +284,7 @@ async function handleSubmit() {
 
 .container .description {
   flex: 30%;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   padding: 2.5rem;
   border-radius: 0;
 }
@@ -314,7 +314,7 @@ async function handleSubmit() {
   font-size: 1.2rem;
   padding: .5rem 0;
   font-weight: bold;
-  color: var(--text-color);
+  color: var(--text-light-color);
   text-align: center;
 }
 
@@ -328,7 +328,7 @@ async function handleSubmit() {
 
 .change-room-form > h2 {
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   text-align: center;
   padding: 1rem 0;
 }
@@ -348,7 +348,7 @@ async function handleSubmit() {
 
 .maintenance-form .question-title {
   font-size: 1rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   padding: .5rem 0;
 }
 
@@ -394,12 +394,12 @@ async function handleSubmit() {
   display: flex;
   font-size: 1rem;
   border-radius: 1rem;
-  background-color: var(--main-color);
-  color: var(--text-color);
+  background-color: var(--primary-color);
+  color: var(--text-light-color);
 }
 
 .maintenance-submit:hover {
-  background-color: var(--text-hovor-color);
+  background-color: var(--text-hover-color);
   transition: .2s;
 }
 

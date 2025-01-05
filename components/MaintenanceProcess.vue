@@ -80,7 +80,7 @@ const toggleFaq = (index) => {
   text-align: center;
   font-size: 2rem;
   font-weight: normal;
-  color: var(--main-color);
+  color: var(--primary-color);
   padding: 2rem;
   margin: 2rem 0;
 }
@@ -99,7 +99,7 @@ const toggleFaq = (index) => {
 
 .process-item {
   background-color: #f5f5f5;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
   margin-bottom: 1.5rem;
   border-radius: 8px;
 }
@@ -120,7 +120,7 @@ const toggleFaq = (index) => {
   padding: .5rem 1rem;
   font-size: 1rem;
   font-weight: normal;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
   text-align: justify;
 }
 
@@ -137,7 +137,7 @@ const toggleFaq = (index) => {
 .link-btn {
   display: flex;
   font-size: 1.2rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   margin: 1rem 0;
 }
 

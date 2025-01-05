@@ -86,7 +86,7 @@ const deleteStudent = async () => {
         <div class="box" v-for="field in studentFields" :key="field.key">
           <span class="student-label-info">
             <span>
-              <UIcon style="color: var(--main-color)" name="ph-student" />
+              <UIcon style="color: var(--primary-color)" name="ph-student" />
             </span>
             {{ field.label }}:
           </span>
@@ -178,7 +178,7 @@ span {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .close-btn:hover {
@@ -188,7 +188,7 @@ span {
 
 .divider {
   margin: 3% 2%;
-  border: 2px solid var(--main-color);;
+  border: 2px solid var(--primary-color);;
 }
 
 .popup-content {
@@ -203,7 +203,7 @@ span {
 .student-key-info {
   text-align: start;
   text-transform: capitalize;
-  color: var(--main-color);
+  color: var(--primary-color);
   font-size: 1.2rem;
   width: 50%;
   padding: .5rem;
@@ -215,7 +215,7 @@ span {
 .control-input {
   text-align: start;
   text-transform: capitalize;
-  color: var(--main-color);
+  color: var(--primary-color);
   font-size: 1.2rem;
   width: 100%;
   outline: none;
@@ -265,12 +265,12 @@ span {
 
 .popup-bts .change-student-info {
   border-radius: 0 1rem;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
 }
 
 .popup-bts .change-student-info:hover {
-  background: var(--main-color);
-  color: var(--text-hovor-color);
+  background: var(--primary-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 
@@ -281,7 +281,7 @@ span {
 
 .popup-bts .delete-student:hover {
   background: red;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
 

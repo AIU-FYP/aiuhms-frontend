@@ -105,7 +105,7 @@ const toggleFaq = (index) => {
   text-align: center;
   font-size: 2rem;
   font-weight: normal;
-  color: var(--main-color);
+  color: var(--primary-color);
   padding: 2rem;
   margin: 2rem 0;
 }
@@ -123,7 +123,7 @@ const toggleFaq = (index) => {
 
 .faq-item {
   background-color: #f5f5f5;
-  color: var(--main-color);
+  color: var(--primary-color);
   margin-bottom: 1.5rem;
   border-radius: 8px;
 }
@@ -144,7 +144,7 @@ const toggleFaq = (index) => {
   padding: .5rem 1rem;
   font-size: 1rem;
   font-weight: normal;
-  color: var(--text-color);
+  color: var(--text-light-color);
   text-align: justify;
 }
 
