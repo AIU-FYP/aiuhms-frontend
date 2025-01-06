@@ -162,7 +162,6 @@ const previousQuestions = computed(() => {
       })) || [],
       id: "bed",
     }
-
   ]
 });
 

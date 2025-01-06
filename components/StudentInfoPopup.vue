@@ -1,32 +1,129 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
+import {defineEmits, defineProps} from 'vue';
 import {useNuxtApp} from "#app";
+import {religions} from "~/utils/dropdownOptions.js";
 
 const props = defineProps({
   show: Boolean,
   student: Object,
 });
 
+// onMounted(async () => {
+//   try {
+//     const {data} = await api.get('/hostels/')
+//     console.log(data)
+//     allHostels.value = data
+//     selectedHostel.value = data[0]
+//   } catch (e) {
+//     console.log('error fetching hostels')
+//   } finally {
+//     isLoading.value = false
+//   }
+// })
+
 const emit = defineEmits(['update:show']);
 
 const studentFields = [
-  { label: 'ID ', key: 'id' ,editable: true},
-  { label: 'Status', key: 'status' ,editable: true},
-  { label: 'Name', key: 'name' ,  editable: false},
-  { label: 'Student ID', key: 'student_id' ,editable: false},
-  { label: 'Passport No', key: 'passport' , editable: true},
-  { label: 'Date of Arrival', key: 'arrival_date' ,editable: true },
-  { label: 'WhatsApp No', key: 'phone',editable: true },
-  { label: 'Student Email', key: 'email' ,editable: false },
-  { label: 'Gender', key: 'gender', editable: true },
-  { label: 'Religion', key: 'religion' ,editable: true },
-  { label: 'Nationality', key: 'nationality' ,editable: false },
-  { label: 'Program/Major', key: 'major' ,editable: true },
-  { label: 'Block Name', key: 'hostel' ,editable: true },
-  { label: 'Level No', key: 'level' ,editable: true },
-  { label: 'Room No', key: 'room' ,editable: true },
-  { label: 'Bed ', key: 'bed' ,editable: true },
+  {
+    label: 'ID ',
+    key: 'id',
+    editable: true,
+    type: 'input'
+  },
+  {
+    label: 'Status',
+    key: 'status',
+    editable: true,
+    type: 'input'
+  },
+  {
+    label: 'Name',
+    key: 'name',
+    editable: false,
+    type: 'input'
+  },
+  {
+    label: 'Student ID',
+    key: 'student_id',
+    editable: false,
+    type: 'input'
+  },
+  {
+    label: 'Passport No',
+    key: 'passport',
+    editable: true,
+    type: 'input'
+  },
+  {
+    label: 'Date of Arrival',
+    key: 'arrival_date',
+    editable: true,
+    type: 'input'
+  },
+  {
+    label: 'WhatsApp No',
+    key: 'phone',
+    editable: true,
+    type: 'input'
+  },
+  {
+    label: 'Student Email',
+    key: 'email',
+    editable: false,
+    type: 'input'
+  },
+  {
+    label: 'Gender',
+    key: 'gender',
+    editable: false,
+  },
+  {
+    label: 'Religion',
+    key: 'religion',
+    editable: true,
+    type: 'select',
+    options: religions.values()
+  },
+  {
+    label: 'Nationality',
+    key: 'nationality',
+    editable: false,
+  },
+  {
+    label: 'Program/Major',
+    key: 'major',
+    editable: true,
+  },
+  {
+    label: 'Block Name',
+    key: 'hostel',
+    editable: true,
+    type: 'select',
+    options: []
+  },
+  {
+    label: 'Level No',
+    key: 'level',
+    editable: true,
+    type: 'select',
+    options: []
+  },
+  {
+    label: 'Room No',
+    key: 'room',
+    editable: true,
+    type: 'select',
+    options: []
+  },
+  {
+    label: 'Bed',
+    key: 'bed',
+    editable: true,
+    type: 'select',
+    options: []
+  },
 ];
+
 
 const closePopup = () => {
   emit('update:show', false);
@@ -38,7 +135,7 @@ const api = $axios()
 const updateStudentInfo = async () => {
   try {
     const response = await api.patch(`/students/${props.student.id}/`,
-        { ...props.student }
+        {...props.student}
     );
     console.log('Success:', response.data);
     alert("Student info updated successfully");
@@ -77,27 +174,37 @@ const deleteStudent = async () => {
       <div class="popup-header">
         <span style="font-size: 1.5rem">Welcome to {{ props.student.name }}</span>
         <span @click="closePopup" class="close-btn">
-          <UIcon name="fontisto-close" />
+          <UIcon name="fontisto-close"/>
         </span>
       </div>
       <hr class="divider">
       <div class="popup-content">
         <div class="box" v-for="field in studentFields" :key="field.key">
-          <span class="student-label-info">
-            <span>
-              <UIcon style="color: var(--primary-color)" name="ph-student" />
-            </span>
-            {{ field.label }}:
-          </span>
+  <span class="student-label-info">
+    <span>
+      <UIcon style="color: var(--primary-color)" name="ph-student"/>
+    </span>
+    {{ field.label }}:
+  </span>
           <span class="student-key-info">
-            <input
-                v-if="field.key !== 'status'"
-                v-model="props.student[field.key]"
-                class="control-input"
-                :readonly="!field.editable"
-            />
-            <span v-else>{{ props.student[field.key] }}</span>
-          </span>
+    <template v-if="field.type === 'input'">
+      <input
+          v-model="props.student[field.key]"
+          class="control-input"
+          :readonly="!field.editable"
+      />
+    </template>
+    <template v-else-if="field.type === 'select'">
+      <select
+          v-model="props.student[field.key]"
+          :disabled="!field.editable"
+          class="control-input"
+      >
+        <option v-for="option in field.options" :key="option.value" :value="option.value">{{ option.label }}</option>
+      </select>
+    </template>
+    <span v-else>{{ props.student[field.key] }}</span>
+  </span>
         </div>
       </div>
       <hr class="divider">
@@ -252,13 +359,14 @@ span {
 }
 
 
-@media (max-width: 800px){
-  .popup-bts{
+@media (max-width: 800px) {
+  .popup-bts {
     flex-direction: column;
     padding: 0;
     margin: 0;
     gap: 0;
   }
+
   .popup-bts button {
     padding: .5rem;
     margin: 1rem 0;
