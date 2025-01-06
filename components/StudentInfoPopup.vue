@@ -10,22 +10,22 @@ const props = defineProps({
 const emit = defineEmits(['update:show']);
 
 const studentFields = [
-  { label: 'ID ', key: 'id' },
-  { label: 'Status', key: 'status' },
-  { label: 'Name', key: 'name' },
-  { label: 'Student ID', key: 'student_id' },
-  { label: 'Passport No', key: 'passport' },
-  { label: 'Date of Arrival', key: 'arrival_date' },
-  { label: 'WhatsApp No', key: 'phone' },
-  { label: 'Student Email', key: 'email' },
-  { label: 'Gender', key: 'gender' },
-  { label: 'Religion', key: 'religion' },
-  { label: 'Nationality', key: 'nationality' },
-  { label: 'Program/Major', key: 'major' },
-  { label: 'Block Name', key: 'hostel' },
-  { label: 'Level No', key: 'level' },
-  { label: 'Room No', key: 'room' },
-  { label: 'Bed ', key: 'bed' },
+  { label: 'ID ', key: 'id' ,editable: true},
+  { label: 'Status', key: 'status' ,editable: true},
+  { label: 'Name', key: 'name' ,  editable: false},
+  { label: 'Student ID', key: 'student_id' ,editable: false},
+  { label: 'Passport No', key: 'passport' , editable: true},
+  { label: 'Date of Arrival', key: 'arrival_date' ,editable: true },
+  { label: 'WhatsApp No', key: 'phone',editable: true },
+  { label: 'Student Email', key: 'email' ,editable: false },
+  { label: 'Gender', key: 'gender', editable: true },
+  { label: 'Religion', key: 'religion' ,editable: true },
+  { label: 'Nationality', key: 'nationality' ,editable: false },
+  { label: 'Program/Major', key: 'major' ,editable: true },
+  { label: 'Block Name', key: 'hostel' ,editable: true },
+  { label: 'Level No', key: 'level' ,editable: true },
+  { label: 'Room No', key: 'room' ,editable: true },
+  { label: 'Bed ', key: 'bed' ,editable: true },
 ];
 
 const closePopup = () => {
@@ -94,6 +94,7 @@ const deleteStudent = async () => {
                 v-if="field.key !== 'status'"
                 v-model="props.student[field.key]"
                 class="control-input"
+                :readonly="!field.editable"
             />
             <span v-else>{{ props.student[field.key] }}</span>
           </span>
@@ -220,6 +221,15 @@ span {
   outline: none;
   background-color: #eeeeee;
   margin-bottom: .5rem;
+}
+
+.control-input[readonly] {
+  cursor: not-allowed;
+  text-transform: capitalize;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  width: 100%;
+  outline: none;
 }
 
 @media (max-width: 800px) {

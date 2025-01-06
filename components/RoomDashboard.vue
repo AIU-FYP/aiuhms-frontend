@@ -18,7 +18,7 @@ const columns = [
   {key: 'gender', label: 'Gender', sortable: true},
   {key: 'date', label: 'Date', sortable: true},
   {key: 'name', label: 'Block Name', sortable: true},
-  {key: 'extend', label: 'View', sortable: false,}
+  {key: 'extend', label: 'View', sortable: false,},
 ]
 
 const hostels = ref<Hostel[]>([]);
@@ -194,6 +194,7 @@ onMounted(fetchData)
                 />
               </template>
             </UTable>
+            <hr class="divider"/>
             <div class="pagination">
               <button
                   :disabled="currentPage === 1"
@@ -213,7 +214,6 @@ onMounted(fetchData)
                 />
               </button>
             </div>
-            <hr class="divider"/>
           </div>
         </div>
       </main>

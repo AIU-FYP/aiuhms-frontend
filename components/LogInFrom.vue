@@ -28,7 +28,7 @@ const formSchema = z.object({
   "password":
       z.string()
           .min(12, "Password must be at least 12 characters long")
-          .max(15, "Password must not exceed 15 characters")
+          .max(20, "Password must not exceed 15 characters")
           .regex(/[a-zA-Z]/, "Password must include at least one letter")
           .regex(/\d/, "Password must include at least one number")
           .regex(/[@$!%*?&]/, "Password must include at least one special character (@$!%*?&)")

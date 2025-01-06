@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import {ref} from 'vue'
-import {useNuxtApp} from '#app'
 
 interface Person {
   id: number
@@ -14,11 +13,7 @@ interface Person {
   gender: string
   extend?: boolean | string
 }
-
-const people = ref<Person[]>([]);
-
-let {$axios} = useNuxtApp()
-const api = $axios()
+ref<Person[]>([]);
 
 const visibleButtonIndex = ref<number | null>(null);
 
