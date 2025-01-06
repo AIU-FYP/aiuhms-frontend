@@ -22,11 +22,10 @@ const studentFields = [
   { label: 'Religion', key: 'religion' },
   { label: 'Nationality', key: 'nationality' },
   { label: 'Program/Major', key: 'major' },
-  { label: 'Block Name', key: 'name' },
+  { label: 'Block Name', key: 'hostel' },
   { label: 'Level No', key: 'level' },
   { label: 'Room No', key: 'room' },
-  { label: 'Hostel Name', key: 'room' },
-  { label: 'Which Zone?', key: 'room_zone' },
+  { label: 'Bed ', key: 'bed' },
 ];
 
 const closePopup = () => {

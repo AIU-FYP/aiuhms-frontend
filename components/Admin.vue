@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
 import {useNuxtApp} from '#app'
-
-interface Person {
-  id: number
-  date: string
-  name: string
-  studentIdNumber: string
-  roomNumber: string
-  whatsappNumber: string
-  emailAddress: string
-  gender: string
-  extend?: boolean | string
-}
-
-
 let {$axios} = useNuxtApp()
 const api = $axios()
 
@@ -112,12 +98,12 @@ const dashboardItems = computed(() => [
         totalNum: stats.value?.student_statistics.female_students ?? 0
       },
       {
-        subTitle: "Available Rooms",
+        subTitle: "Available Beds",
         icon: "fa-bed",
         totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
       },
       {
-        subTitle: "Occupied Rooms",
+        subTitle: "Occupied Beds",
         icon: "ic-baseline-clear",
         totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
       },
@@ -178,9 +164,6 @@ onMounted(() => {
 <template>
   <div class="admin-dashboard">
     <div class="container">
-
-      <Loader v-if="isLoading"/>
-
       <aside class="sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
           <div class="btn-container">
@@ -215,7 +198,7 @@ onMounted(() => {
         </section>
 
         <div v-if="isFetching" class="loading">
-          Loading stats...
+          <Loader/>
         </div>
         <section
             v-else
@@ -251,7 +234,7 @@ onMounted(() => {
 <style scoped>
 .admin-dashboard {
   display: block;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .container {
@@ -259,15 +242,15 @@ onMounted(() => {
   flex-wrap: nowrap;
   flex-direction: row;
   padding: 0;
-  border-top: 3px solid var(--text-hovor-color);
-  border-bottom: 3px solid var(--text-hovor-color);
+  border-top: 3px solid var(--text-hover-color);
+  border-bottom: 3px solid var(--text-hover-color);
   width: 100%;
   margin: 0 auto;
 }
 
 .sidebar {
   flex: 2;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
@@ -300,12 +283,12 @@ onMounted(() => {
 }
 
 .btn-container:hover {
-  background-color: var(--main-hovor-color);
+  background-color: var(--primary-hover-color);
 }
 
 .sidebar-button {
   font-size: 1rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
   margin-bottom: 0.5rem;
   text-align: start;
   border-radius: .5rem;
@@ -313,7 +296,7 @@ onMounted(() => {
 }
 
 .sidebar-button:hover {
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
 }
 
 .sidebar ul li {
@@ -324,13 +307,13 @@ onMounted(() => {
   text-align: start;
   text-transform: capitalize;
   font-weight: normal;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   background-color: transparent;
 }
 
 .sidebar li:hover {
-  color: var(--text-hovor-color);
-  background-color: var(--main-hovor-color);
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -344,7 +327,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   padding: 0;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--primary-color);
   border-radius: 1rem;
 }
 
@@ -360,7 +343,7 @@ onMounted(() => {
 
 .welcome-info h2 {
   font-size: 1.5rem;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .dashboard-info-content .image-container {
@@ -384,7 +367,7 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background-color: var(--text-hovor-color);
+  background-color: var(--text-hover-color);
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 0 1rem 1rem 0 !important;
@@ -399,7 +382,7 @@ onMounted(() => {
   padding: 1rem 0.5rem;
   flex: 2;
   border-radius: 0 1rem 1rem 0;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .stat-card .num > span {
@@ -408,17 +391,17 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: var(--text-light-color);
 }
 
 .stat-card h4 {
   font-size: 1.1rem;
-  color: var(--main-color);
+  color: var(--primary-color);
 }
 
 .stat-icon {
   font-size: 2rem;
-  color: var(--main-color);
+  color: var(--primary-color);
   margin: 0.5rem 0;
 }
 

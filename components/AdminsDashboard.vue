@@ -97,7 +97,7 @@ onMounted(fetchData)
 </script>
 
 <template>
-  <div class="admin-dashboard">
+  <div class="admin-dashboard" >
     <div class="container">
       <main class="dashboard-content">
         <div class="sub-container">
@@ -154,15 +154,15 @@ onMounted(fetchData)
 <style scoped>
 .admin-dashboard {
   display: block;
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
 }
 
 .container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
-  border-top: 3px solid var(--text-hovor-color);
-  border-bottom: 3px solid var(--text-hovor-color);
+  border-top: 3px solid var(--text-hover-color);
+  border-bottom: 3px solid var(--text-hover-color);
   width: 100%;
   margin: 0 auto;
 }
@@ -186,13 +186,13 @@ onMounted(fetchData)
   text-align: start;
   text-transform: capitalize;
   font-weight: normal;
-  color: var(--text-hovor-color);
+  color: var(--text-hover-color);
   background-color: transparent;
 }
 
 .sidebar li:hover {
-  color: var(--text-hovor-color);
-  background-color: var(--main-hovor-color);
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
@@ -219,27 +219,27 @@ onMounted(fetchData)
 .extend-btn {
   padding: .5rem;
   border-radius: .5rem 0;
-  color: var(--text-hovor-color);
-  background-color: var(--main-hovor-color);
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
   cursor: pointer;
 }
 
 .extend-btn:hover {
-  color: var(--text-color);
-  background-color: var(--main-color);
+  color: var(--text-light-color);
+  background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
 .header h2,
 .footer h2 {
   font-size: 1.5rem;
-  color: var(--main-hovor-color);
+  color: var(--primary-hover-color);
   text-align: center;
   margin: 1rem auto;
 }
 
 .divider {
-  border-bottom: 2px solid var(--main-hovor-color);
+  border-bottom: 2px solid var(--primary-hover-color);
   margin: 1rem 0;
 }
 
@@ -258,8 +258,8 @@ onMounted(fetchData)
 .pagination button {
   padding: .5rem;
   border-radius: .5rem;
-  color: var(--text-color);
-  background-color: var(--main-color);
+  color: var(--text-light-color);
+  background-color: var(--primary-color);
   transition: 0.3s ease-in-out;
 }
 

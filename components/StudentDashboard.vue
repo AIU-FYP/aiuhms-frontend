@@ -22,7 +22,7 @@ const columns = [
   {key: "date", label: 'Date',},
   {key: 'name', label: 'Name', sortable: true},
   {key: 'student_id', label: 'Student ID', sortable: true},
-  {key: 'room', label: 'Room No', sortable: true},
+  {key: 'bed', label: 'Room No', sortable: true},
   {key: 'gender', label: 'Gender', sortable: true},
   {key: 'status', label: 'Status', sortable: true},
   {key: 'extend', label: 'View', sortable: false,}
@@ -67,7 +67,6 @@ const navigationButtons = [
     links: [
       {text: "Register Student", url: "/student-registration-form"},
       {text: "Manage Student", url: "/student-registration-dashboard"},
-      {text: "Graduated Student", url: "/graduated-students"},
 
     ],
   },

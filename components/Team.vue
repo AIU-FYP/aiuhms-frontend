@@ -1,6 +1,5 @@
-<script setup>
-
-import { ref, onMounted } from 'vue';
+<script setup lang="ts">
+import {ref} from 'vue';
 
 const members = ref([
   {
@@ -80,72 +79,53 @@ const members = ref([
     position: "Warden",
     photoURL: "/images/nadia-200x200.jpg",
     alt: "Nadia Affiqa Abdul Nasir"
-  },
-
+  }
 ]);
 
-const slideIndex = ref(1);
+const currentIndex = ref(0);
 
-// Show the initial slide when the component is mounted
-onMounted(() => {
-  showSlides(slideIndex.value);
-});
-
-const plusSlides = (n) => {
-  showSlides((slideIndex.value += n));
+const goToNext = () => {
+  currentIndex.value = (currentIndex.value + 3) % members.value.length;
 };
 
-const currentSlide = (n) => {
-  showSlides((slideIndex.value = n));
+const goToPrevious = () => {
+  currentIndex.value = (currentIndex.value - 3 + members.value.length) % members.value.length;
 };
-
-const showSlides = (n) => {
-  if (n > members.value.length) {
-    slideIndex.value = 1;
-  }
-  if (n < 1) {
-    slideIndex.value = members.value.length;
-  }
-};
-
 </script>
-
 
 <template>
   <div class="team">
     <div class="team-container">
       <h2>Members of Staff</h2>
       <hr class="divider">
-      <div class="team-content">
-        <div class="team-member fade " v-for="member in members" :key="member.photoURL">
+      <div class="carousel">
+        <div v-for="(member, index) in members.slice(currentIndex, currentIndex + 3)" :key="index" class="team-member">
           <img :src="member.photoURL" :alt="member.alt">
           <div class="info">
             <h3>{{ member.name }}</h3>
             <h5>{{ member.position }}</h5>
           </div>
         </div>
-        <div class="balls">
-          <a class="prev" onclick="plusSlides(-1)">❮</a>
-          <a class="next" onclick="plusSlides(1)">❯</a>
-        </div>
-        <div style="text-align:center">
-          <span class="dot" onclick="currentSlide(1)"></span>
-          <span class="dot" onclick="currentSlide(2)"></span>
-          <span class="dot" onclick="currentSlide(3)"></span>
-        </div>
+      </div>
+      <div class="carousel-controls">
+        <button @click="goToPrevious" class="carousel-btn">
+          <UIcon name="chevron-left" size="24"/>
+        </button>
+        <button @click="goToNext" class="carousel-btn">
+          <UIcon name="chevron-right" size="24"/>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .team-container {
   padding: 5rem;
 }
 
 @media (max-width: 800px) {
-  .team-container{
+  .team-container {
     padding: 0 1rem;
   }
 }
@@ -157,44 +137,37 @@ const showSlides = (n) => {
   padding: 0 2rem;
 }
 
-.divider{
+.divider {
   margin: 1rem auto;
   border: 2px solid var(--primary-color);
   width: 100%;
 }
 
-.team-content {
+.carousel {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 20px;
+  min-height: 300px;
+}
+
+@media (max-width: 1200px) {
+  .carousel {
+    flex-direction: column;
+  }
 }
 
 .team-member {
-  flex: 1 1 20%;
-  box-sizing: border-box;
-  padding: 1.5em 0;
   text-align: center;
-  max-width: 20%;
-}
-
-@media (max-width: 800px){
-  .team-content{
-    display: block;
-  }
-  .team-member{
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    max-width: 100%;
-  }
+  flex: 1;
+  margin-bottom: 1rem;
 }
 
 .team-member img {
-  margin: 10px auto !important;
-  width: 200px;
-  height: 200px;
-  align-items: center;
+  margin: 10px auto;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
 }
 
@@ -202,81 +175,53 @@ const showSlides = (n) => {
   font-size: 1rem;
   padding: .5rem 0;
   color: var(--primary-color);
+  max-width: 200px;
+  margin: auto;
+  font-weight: bold;
 }
 
 .team-member h5 {
-  font-size: 1rem;
+  font-size: .8rem;
   color: var(--primary-color);
+  max-width: 200px;
+  margin: auto;
+}
+
+.carousel-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .carousel-controls {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+.carousel-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.carousel-btn:hover {
+  background-color: var(--primary-hover-color);
 }
 
 @media (max-width: 800px) {
-  .team-member {
-    display: block;
-    margin-bottom: 1rem;
-  }
-  .team-member img {
-    margin: 0;
-  }
-}
-
-.balls{
-  display: none;
-}
-
-.prev, .next {
-  display: none;
-}
-
-.dot {
-  display: none;
-}
-
-@media (max-width: 800px) {
-  .prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
+  .team-container {
+    padding: 0;
   }
 
-  .next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-  }
-
-  .prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
-  }
-
-  .dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-  }
-
-  .fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
-  }
-
-  @keyframes fade {
-    from {opacity: .4}
-    to {opacity: 1}
+  .carousel-btn {
+    padding: 0.5rem 1rem;
   }
 }
-
-
 </style>
