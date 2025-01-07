@@ -2,7 +2,7 @@
 import {computed, reactive, ref, watch} from 'vue';
 import Popup from '~/components/AdminSubmitPopup.vue'
 import {z} from 'zod';
-import {religions, dropdownOptions,} from "~/utils/dropdownOptions.js";
+import {religions, nationalities,} from "~/utils/dropdownOptions.js";
 import {useNuxtApp} from "#app";
 
 const form = reactive({});
@@ -11,9 +11,9 @@ const errors = reactive({});
 const userNationalityInput = ref('');
 const filteredNationalities = computed(() => {
   if (!userNationalityInput.value) {
-    return dropdownOptions;
+    return nationalities;
   }
-  return dropdownOptions.filter(n =>
+  return nationalities.filter(n =>
       n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
   );
 });

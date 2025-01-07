@@ -52,11 +52,11 @@ const studentFields = [
   {
     label: 'Date of Arrival',
     key: 'arrival_date',
-    editable: true,
+    editable: false,
     type: 'input'
   },
   {
-    label: 'WhatsApp No',
+    label: 'Phone No',
     key: 'phone',
     editable: true,
     type: 'input'
@@ -64,7 +64,7 @@ const studentFields = [
   {
     label: 'Student Email',
     key: 'email',
-    editable: false,
+    editable: true,
     type: 'input'
   },
   {

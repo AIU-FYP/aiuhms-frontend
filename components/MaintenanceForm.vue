@@ -2,7 +2,7 @@
 import {computed, reactive, ref, watch} from 'vue';
 import Popup from '~/components/StudentSubmitPopup.vue'
 import {z} from 'zod';
-import {dropdownOptions, roomMaintenanceIssues} from "~/utils/dropdownOptions.js";
+import {nationalities, roomMaintenanceIssues} from "~/utils/dropdownOptions.js";
 import {useNuxtApp} from "#app";
 
 let {$axios} = useNuxtApp()
@@ -10,9 +10,9 @@ let {$axios} = useNuxtApp()
 const userNationalityInput = ref('');
 const filteredNationalities = computed(() => {
   if (!userNationalityInput.value) {
-    return dropdownOptions;
+    return nationalities;
   }
-  return dropdownOptions.filter(n =>
+  return nationalities.filter(n =>
       n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
   );
 });
