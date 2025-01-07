@@ -14,14 +14,14 @@ const previousQuestions = [
     label: "Building Name",
     type: "text",
     placeholder: "Building name",
-    id: "name"
+    id : "name"
   },
   {
     label: "Gender",
     type: "select",
-    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
+    options: [{value : "male", label: "Male"}, {value : "female", label: "Female"},],
     placeholder: "Select your gender",
-    id: "gender"
+    id : "gender"
   },
   {
     label: "Capacity",
@@ -29,7 +29,7 @@ const previousQuestions = [
     options: [{value: "1", label: "One"},{value: "2", label: "Two"}, {value: "3", label: "Three"}, {value: "4", label: "Four"}],
     placeholder: "Select capacity",
     required: true,
-    id: "capacity"
+    id : "capacity"
   },
   {
     label: "Number of Rooms for Each Level",
@@ -42,7 +42,7 @@ const previousQuestions = [
     ],
     placeholder: "Select Rooms for Each Level",
     required: true,
-    id: "level"
+    id :"level"
   },
 ];
 
@@ -51,8 +51,8 @@ const formSchema = z.object({
       .string()
       .regex(/^\d{2}[A-Z]$/, "Hostel name must be two numbers followed by one uppercase letter")
       .nonempty("Hostel Name is required"),
-  "gender": z.string().nonempty("Gender is required"),
-  "capacity": z.string().nonempty("Capacity is required"),
+  "gender" : z.string().nonempty("Gender is required"),
+  "capacity" : z.string().nonempty("Capacity is required"),
 });
 
 previousQuestions.forEach((question) => {
@@ -100,42 +100,19 @@ async function handleSubmit() {
         capacity: form.capacity,
         gender: form.gender,
         levels: []
-      };
-
-      for (const level in form.levels) {
-        const roomsCount = form.levels[level];
-        const levelData = {
-          number: parseInt(level.replace('level', '')),
-          rooms: [],
-        };
-
-        for (let i = 0; i < roomsCount; i++) {
-          const roomData = {
-            number: `Room ${i + 1}`,
-            capacity: parseInt(form.capacity),
-            beds: [],
-          };
-
-          // Create beds for each room
-          for (let bedIndex = 0; bedIndex < roomData.capacity; bedIndex++) {
-            roomData.beds.push({
-              bed_number: `Bed ${bedIndex + 1}`,
-              status: 'available',
-            });
-          }
-
-          levelData.rooms.push(roomData);
-        }
-
-        payload.levels.push(levelData);
       }
 
-      console.log(payload);
+      for (const level in form.levels) {
+        payload.levels.push({
+          number: parseInt(level.replace('level', '')),
+          rooms: form.levels[level]
+        })
+      }
+
+      console.log(payload)
 
       const response = await api.post("/hostels/", payload);
       console.log("Response Data:", response.data);
-      console.log("Backend response:", response);
-
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
     } catch (error) {
@@ -144,6 +121,7 @@ async function handleSubmit() {
       if (error.response) {
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
+        console.log("Response Data:", response.data.value);
       } else if (error.request) {
         console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
@@ -158,6 +136,7 @@ async function handleSubmit() {
     alert("Please correct the errors in the form.");
   }
 }
+
 </script>
 
 <template>
@@ -219,7 +198,6 @@ async function handleSubmit() {
     </div>
   </div>
 </template>
-
 
 <style scoped>
 

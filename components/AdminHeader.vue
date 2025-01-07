@@ -13,7 +13,7 @@ const handleSettingsNavigation = async () => {
   isLoading.value = true;
   try {
     await new Promise(resolve => setTimeout(resolve, 3000));
-    navigateTo('/setting');
+    navigateTo('/login');
   } finally {
     isLoading.value = false;
   }

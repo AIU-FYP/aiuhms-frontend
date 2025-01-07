@@ -14,14 +14,22 @@ const studentFields = [
   {
     label: 'ID ',
     key: 'id',
-    editable: true,
+    editable: false,
     type: 'input'
   },
   {
     label: 'Status',
     key: 'status',
     editable: true,
-    type: 'input'
+    type: 'select',
+    options: [
+        { value: "active", label : "Active"},
+        { value: "inactive", label : "Inactive"},
+        { value: "graduated", label : "Graduated"},
+        { value: "terminated", label : "Terminated"},
+
+    ]
+
   },
   {
     label: 'Name',

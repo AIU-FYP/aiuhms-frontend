@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Popup from '~/components/StudentInfoPopup.vue'
-import {useNuxtApp} from "#app";
+import { useNuxtApp } from "#app";
+import { useRouter } from 'vue-router'
 
-let {$axios} = useNuxtApp()
+let { $axios } = useNuxtApp()
 
 interface Person {
   id: number
@@ -14,18 +15,19 @@ interface Person {
   whatsappNumber: string
   emailAddress: string
   gender: string
+  status: string
   extend?: boolean | string
 }
 
 const columns = [
-  {key: 'id', label: 'id'},
-  {key: "date", label: 'Date',},
-  {key: 'name', label: 'Name', sortable: true},
-  {key: 'student_id', label: 'Student ID', sortable: true},
-  {key: 'bed', label: 'Room No', sortable: true},
-  {key: 'gender', label: 'Gender', sortable: true},
-  {key: 'status', label: 'Status', sortable: true},
-  {key: 'extend', label: 'View', sortable: false,}
+  { key: 'id', label: 'id' },
+  { key: "date", label: 'Date' },
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'student_id', label: 'Student ID', sortable: true },
+  { key: 'bed', label: 'Room No', sortable: true },
+  { key: 'gender', label: 'Gender', sortable: true },
+  { key: 'status', label: 'Status', sortable: true },
+  { key: 'extend', label: 'View', sortable: false }
 ]
 
 const people = ref<Person[]>([]);
@@ -35,7 +37,6 @@ const totalItems = ref(0);
 const q = ref('');
 const isLoading = ref(true);
 const api = $axios()
-
 
 const fetchData = async () => {
   isLoading.value = true;
@@ -65,33 +66,32 @@ const navigationButtons = [
     name: "Student",
     icon: "ph-student",
     links: [
-      {text: "Register Student", url: "/student-registration-form"},
-      {text: "Manage Student", url: "/student-registration-dashboard"},
-
+      { text: "Register Student", url: "/student-registration-form" },
+      { text: "Manage Student", url: "/student-registration-dashboard" },
     ],
   },
   {
     name: "Maintenance",
     icon: "wpf-maintenance",
     links: [
-      {text: "Maintenance Form", url: "/maintenance-room-form"},
-      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
+      { text: "Maintenance Form", url: "/maintenance-room-form" },
+      { text: "Manage Maintenance", url: "/maintenance-room-dashboard" },
     ],
   },
   {
     name: "Change Room",
     icon: "bx-building",
     links: [
-      {text: "Change Room Form", url: "/change-room-form"},
-      {text: "Manage Room Changes", url: "/change-room-dashboard"},
+      { text: "Change Room Form", url: "/change-room-form" },
+      { text: "Manage Room Changes", url: "/change-room-dashboard" },
     ],
   },
   {
     name: "Hostels",
     icon: "bx-building",
     links: [
-      {text: "Add new Building", url: "/new-hostel-form"},
-      {text: "Manage Rooms", url: "/room-dashboard"},
+      { text: "Add new Building", url: "/new-hostel-form" },
+      { text: "Manage Rooms", url: "/room-dashboard" },
     ],
   },
 ];
@@ -124,18 +124,6 @@ const openPopup = (row: Person) => {
   isPopupVisible.value = true;
 };
 
-const filteredRows = computed(() => {
-  if (!q.value) {
-    return people.value;
-  }
-
-  return people.value.filter((person) => {
-    return Object.values(person).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase());
-    });
-  });
-});
-
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
@@ -147,6 +135,26 @@ const handlePageChange = (newPage: number) => {
 };
 
 onMounted(fetchData)
+
+const selectedFilter = ref('all');
+
+const filterOptions = [
+  { value: 'all', label: 'All Students' },
+  { value: 'active', label: 'Active Students' },
+  { value: 'inactive', label: 'Non-Active Students' },
+];
+
+const filteredRows = computed(() => {
+  if (selectedFilter.value === 'all') {
+    return people.value;
+  } else if (selectedFilter.value === 'active') {
+    return people.value.filter(person => person.status === 'active');
+  } else if (selectedFilter.value === 'inactive') {
+    return people.value.filter(person => person.status === 'inactive');
+  }
+  return people.value;
+});
+
 
 </script>
 
@@ -161,31 +169,36 @@ onMounted(fetchData)
                 :aria-expanded="visibleButtonIndex === index"
                 class="sidebar-button"
             >
-              <UIcon
-                  :name="button.icon"
-              />
+              <UIcon :name="button.icon" />
               {{ button.name }}
             </button>
           </div>
           <ul v-if="visibleButtonIndex === index">
             <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url) " style="cursor: pointer">{{ link.text }}</a>
+              <a @click.prevent="navigateToPage(link.url)" style="cursor: pointer">{{ link.text }}</a>
             </li>
           </ul>
         </div>
       </aside>
 
-      <Loader v-if="isLoading"/>
+      <Loader v-if="isLoading" />
 
       <main class="dashboard-content" v-else>
         <div class="sub-container">
-
           <div class="content">
             <div class="header">
-
               <div class="search-container">
-                <UInput v-model="q" placeholder="Filter students..."/>
+                <UInput v-model="q" placeholder="Filter students..." />
               </div>
+
+              <div class="select-container">
+                <USelect
+                    v-model="selectedFilter"
+                    :options="filterOptions"
+                    placeholder="Filter students..."
+                />
+              </div>
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
@@ -198,32 +211,21 @@ onMounted(fetchData)
                 />
               </template>
             </UTable>
+
             <div class="pagination">
-              <button
-                  :disabled="currentPage === 1"
-                  @click="handlePageChange(currentPage - 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-left"
-                />
+              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">
+                <UIcon name="mdi-arrow-left" />
               </button>
               <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button
-                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-right"
-                />
+              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">
+                <UIcon name="mdi-arrow-right" />
               </button>
             </div>
 
-
-            <hr class="divider"/>
+            <hr class="divider" />
           </div>
         </div>
       </main>
-
     </div>
   </div>
 </template>
@@ -314,6 +316,10 @@ onMounted(fetchData)
 
 .dashboard-info-content div {
   margin: 1rem;
+}
+
+.select-container{
+  padding: 1rem;
 }
 
 .dashboard-info-content div {
