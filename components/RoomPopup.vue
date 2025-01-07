@@ -34,6 +34,12 @@ let { $axios } = useNuxtApp();
 const api = $axios();
 
 const toggleBedStatus = async (bed, newStatus) => {
+
+  if (bed.status === "occupied") {
+    alert("Cannot change the status of an occupied bed.");
+    return;
+  }
+
   try {
     await api.patch(`/beds/${bed.id}/`, { status: newStatus });
     console.log('Bed ID:', bed.id);
