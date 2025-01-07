@@ -8,19 +8,6 @@ const props = defineProps({
   student: Object,
 });
 
-// onMounted(async () => {
-//   try {
-//     const {data} = await api.get('/hostels/')
-//     console.log(data)
-//     allHostels.value = data
-//     selectedHostel.value = data[0]
-//   } catch (e) {
-//     console.log('error fetching hostels')
-//   } finally {
-//     isLoading.value = false
-//   }
-// })
-
 const emit = defineEmits(['update:show']);
 
 const studentFields = [
@@ -123,7 +110,6 @@ const studentFields = [
     options: []
   },
 ];
-
 
 const closePopup = () => {
   emit('update:show', false);

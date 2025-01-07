@@ -78,6 +78,10 @@ interface HostelStats {
     change_room_requests: number;
     total_requests: number;
   };
+  hostel_statistics: {
+    total_hostels: number,
+    total_rooms: number,
+  }
 }
 
 
@@ -87,6 +91,26 @@ const dashboardItems = computed(() => [
   {
     title: "Main Dashboard",
     maintenanceStats: [
+      {
+        subTitle: "Total Hostels",
+        icon: "mdi-office-building",
+        totalNum: stats.value?.hostel_statistics.total_hostels ?? 0
+      },
+      {
+        subTitle: "Total Rooms",
+        icon: "mdi-door",
+        totalNum: stats.value?.hostel_statistics.total_rooms ?? 0
+      },
+      {
+        subTitle: "Available Beds",
+        icon: "mdi-bed-outline",
+        totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
+      },
+      {
+        subTitle: "Occupied Beds",
+        icon: "fa-bed",
+        totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
+      },
       {
         subTitle: "Male Students",
         icon: "fa-male",
@@ -98,48 +122,18 @@ const dashboardItems = computed(() => [
         totalNum: stats.value?.student_statistics.female_students ?? 0
       },
       {
-        subTitle: "Available Beds",
-        icon: "fa-bed",
-        totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
-      },
-      {
-        subTitle: "Occupied Beds",
-        icon: "ic-baseline-clear",
-        totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
-      },
-      {
         subTitle: "Maintenance Requests",
-        icon: "la-building-solid",
+        icon: "mdi-tools",
         totalNum: stats.value?.request_statistics.maintenance_requests ?? 0
       },
       {
         subTitle: "Change Room Requests",
-        icon: "la-building-solid",
+        icon: "mdi-swap-horizontal",
         totalNum: stats.value?.request_statistics.change_room_requests ?? 0
       },
     ],
   },
 ])
-
-const currentNumber = ref(0);
-
-const animateNumber = () => {
-  let start = 0;
-  const end = 100;
-  const duration = 1000;
-  const stepTime = 10;
-  const totalSteps = duration / stepTime;
-
-  const increment = (end / totalSteps);
-
-  const interval = setInterval(() => {
-    start += increment;
-    currentNumber.value = Math.min(Math.round(start), end);
-    if (start >= end) {
-      clearInterval(interval);
-    }
-  }, stepTime);
-};
 
 const isFetching = ref(true);
 
@@ -154,7 +148,6 @@ const fetchStats = async () => {
 }
 
 onMounted(() => {
-  animateNumber();
   fetchStats();
 })
 
