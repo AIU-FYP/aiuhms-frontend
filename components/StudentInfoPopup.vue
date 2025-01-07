@@ -10,6 +10,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:show']);
 
+
+const religionOptions = Array.isArray(religions)
+    ? religions
+    : Array.from(religions.values());
+
+
 const studentFields = [
   {
     label: 'ID ',
@@ -77,7 +83,7 @@ const studentFields = [
     key: 'religion',
     editable: true,
     type: 'select',
-    options: religions.values()
+    options: religionOptions,
   },
   {
     label: 'Nationality',
