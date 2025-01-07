@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps} from 'vue';
+import {defineEmits, defineProps, ref} from 'vue';
 import {useNuxtApp} from "#app";
 import {religions} from "~/utils/dropdownOptions.js";
 
@@ -10,11 +10,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:show']);
 
-
-const religionOptions = Array.isArray(religions)
-    ? religions
-    : Array.from(religions.values());
-
+const locationData = ref({
+  block: '',
+  level: '',
+  room: '',
+  bed: '',
+});
 
 const studentFields = [
   {
@@ -62,7 +63,7 @@ const studentFields = [
     type: 'input'
   },
   {
-    label: 'Phone No',
+    label: 'WhatsApp No',
     key: 'phone',
     editable: true,
     type: 'input'
@@ -76,14 +77,16 @@ const studentFields = [
   {
     label: 'Gender',
     key: 'gender',
-    editable: false,
+    editable: true,
+    type: 'select',
+    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}]
   },
   {
     label: 'Religion',
     key: 'religion',
     editable: true,
     type: 'select',
-    options: religionOptions,
+    options: religions.values()
   },
   {
     label: 'Nationality',
@@ -97,31 +100,27 @@ const studentFields = [
   },
   {
     label: 'Block Name',
-    key: 'hostel',
-    editable: true,
-    type: 'select',
-    options: []
+    key: 'block',
+    editable: false,
+    type: 'input', // Static field
   },
   {
     label: 'Level No',
     key: 'level',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false,
+    type: 'input', // Static field
   },
   {
     label: 'Room No',
     key: 'room',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false,
+    type: 'input', // Static field
   },
   {
     label: 'Bed',
     key: 'bed',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false,
+    type: 'input', // Static field
   },
 ];
 

@@ -33,7 +33,7 @@ const handleSettingsNavigation = async () => {
         </div>
 
         <div class="title">
-          <h1>Admin Dashboard</h1>
+          <h1> <router-link to="/admin">Admin Dashboard</router-link> </h1>
         </div>
 
         <div class="bar-btn">

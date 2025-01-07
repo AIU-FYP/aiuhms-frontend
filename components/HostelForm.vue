@@ -180,7 +180,7 @@ async function handleSubmit() {
                       @change="validateField(level.key)"
                   >
                     <option value="" disabled>{{ question.placeholder }}</option>
-                    <option v-for="i in 20" :key="i" :value="i">{{ i }}</option>
+                    <option v-for="i in 30" :key="i" :value="i">{{ i }}</option>
                   </select>
                   <span v-if="errors[level.id]" class="error">{{ errors[level.id] }}</span>
                 </div>
