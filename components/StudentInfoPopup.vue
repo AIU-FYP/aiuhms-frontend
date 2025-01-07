@@ -173,7 +173,6 @@ const deleteStudent = async () => {
           <UIcon name="fontisto-close"/>
         </span>
       </div>
-
       <hr class="divider">
 
       <div class="popup-content">
