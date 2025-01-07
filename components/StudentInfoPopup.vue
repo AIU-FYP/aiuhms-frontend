@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps, ref} from 'vue';
+import {defineEmits, defineProps} from 'vue';
 import {useNuxtApp} from "#app";
 import {religions} from "~/utils/dropdownOptions.js";
 
@@ -9,13 +9,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:show']);
-
-const locationData = ref({
-  block: '',
-  level: '',
-  room: '',
-  bed: '',
-});
 
 const studentFields = [
   {
@@ -100,27 +93,31 @@ const studentFields = [
   },
   {
     label: 'Block Name',
-    key: 'block',
+    key: 'name',
     editable: false,
-    type: 'input', // Static field
+    type: 'select',
+    options: []
   },
   {
     label: 'Level No',
     key: 'level',
-    editable: false,
-    type: 'input', // Static field
+    editable: true,
+    type: 'select',
+    options: []
   },
   {
     label: 'Room No',
     key: 'room',
-    editable: false,
-    type: 'input', // Static field
+    editable: true,
+    type: 'select',
+    options: []
   },
   {
     label: 'Bed',
     key: 'bed',
-    editable: false,
-    type: 'input', // Static field
+    editable: true,
+    type: 'select',
+    options: []
   },
 ];
 
