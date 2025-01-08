@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps} from 'vue';
+import {defineEmits, defineProps, ref} from 'vue';
 import {useNuxtApp} from "#app";
 import {religions} from "~/utils/dropdownOptions.js";
 
@@ -11,10 +11,13 @@ const props = defineProps({
 const religionOptions = Array.isArray(religions)
     ? religions
     : Array.from(religions.values());
+const allHostels = ref([]);
+const selectedHostel = ref(null);
+const isLoading = ref(true);
 
 const emit = defineEmits(['update:show']);
 
-const studentFields = [
+const studentFields = ref([
   {
     label: 'ID ',
     key: 'id',
@@ -27,10 +30,10 @@ const studentFields = [
     editable: true,
     type: 'select',
     options: [
-      { value: "active", label : "Active"},
-      { value: "inactive", label : "Inactive"},
-      { value: "graduated", label : "Graduated"},
-      { value: "terminated", label : "Terminated"},
+      {value: "active", label: "Active"},
+      {value: "inactive", label: "Inactive"},
+      {value: "graduated", label: "Graduated"},
+      {value: "terminated", label: "Terminated"},
 
     ]
 
@@ -97,33 +100,27 @@ const studentFields = [
   },
   {
     label: 'Block Name',
-    key: 'name',
-    editable: false,
+    key: 'block_name',
+    editable: true,
     type: 'select',
     options: []
   },
   {
     label: 'Level No',
     key: 'level',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false
   },
   {
     label: 'Room No',
     key: 'room',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false
   },
   {
     label: 'Bed',
     key: 'bed',
-    editable: true,
-    type: 'select',
-    options: []
+    editable: false,
   },
-];
+]);
 
 const closePopup = () => {
   emit('update:show', false);
@@ -131,6 +128,32 @@ const closePopup = () => {
 
 let {$axios} = useNuxtApp()
 const api = $axios()
+
+onMounted(async () => {
+  try {
+    const {data} = await api.get('/hostels/');
+    console.log('Fetched Hostels:', data);
+
+    allHostels.value = data.map(hostel => ({
+      value: hostel.id,
+      label: hostel.name,
+    }));
+
+    console.log('Transformed Hostel Options:', allHostels.value);
+
+
+    const blockField = studentFields.value.find(field => field.key === 'block_name');
+    if (blockField) {
+      blockField.options = allHostels.value; // Update dynamically
+      console.log('Updated Block Name Options:', blockField.options);
+    }
+
+  } catch (error) {
+    console.error('Error fetching hostels:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 
 const updateStudentInfo = async () => {
   try {
@@ -171,6 +194,7 @@ const deleteStudent = async () => {
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
     <div class="popup-container" @click.stop>
+
       <div class="popup-header">
         <span style="font-size: 1.5rem">Welcome to {{ props.student.name }}</span>
         <span @click="closePopup" class="close-btn">
@@ -182,31 +206,34 @@ const deleteStudent = async () => {
 
       <div class="popup-content">
         <div class="box" v-for="field in studentFields" :key="field.key">
-  <span class="student-label-info">
-    <span>
-      <UIcon style="color: var(--primary-color)" name="ph-student"/>
-    </span>
-    {{ field.label }}:
-  </span>
+          <span class="student-label-info">
+            <span>
+              <UIcon style="color: var(--primary-color)" name="ph-student"/>
+            </span> {{ field.label }}: </span>
           <span class="student-key-info">
-    <template v-if="field.type === 'input'">
-      <input
-          v-model="props.student[field.key]"
-          class="control-input"
-          :readonly="!field.editable"
-      />
-    </template>
-    <template v-else-if="field.type === 'select'">
-      <select
-          v-model="props.student[field.key]"
-          :disabled="!field.editable"
-          class="control-input"
-      >
-        <option v-for="option in field.options" :key="option.value" :value="option.value">{{ option.label }}</option>
-      </select>
-    </template>
-    <span v-else>{{ props.student[field.key] }}</span>
-  </span>
+            <template v-if="field.type === 'input'">
+              <input
+                  v-model="props.student[field.key]"
+                  class="control-input"
+                  :readonly="!field.editable"
+              />
+            </template>
+            <template v-if="field.type === 'select'">
+              <select
+                  v-model="props.student[field.key]"
+                  :disabled="!field.editable"
+                  class="control-input"
+              >
+                <option
+                    v-for="option in field.options || []"
+                    :key="option.value"
+                    :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </template>
+          </span>
         </div>
       </div>
       <hr class="divider">
@@ -323,7 +350,6 @@ span {
 
 .control-input {
   text-align: start;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1.2rem;
   width: 100%;
@@ -334,7 +360,6 @@ span {
 
 .control-input[readonly] {
   cursor: not-allowed;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1.2rem;
   width: 100%;

@@ -2,7 +2,7 @@
 import {computed, reactive, ref, watch} from 'vue';
 import Popup from '~/components/AdminSubmitPopup.vue'
 import {z} from 'zod';
-import { religions, femaleBlockOptions, maleBlockOptions, dropdownOptions,blockData} from "~/utils/dropdownOptions.js";
+import { religions, femaleBlockOptions, maleBlockOptions, nationalities,blockData} from "~/utils/dropdownOptions.js";
 
 const form = reactive({});
 const errors = reactive({});
@@ -10,9 +10,9 @@ const errors = reactive({});
 const userNationalityInput = ref('');
 const filteredNationalities = computed(() => {
   if (!userNationalityInput.value) {
-    return dropdownOptions;
+    return nationalities;
   }
-  return dropdownOptions.filter(n =>
+  return nationalities.filter(n =>
       n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
   );
 });
