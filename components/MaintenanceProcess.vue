@@ -108,6 +108,13 @@ const toggleFaq = (index: number) => {
   transition: box-shadow 0.3s ease;
 }
 
+@media (max-width: 1200px) {
+  .process-item{
+    width: 90%;
+    margin: 1.5rem auto;
+  }
+}
+
 .process-item:focus,
 .process-item:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -171,6 +178,7 @@ const toggleFaq = (index: number) => {
   .link-btn {
     font-size: 0.9rem;
     padding: 0.7rem 1.2rem;
+    margin: 1rem;
   }
 }
 </style>
