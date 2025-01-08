@@ -1,7 +1,7 @@
 <script setup>
-import {defineEmits, defineProps, ref, onMounted} from 'vue';
-import {useNuxtApp} from "#app";
-import {religions} from "~/utils/dropdownOptions.js";
+import { defineEmits, defineProps, ref, onMounted } from 'vue';
+import { useNuxtApp } from "#app";
+import { religions } from "~/utils/dropdownOptions.js";
 
 const props = defineProps({
   show: Boolean,
@@ -29,13 +29,11 @@ const studentFields = ref([
     editable: true,
     type: 'select',
     options: [
-      {value: "active", label: "Active"},
-      {value: "inactive", label: "Inactive"},
-      {value: "graduated", label: "Graduated"},
-      {value: "terminated", label: "Terminated"},
-
+      { value: "active", label: "Active" },
+      { value: "inactive", label: "Inactive" },
+      { value: "graduated", label: "Graduated" },
+      { value: "terminated", label: "Terminated" },
     ]
-
   },
   {
     label: 'Name',
@@ -90,7 +88,7 @@ const studentFields = ref([
     key: 'gender',
     editable: true,
     type: 'select',
-    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}]
+    options: [{ value: "male", label: "Male" }, { value: "female", label: "Female" }]
   },
   {
     label: 'Religion',
@@ -102,26 +100,30 @@ const studentFields = ref([
   {
     label: 'Block Name',
     key: 'hostel_name',
-    editable: false,
-    type: 'input',
+    editable: true,
+    type: 'select',
+    options: [],
   },
   {
     label: 'Level No',
     key: 'level_number',
     editable: true,
-    type: 'input',
+    type: 'select',
+    options: [],
   },
   {
     label: 'Room No',
     key: 'room_number',
-    editable: false,
-    type: "input"
+    editable: true,
+    type: 'select',
+    options: [],
   },
   {
     label: 'Bed',
     key: 'bed_number',
-    editable: false,
-    type: "input"
+    editable: true,
+    type: 'select',
+    options: [],
   },
 ]);
 
@@ -129,19 +131,55 @@ const closePopup = () => {
   emit('update:show', false);
 };
 
-let {$axios} = useNuxtApp()
-const api = $axios()
+let { $axios } = useNuxtApp();
+const api = $axios();
 
 const updateHostelOptions = (gender) => {
-  const blockField = studentFields.value.find(field => field.key === 'block_name');
+  const blockField = studentFields.value.find(field => field.key === 'hostel_name');
   if (blockField) {
     blockField.options = allHostels.value.filter(hostel => hostel.gender === gender);
   }
 };
 
+const updateLevelOptions = (hostelId) => {
+  const hostel = allHostels.value.find(h => h.id === hostelId);
+  const levelField = studentFields.value.find(field => field.key === 'level_number');
+  if (levelField && hostel) {
+    levelField.options = hostel.levels.map(level => ({
+      value: level.id,
+      label: level.name
+    }));
+  }
+};
+
+const updateRoomOptions = (levelId) => {
+  const hostel = allHostels.value.find(h => h.levels.some(level => level.id === levelId));
+  const level = hostel?.levels.find(level => level.id === levelId);
+  const roomField = studentFields.value.find(field => field.key === 'room_number');
+  if (roomField && level) {
+    roomField.options = level.rooms.map(room => ({
+      value: room.id,
+      label: room.number
+    }));
+  }
+};
+
+const updateBedOptions = (roomId) => {
+  const hostel = allHostels.value.find(h => h.levels.some(level => level.rooms.some(room => room.id === roomId)));
+  const level = hostel?.levels.find(level => level.rooms.some(room => room.id === roomId));
+  const room = level?.rooms.find(room => room.id === roomId);
+  const bedField = studentFields.value.find(field => field.key === 'bed_number');
+  if (bedField && room) {
+    bedField.options = room.beds.map(bed => ({
+      value: bed.id,
+      label: bed.number
+    }));
+  }
+};
+
 onMounted(async () => {
   try {
-    const {data} = await api.get('/hostels/');
+    const { data } = await api.get('/hostels/');
     console.log('Fetched Hostels:', data);
 
     allHostels.value = data.map(hostel => ({
@@ -152,6 +190,10 @@ onMounted(async () => {
     }));
 
     updateHostelOptions(props.student.gender);
+    updateLevelOptions(props.student.hostel_id);
+    updateRoomOptions(props.student.level_id);
+    updateBedOptions(props.student.room_id);
+
   } catch (error) {
     console.error('Error fetching hostels:', error);
   } finally {
@@ -161,9 +203,9 @@ onMounted(async () => {
 
 const updateStudentInfo = async () => {
   try {
-    const response = await api.patch(`/students/${props.student.id}/`,
-        {...props.student}
-    );
+    const response = await api.patch(`/students/${props.student.id}/`, {
+      ...props.student
+    });
     console.log('Success:', response.data);
     alert("Student info updated successfully");
     emit('update:show', false);
@@ -178,9 +220,7 @@ const updateStudentInfo = async () => {
 
 const deleteStudent = async () => {
   try {
-    const response = await api.delete(
-        `/students/${props.student.id}/`
-    );
+    const response = await api.delete(`/students/${props.student.id}/`);
     console.log('Student deleted:', response.data);
     alert("Student deleted successfully");
     emit('update:show', false);
@@ -232,6 +272,7 @@ const deleteStudent = async () => {
                     v-for="option in field.options || []"
                     :key="option.value"
                     :value="option.value"
+                    :selected="{ 'selected': option.value == student['bed']['hostel_id'] }"
                 >
                   {{ option.label }}
                 </option>
