@@ -1,23 +1,23 @@
 <template>
-  <div class="header-sec">
-    <div class="main-container">
-      <div class="container-box">
-        <div class="image-logo">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="logo-container">
+        <div class="logo">
           <a href="https://aiu.edu.my/">
             <img src="/images/AIU-Official-Logo.png" alt="AIU Logo" />
           </a>
         </div>
-        <button v-if="isMobile" @click="toggleLinksVisibility" class="bar-btn">
+        <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
           <UIcon name="uil-bars" />
         </button>
       </div>
 
-      <div class="title">
+      <div class="header-title">
         <h2>AIU Hostel Management System</h2>
       </div>
 
-      <nav v-if="isLinksVisible || !isMobile" class="menu">
-        <ul class="menu-links">
+      <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
+        <ul class="navigation-links">
           <li><router-link to="/home">Home</router-link></li>
           <li><router-link to="/about">About</router-link></li>
           <li><router-link to="/maintenance-room-form">Maintenance Room Form</router-link></li>
@@ -49,39 +49,39 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.header-sec {
+.header-container {
   background-color: var(--primary-color);
   padding: 0.5rem 1rem;
   max-height: 500px;
 }
 
-.main-container {
+.header-wrapper {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.image-logo img {
+.logo img {
   width: 70px;
   height: 50px;
 }
 
-.title h2 {
+.header-title h2 {
   font-size: 1.5rem;
   font-weight: normal;
   text-transform: uppercase;
   color: var(--text-light-color);
 }
 
-.menu-links {
+.navigation-links {
   display: inline-flex;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.menu-links li {
+.navigation-links li {
   display: inline-block;
   padding: 0.3rem;
   margin-right: 0.5rem;
@@ -90,49 +90,49 @@ onMounted(() => {
   background-color: transparent;
 }
 
-.menu-links li:hover {
+.navigation-links li:hover {
   border: 1px solid var(--primary-hover-color);
   background-color: var(--primary-hover-color);
 }
 
-.menu-links a {
+.navigation-links a {
   color: var(--text-light-color);
   padding: 0 0.5rem;
   font-size: 1rem;
   text-decoration: none;
 }
 
-.menu-links a:hover {
+.navigation-links a:hover {
   color: var(--text-hover-color);
   transition: 0.3s ease-in-out;
 }
 
 @media (max-width: 1200px) {
-  .main-container {
+  .header-wrapper {
     display: block;
   }
 
-  .title h2 {
+  .header-title h2 {
     display: none;
   }
 
-  .container-box {
+  .logo-container {
     display: flex;
     justify-content: space-between;
   }
 
-  .bar-btn {
+  .menu-toggle-btn {
     font-size: 2rem;
     margin: 0 1rem;
     color: var(--text-hover-color);
   }
 
-  .menu-links {
+  .navigation-links {
     display: block;
     margin: 1rem 0;
   }
 
-  .menu-links li {
+  .navigation-links li {
     display: block;
     margin-left: 0.5rem;
   }
