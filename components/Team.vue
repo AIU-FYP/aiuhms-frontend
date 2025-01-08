@@ -94,50 +94,87 @@ const goToPrevious = () => {
 </script>
 
 <template>
-  <div class="team">
-    <div class="team-container">
-      <h2>Members of Staff</h2>
-      <hr class="divider">
-      <div class="carousel">
-        <div v-for="(member, index) in members.slice(currentIndex, currentIndex + 3)" :key="index" class="team-member">
-          <img :src="member.photoURL" :alt="member.alt">
-          <div class="info">
-            <h3>{{ member.name }}</h3>
-            <h5>{{ member.position }}</h5>
+  <div class="staff-section">
+    <div class="staff-container">
+      <h2 class="staff-title">Members of Staff</h2>
+      <hr class="staff-divider">
+      <div class="staff-content">
+        <div class="carousel-control">
+          <span class="carousel-box">
+            <button @click="goToPrevious" class="carousel-button">
+              <UIcon name="chevron-left" size="24"/>
+            </button>
+          </span>
+        </div>
+        <div class="carousel-main">
+          <div class="carousel">
+            <div
+                v-for="(member, index) in members.slice(currentIndex, currentIndex + 3)"
+                :key="index"
+                class="staff-member"
+            >
+              <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
+              <div class="staff-info">
+                <h3 class="staff-name">{{ member.name }}</h3>
+                <h3 class="staff-position">{{ member.position }}</h3>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="carousel-controls">
-        <button @click="goToPrevious" class="carousel-btn">
-          <UIcon name="chevron-left" size="24"/>
-        </button>
-        <button @click="goToNext" class="carousel-btn">
-          <UIcon name="chevron-right" size="24"/>
-        </button>
+        <div class="carousel-control">
+          <span class="carousel-box">
+            <button @click="goToNext" class="carousel-button">
+              <UIcon name="chevron-right" size="24"/>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.team-container {
+.staff-container {
   padding: 5rem;
 }
 
-@media (max-width: 800px) {
-  .team-container {
-    padding: 0 1rem;
-  }
+.staff-content {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  background-color: var(--text-hover-color);
+  border-radius: 3rem;
+  margin: 5rem 0;
+  padding: 1rem 0;
 }
 
-.team h2 {
+.carousel-main {
+  flex: 85%;
+}
+
+.carousel-control {
+  flex: 5%;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  margin: auto;
+  background: white;
+}
+
+.carousel-box {
+  margin: auto 10px;
+  background-color: transparent;
+}
+
+.staff-title {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary-color);
   padding: 0 2rem;
+
 }
 
-.divider {
+.staff-divider {
   margin: 1rem auto;
   border: 2px solid var(--primary-color);
   width: 100%;
@@ -158,20 +195,30 @@ const goToPrevious = () => {
   }
 }
 
-.team-member {
+.staff-member {
+  display: block;
   text-align: center;
   flex: 1;
   margin-bottom: 1rem;
+  min-height: 200px;
 }
 
-.team-member img {
+.staff-photo {
   margin: 10px auto;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
 }
 
-.team-member h3 {
+.staff-info {
+  min-height: 100px;
+}
+
+.staff-info h3 {
+  height: 60px;
+}
+
+.staff-name {
   font-size: 1rem;
   padding: .5rem 0;
   color: var(--primary-color);
@@ -180,47 +227,33 @@ const goToPrevious = () => {
   font-weight: bold;
 }
 
-.team-member h5 {
+.staff-position {
   font-size: .8rem;
   color: var(--primary-color);
   max-width: 200px;
   margin: auto;
 }
 
-.carousel-controls {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 1rem;
-}
-
-@media (max-width: 1200px) {
-  .carousel-controls {
-    width: 90%;
-    margin: 20px auto;
-  }
-}
-
-.carousel-btn {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.5rem 1.5rem;
+.carousel-button {
+  background-color: var(--text-light-color);
+  width: 50px;
+  height: 50px;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 1rem;
 }
 
-.carousel-btn:hover {
-  background-color: var(--primary-hover-color);
+.carousel-button:hover {
+  background-color: var(--text-hover-color);
+  transition: ease-in-out .3s;
 }
 
 @media (max-width: 800px) {
-  .team-container {
-    padding: 0;
+  .staff-container {
+    padding: 0 1rem;
   }
 
-  .carousel-btn {
+  .carousel-button {
     padding: 0.5rem 1rem;
   }
 }
