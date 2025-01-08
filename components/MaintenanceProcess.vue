@@ -97,6 +97,11 @@ const toggleFaq = (index: number) => {
   margin-bottom: 2rem;
 }
 
+.process-maintenance-room .container{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .process-item {
   background-color: #f5f5f5;
   color: var(--primary-hover-color);

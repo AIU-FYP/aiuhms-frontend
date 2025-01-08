@@ -84,7 +84,7 @@ const toggleFaq = (index: number) => {
           </p>
         </div>
         <router-link to="/change-room-form" class="link-btn">
-          Maintenance Room Form
+          Change Room Form
         </router-link>
       </div>
     </div>
@@ -105,10 +105,16 @@ const toggleFaq = (index: number) => {
   margin-bottom: 2rem;
 }
 
+.room-change-request .container{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .process-item {
   background-color: #f5f5f5;
+  width: 90%;
   color: var(--primary-hover-color);
-  margin-bottom: 1.5rem;
+  margin: 1.5rem auto;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -157,7 +163,7 @@ const toggleFaq = (index: number) => {
 
 .link-btn {
   display: inline-block;
-  margin-top: 2rem;
+  margin: 2rem;
   text-align: center;
   background-color: #f5f5f5;
   color: var(--primary-hover-color);
