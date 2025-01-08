@@ -84,10 +84,10 @@ const toggleFaq = (index: number) => {
 </template>
 
 <style scoped>
+
 .process-maintenance-room {
   padding: 1rem 0;
   margin: 0 auto;
-  max-width: 800px;
 }
 
 .process-maintenance-room h2 {
@@ -128,7 +128,7 @@ const toggleFaq = (index: number) => {
 }
 
 .title {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .description {

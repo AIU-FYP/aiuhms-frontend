@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {ref} from "vue";
+
 const items = [
   {
     label: 'Fill Out the Room Change Request Form',
@@ -32,23 +34,22 @@ const items = [
   }
 ];
 
-const activeIndex = ref<number | null>(null)
+const activeIndex = ref<number | null>(null);
 
 const toggleFaq = (index: number) => {
-  activeIndex.value = activeIndex.value === index ? null : index
-}
+  activeIndex.value = activeIndex.value === index ? null : index;
+};
 </script>
 
 <template>
   <div class="room-change-request">
     <div class="container">
-      <div></div>
       <div class="room-change-request-section">
         <h2>How do students request to change room?</h2>
         <div
-            class="room-change-request-item"
             v-for="(item, index) in items"
             :key="index"
+            class="process-item"
             @click="toggleFaq(index)"
             :aria-expanded="activeIndex === index"
             role="button"
@@ -56,106 +57,121 @@ const toggleFaq = (index: number) => {
             @keydown.enter="toggleFaq(index)"
             @keydown.space.prevent="toggleFaq(index)"
         >
-          <div class="room-change-request-info">
-            <h3 class="room-change-request-title">
+          <div class="info">
+            <h3 class="title">
               <span>
-                <UIcon
-                    name="lucide-university"
-                />
+                <UIcon name="i-heroicons-square-3-stack-3d"/>
               </span>
               {{ item.label }}
             </h3>
             <h3>
-              <UIcon v-if="activeIndex === index" name="ep-arrow-up-bold" />
-              <UIcon v-else name="ep-arrow-down-bold" />
+              <UIcon
+                  v-if="activeIndex === index"
+                  name="ep-arrow-up-bold"
+              />
+              <UIcon
+                  v-else
+                  name="ep-arrow-down-bold"
+              />
             </h3>
           </div>
-          <p class="room-change-request-description" v-show="activeIndex === index" :class="{ 'fade-in': activeIndex === index }">{{ item.content }}</p>
+          <p
+              v-show="activeIndex === index"
+              class="description"
+              :class="{ 'fade-in': activeIndex === index }"
+          >
+            {{ item.content }}
+          </p>
         </div>
-        <router-link to="/change-room-form" class="room-change-request-link-btn">
-          Request To Change Room Form
+        <router-link to="/change-room-form" class="link-btn">
+          Maintenance Room Form
         </router-link>
       </div>
-      <div></div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
 .room-change-request {
   padding: 1rem 0;
   margin: 0 auto;
-  max-width: 800px;
 }
 
 .room-change-request h2 {
   text-align: center;
   font-size: 2rem;
-  font-weight: normal;
   color: var(--primary-color);
-  padding: 2rem;
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 }
 
-.room-change-request-item {
+.process-item {
   background-color: #f5f5f5;
   color: var(--primary-hover-color);
   margin-bottom: 1.5rem;
   border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: box-shadow 0.3s ease;
 }
 
-.room-change-request-item:focus,
-.room-change-request-item:hover {
+@media (max-width: 1200px) {
+  .process-item{
+    width: 90%;
+    margin: 1.5rem auto;
+  }
+}
+
+.process-item:focus,
+.process-item:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.room-change-request-info {
+.info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: .5rem 1rem;
+  padding: 1rem;
 }
 
-.room-change-request-title {
-  font-size: 1.5rem;
-}
-
-.room-change-request-description {
-  padding: .5rem 1rem;
+.title {
   font-size: 1rem;
-  font-weight: normal;
-  color: var(--primary-hover-color);
-  text-align: justify;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
-.room-change-request-description.fade-in {
+.description {
+  padding: 0 1rem 1rem;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.description.fade-in {
   opacity: 1;
   max-height: 300px;
 }
 
-.room-change-request-link-btn {
+.link-btn {
   display: inline-block;
-  font-size: 1.2rem;
-  color: var(--primary-color);
-  margin: 1rem 0;
+  margin-top: 2rem;
   text-align: center;
+  background-color: #f5f5f5;
+  color: var(--primary-hover-color);
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
-  background-color: #f5f5f5;
+  font-size: 1rem;
   text-decoration: none;
   transition: background-color 0.3s ease;
 }
 
-.room-change-request-link-btn:hover {
+.link-btn:hover {
   background-color: var(--primary-color);
   color: var(--text-light-color);
+  transition:  0.3s ease-in-out;
 }
 
 @media (max-width: 820px) {
@@ -163,18 +179,14 @@ const toggleFaq = (index: number) => {
     font-size: 1.5rem;
   }
 
-  .room-change-request {
-    padding: 1em;
-    margin: 0 1rem;
-  }
-
-  .room-change-request-description {
+  .description {
     font-size: 0.9rem;
   }
 
-  .room-change-request-link-btn {
-    font-size: 1rem;
+  .link-btn {
+    font-size: 0.9rem;
     padding: 0.7rem 1.2rem;
+    margin: 1rem;
   }
 }
 </style>

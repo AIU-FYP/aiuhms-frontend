@@ -1,259 +1,192 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {ref} from "vue";
 
-const members = ref([
+const items = [
   {
-    name: "Nidhoil Mohamed Ibrahim",
-    position: "DIRECTOR OF STUDENT AFFAIRS",
-    photoURL: "/images/Nidhoil-200x200.jpg",
-    alt: "Nidhoil Mohamed Ibrahim"
+    label: 'Fill Out the Room Change Request Form',
+    defaultOpen: false,
+    content: 'Students must complete the designated form to request a room change, providing necessary details and supporting documentation.'
   },
   {
-    name: "Nurul Huda Bt Hassan Bakri",
-    position: "Deputy Director of Student Affairs",
-    photoURL: "/images/Nurul-Huda-Hassan-01-200x200.jpg",
-    alt: "Nurul Huda Bt Hassan Bakri"
+    label: 'Submit Supporting Documents',
+    defaultOpen: false,
+    content: 'For medical reasons, attach an official medical report. For issues with roommates, submit proof via email to the relevant office.'
   },
   {
-    name: "Fazlia Binti Azhari",
-    position: "Counsellor",
-    photoURL: "/images/fazlia-200x200.jpg",
-    alt: "Fazlia Binti Azhari"
+    label: 'Processing of Request',
+    defaultOpen: false,
+    content: 'The Student Affairs (SA) team will review the submitted form and documents. Processing typically takes 7-14 working days.'
   },
   {
-    name: "Mohammad Hafis Shafiq Bin Mohammad Sopian",
-    position: "Counsellor",
-    photoURL: "/images/hafis-shafiq-200x200.png",
-    alt: "Mohammad Hafis Shafiq Bin Mohammad Sopian"
+    label: 'Assessment and Decision by Director of Student Affairs',
+    defaultOpen: false,
+    content: 'The Director of Student Affairs will evaluate the necessity of the room change and check room availability. The decision is final upon approval.'
   },
   {
-    name: "Ahmad Muaz Azizan",
-    position: "Executive cum Warden",
-    photoURL: "/images/Muaz-240x300-1-200x200.png",
-    alt: "Ahmad Muaz Azizan"
+    label: 'Confirmation of Room Availability and Approval',
+    defaultOpen: false,
+    content: 'Confirmation will be sent via email once the request is approved, outlining the next steps for the room change.'
   },
   {
-    name: "Nurul Elina Afiqah Binti Badrulhisham",
-    position: "Executive cum Warden",
-    photoURL: "/images/Elina-200x200.jpg",
-    alt: "Nurul Elina Afiqah Binti Badrulhisham"
-  },
-  {
-    name: "Hazween Eyzwann Bin Sharif",
-    position: "Executive cum Warden",
-    photoURL: "/images/Hazween-200x200.jpg",
-    alt: "Hazween Eyzwann Bin Sharif"
-  },
-  {
-    name: "Nurul Izzati Binti Ramli",
-    position: "Executive cum Warden",
-    photoURL: "/images/izzati-200x200.jpg",
-    alt: "Nurul Izzati Binti Ramli"
-  },
-  {
-    name: "Ainun Nadiah Binti Samsudin",
-    position: "Executive (Career & Alumni)",
-    photoURL: "/images/ainun-200x200.jpg",
-    alt: "Ainun Nadiah Binti Samsudin"
-  },
-  {
-    name: "Muhammad Zhafran Bin Jasmi",
-    position: "Sport Officer",
-    photoURL: "/images/zhafran.jasmi@aiu.edu_.my_-200x200.jpg",
-    alt: "Muhammad Zhafran Bin Jasmi"
-  },
-  {
-    name: "Mohamad Nor Hisyam Bin Musa",
-    position: "Warden",
-    photoURL: "/images/Hisyam-Musa-1-200x200.jpg",
-    alt: "Mohamad Nor Hisyam Bin Musa"
-  },
-  {
-    name: "Farah Nadiah Binti Abdul Kudus",
-    position: "Warden",
-    photoURL: "/images/Fatin-Nadiah.jpg",
-    alt: "Farah Nadiah Binti Abdul Kudus"
-  },
-  {
-    name: "Nadia Affiqa Abdul Nasir",
-    position: "Warden",
-    photoURL: "/images/nadia-200x200.jpg",
-    alt: "Nadia Affiqa Abdul Nasir"
+    label: 'Compliance with Hostel Policies',
+    defaultOpen: false,
+    content: 'Students acknowledge that room change approval is contingent on room availability and compliance with hostel policies.'
   }
-]);
+];
 
-const currentIndex = ref(0);
+const activeIndex = ref<number | null>(null);
 
-const goToNext = () => {
-  currentIndex.value = (currentIndex.value + 3) % members.value.length;
-};
-
-const goToPrevious = () => {
-  currentIndex.value = (currentIndex.value - 3 + members.value.length) % members.value.length;
+const toggleFaq = (index: number) => {
+  activeIndex.value = activeIndex.value === index ? null : index;
 };
 </script>
 
 <template>
-  <div class="staff-section">
-    <div class="staff-container">
-      <h2 class="staff-title">Members of Staff</h2>
-      <hr class="staff-divider">
-      <div class="staff-content">
-        <div class="carousel-control">
-          <span class="carousel-box">
-            <button @click="goToPrevious" class="carousel-button">
-              <UIcon name="chevron-left" size="24"/>
-            </button>
-          </span>
-        </div>
-        <div class="carousel-main">
-          <div class="carousel">
-            <div
-                v-for="(member, index) in members.slice(currentIndex, currentIndex + 3)"
-                :key="index"
-                class="staff-member"
-            >
-              <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
-              <div class="staff-info">
-                <h3 class="staff-name">{{ member.name }}</h3>
-                <h3 class="staff-position">{{ member.position }}</h3>
-              </div>
-            </div>
+  <div class="room-change-request">
+    <div class="container">
+      <div class="room-change-request-section">
+        <h2>How do students request to change room?</h2>
+        <div
+            v-for="(item, index) in items"
+            :key="index"
+            class="process-item"
+            @click="toggleFaq(index)"
+            :aria-expanded="activeIndex === index"
+            role="button"
+            tabindex="0"
+            @keydown.enter="toggleFaq(index)"
+            @keydown.space.prevent="toggleFaq(index)"
+        >
+          <div class="info">
+            <h3 class="title">
+              <span>
+                <UIcon name="i-heroicons-square-3-stack-3d"/>
+              </span>
+              {{ item.label }}
+            </h3>
+            <h3>
+              <UIcon
+                  v-if="activeIndex === index"
+                  name="ep-arrow-up-bold"
+              />
+              <UIcon
+                  v-else
+                  name="ep-arrow-down-bold"
+              />
+            </h3>
           </div>
+          <p
+              v-show="activeIndex === index"
+              class="description"
+              :class="{ 'fade-in': activeIndex === index }"
+          >
+            {{ item.content }}
+          </p>
         </div>
-        <div class="carousel-control">
-          <span class="carousel-box">
-            <button @click="goToNext" class="carousel-button">
-              <UIcon name="chevron-right" size="24"/>
-            </button>
-          </span>
-        </div>
+        <router-link to="/change-room-form" class="link-btn">
+          Maintenance Room Form
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.staff-container {
-  padding: 5rem;
+
+.room-change-request {
+  padding: 1rem 0;
+  margin: 0 auto;
 }
 
-.staff-content {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  background-color: var(--text-hover-color);
-  border-radius: 3rem;
-  margin: 5rem 0;
-}
-
-.carousel-main {
-  flex: 85%;
-}
-
-.carousel-control {
-  flex: 5%;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  margin: auto;
-  background: white;
-}
-
-.carousel-box {
-  margin: auto 10px;
-  background-color: transparent;
-}
-
-.staff-title {
-  font-size: 1.5rem;
-  font-weight: bold;
+.room-change-request h2 {
+  text-align: center;
+  font-size: 2rem;
   color: var(--primary-color);
-  padding: 0 2rem;
-
+  margin-bottom: 2rem;
 }
 
-.staff-divider {
-  margin: 1rem auto;
-  border: 2px solid var(--primary-color);
-  width: 100%;
-}
-
-.carousel {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 20px;
-  min-height: 300px;
+.process-item {
+  background-color: #f5f5f5;
+  color: var(--primary-hover-color);
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
 }
 
 @media (max-width: 1200px) {
-  .carousel {
-    flex-direction: column;
+  .process-item{
+    width: 90%;
+    margin: 1.5rem auto;
   }
 }
 
-.staff-member {
-  display: block;
-  text-align: center;
-  flex: 1;
-  margin-bottom: 1rem;
-  min-height: 200px;
+.process-item:focus,
+.process-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.staff-photo {
-  margin: 10px auto;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 }
 
-.staff-info {
-  min-height: 100px;
+.title {
+  font-size: 1.2rem;
 }
 
-.staff-info h3 {
-  height: 60px;
-}
-
-.staff-name {
+.description {
+  padding: 0 1rem 1rem;
   font-size: 1rem;
-  padding: .5rem 0;
-  color: var(--primary-color);
-  max-width: 200px;
-  margin: auto;
-  font-weight: bold;
+  color: #333;
+  line-height: 1.5;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
 }
 
-.staff-position {
-  font-size: .8rem;
-  color: var(--primary-color);
-  max-width: 200px;
-  margin: auto;
+.description.fade-in {
+  opacity: 1;
+  max-height: 300px;
 }
 
-.carousel-button {
-  background-color: var(--text-light-color);
-  width: 50px;
-  height: 50px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
+.link-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  text-align: center;
+  background-color: #f5f5f5;
+  color: var(--primary-hover-color);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
 
-.carousel-button:hover {
-  background-color: var(--text-hover-color);
-  transition: ease-in-out .3s;
+.link-btn:hover {
+  background-color: var(--primary-color);
+  color: var(--text-light-color);
+  transition:  0.3s ease-in-out;
 }
 
-@media (max-width: 800px) {
-  .staff-container {
-    padding: 0 1rem;
+@media (max-width: 820px) {
+  .room-change-request h2 {
+    font-size: 1.5rem;
   }
 
-  .carousel-button {
-    padding: 0.5rem 1rem;
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .link-btn {
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+    margin: 1rem;
   }
 }
 </style>
