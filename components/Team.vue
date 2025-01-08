@@ -249,7 +249,7 @@ const goToPrevious = () => {
 
 .carousel-button:hover {
   background-color: var(--text-hover-color);
-  transition: ease-in-out .3s;
+  transition: ease-in-out 0.3s;
 }
 
 @media (max-width: 800px) {
