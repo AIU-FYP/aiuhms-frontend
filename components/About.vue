@@ -12,103 +12,120 @@ const information = [
   }
 ];
 
-const images=[
+const images = [
   {
-    url:"/images/WB-5core-values.jpg",
-    alt:"WB-5core-values"
+    url: "/images/WB-5core-values.jpg",
+    alt: "WB-5core-values"
   },
   {
-    url:"/images/WB-8hrs-rules.jpg",
-    alt:"WB-8hrs-rules"
+    url: "/images/WB-8hrs-rules.jpg",
+    alt: "WB-8hrs-rules"
   }
-]
+];
 </script>
 
 <template>
-  <div class="about-section">
-    <div class="container">
-      <h1>About Albukhary International University</h1>
-      <hr class="divider">
-      <div class="content">
-        <div v-for="info in information" :key="info.title" class="info">
-          <h3>{{ info.title }}</h3>
-          <p>{{ info.description }}</p>
+  <div class="aiu-about-section">
+    <div class="aiu-about-container">
+      <h1 class="aiu-about-title">About Albukhary International University</h1>
+      <hr class="aiu-divider" />
+      <div class="aiu-information">
+        <div v-for="info in information" :key="info.title" class="aiu-info-card">
+          <h3 class="aiu-info-title">{{ info.title }}</h3>
+          <p class="aiu-info-description">{{ info.description }}</p>
         </div>
       </div>
-      <div class="random-images" v-for="image in images" :key="image.url">
-        <img :src="image.url" alt="image.alt">
+      <div class="aiu-images">
+        <div v-for="image in images" :key="image.url" class="aiu-image-wrapper">
+          <img :src="image.url" :alt="image.alt" class="aiu-image" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.about-section {
+.aiu-about-section {
   padding: 5em;
   margin: 1em auto;
 }
 
-.container h1 {
+.aiu-about-title {
   font-size: 2.5rem;
   margin-left: 20px;
   color: var(--primary-hover-color);
 }
 
 @media (max-width: 800px) {
-  .about-section {
+  .aiu-about-section {
     padding: 2rem 1rem;
   }
 
-  .container h1 {
+  .aiu-about-title {
     font-size: 1.2rem;
   }
 }
 
-.divider{
+.aiu-divider {
   margin: 1rem auto;
   border: 2px solid var(--primary-color);
   width: 100%;
 }
 
-.content {
+.aiu-information {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
   flex-wrap: wrap;
 }
 
-.info {
+.aiu-info-card {
   margin: 1rem auto;
   padding: 20px;
   border-radius: 8px;
   flex: 1 1 45%;
   box-sizing: border-box;
+  background-color: var(--text-hover-color);
 }
 
-h3 {
+.aiu-info-title {
   font-size: 1.5rem;
   color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
-p {
+.aiu-info-description {
   font-size: 1rem;
   color: var(--primary-hover-color);
   text-align: justify;
 }
 
 @media (max-width: 800px) {
-  .content {
+  .aiu-information {
     flex-direction: column;
   }
 
-  .info {
+  .aiu-info-card {
     width: 100%;
     margin-bottom: 0;
   }
 }
 
-.random-images img {
-  padding: .5rem;
+.aiu-images {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.aiu-image-wrapper {
+  padding: 0.5rem;
+}
+
+.aiu-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 </style>
