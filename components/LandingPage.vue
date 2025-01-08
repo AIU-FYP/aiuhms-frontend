@@ -1,16 +1,16 @@
 <template>
-  <section class="landing">
-    <div class="main-container">
-      <div class="box-info">
+  <section class="landing-section">
+    <div class="content-container">
+      <div class="text-content">
         <h2 class="fade-in">Welcome Students</h2>
         <h1 class="slide-up">Albukhary International University</h1>
-        <div class="students-btn">
-          <button class="btn-animate">Maintenance Room Form</button>
-          <button class="btn-animate">Change Room Form</button>
+        <div class="action-buttons">
+          <button class="btn-action">Maintenance Room Form</button>
+          <button class="btn-action">Change Room Form</button>
         </div>
       </div>
-      <div class="image-container">
-        <img src="/images/aiu%20random%201.jpg" alt="AIU Campus" class="image-fade" />
+      <div class="image-wrapper">
+        <img src="/images/hostel.png" alt="AIU Campus" class="image-fade" />
       </div>
     </div>
   </section>
@@ -20,7 +20,8 @@
 </script>
 
 <style scoped>
-.landing {
+
+.landing-section {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,7 +31,7 @@
   background: linear-gradient(135deg, #133E87FF, #4B8AE6, #82B4F9);
 }
 
-.main-container {
+.content-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -44,20 +45,20 @@
 }
 
 @media (max-width: 1200px) {
-  .main-container {
+  .content-container {
     width: 100%;
     height: 100%;
     flex-direction: column;
   }
 
-  .students-btn {
+  .action-buttons {
     flex-direction: column;
     gap: 1rem;
   }
 }
 
 @media (max-width: 800px) {
-  .main-container {
+  .content-container {
     padding: 1rem;
     text-align: center;
   }
@@ -67,7 +68,7 @@
   }
 }
 
-.box-info {
+.text-content {
   flex: 1 1 50%;
   display: flex;
   flex-direction: column;
@@ -75,7 +76,7 @@
   align-items: flex-start;
 }
 
-.box-info h2, .box-info h1 {
+.text-content h2, .text-content h1 {
   margin: 1rem 0;
   opacity: 0;
 }
@@ -91,13 +92,28 @@ h1 {
   animation: slideUp 1.2s ease forwards;
 }
 
-.students-btn {
+.action-buttons {
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
-.btn-animate {
+@media (max-width: 1200px) {
+  .landing-section h2 {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  .content-container {
+    width: 100%;
+    height: 100vh;
+    padding: 2rem;
+    border-radius: 0;
+  }
+}
+  .btn-action {
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 1rem;
@@ -108,23 +124,22 @@ h1 {
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.btn-animate:hover {
+.btn-action:hover {
   transform: scale(1.1);
   background-color: var(--primary-color);
 }
 
-.image-container {
+.image-wrapper {
   flex: 1 1 35%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.image-container img {
+.image-wrapper img {
   width: 80%;
   height: auto;
   border-radius: 1rem;
-  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
   opacity: 0;
   animation: fadeIn 1.5s ease forwards;
 }
