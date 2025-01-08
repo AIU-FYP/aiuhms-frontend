@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps, ref} from 'vue';
+import {defineEmits, defineProps, ref, onMounted} from 'vue';
 import {useNuxtApp} from "#app";
 import {religions} from "~/utils/dropdownOptions.js";
 
@@ -11,10 +11,9 @@ const props = defineProps({
 const religionOptions = Array.isArray(religions)
     ? religions
     : Array.from(religions.values());
-const allHostels = ref([]);
-const selectedHostel = ref(null);
-const isLoading = ref(true);
 
+const allHostels = ref([]);
+const isLoading = ref(true);
 const emit = defineEmits(['update:show']);
 
 const studentFields = ref([
@@ -75,6 +74,18 @@ const studentFields = ref([
     type: 'input'
   },
   {
+    label: 'Nationality',
+    key: 'nationality',
+    editable: false,
+    type: "input"
+  },
+  {
+    label: 'Program/Major',
+    key: 'major',
+    editable: true,
+    type: "input"
+  },
+  {
     label: 'Gender',
     key: 'gender',
     editable: true,
@@ -89,38 +100,28 @@ const studentFields = ref([
     options: religionOptions
   },
   {
-    label: 'Nationality',
-    key: 'nationality',
-    editable: false,
-  },
-  {
-    label: 'Program/Major',
-    key: 'major',
-    editable: true,
-  },
-  {
     label: 'Block Name',
-    key: 'block_name',
-    editable: true,
-    type: 'select',
-    options: []
+    key: 'hostel_name',
+    editable: false,
+    type: 'input',
   },
   {
     label: 'Level No',
-    key: 'level',
+    key: 'level_number',
     editable: true,
-    type: 'select',
-    options: []
+    type: 'input',
   },
   {
     label: 'Room No',
-    key: 'room',
-    editable: false
+    key: 'room_number',
+    editable: false,
+    type: "input"
   },
   {
     label: 'Bed',
-    key: 'bed',
+    key: 'bed_number',
     editable: false,
+    type: "input"
   },
 ]);
 
@@ -147,10 +148,10 @@ onMounted(async () => {
       value: hostel.id,
       label: hostel.name,
       gender: hostel.gender,
+      levels: hostel.levels
     }));
 
     updateHostelOptions(props.student.gender);
-
   } catch (error) {
     console.error('Error fetching hostels:', error);
   } finally {
@@ -214,14 +215,14 @@ const deleteStudent = async () => {
               <UIcon style="color: var(--primary-color)" name="ph-student"/>
             </span> {{ field.label }}: </span>
           <span class="student-key-info">
-            <template v-if="field.type === 'input'">
+            <div v-if="field.type === 'input'">
               <input
                   v-model="props.student[field.key]"
                   class="control-input"
                   :readonly="!field.editable"
               />
-            </template>
-            <template v-if="field.type === 'select'">
+            </div>
+            <div v-if="field.type === 'select'">
               <select
                   v-model="props.student[field.key]"
                   :disabled="!field.editable"
@@ -235,7 +236,7 @@ const deleteStudent = async () => {
                   {{ option.label }}
                 </option>
               </select>
-            </template>
+            </div>
           </span>
         </div>
       </div>

@@ -50,8 +50,8 @@ const fetchData = async () => {
     people.value = response.data.map((person: any) => ({
       ...person,
       hostel_name: person.bed ? person.bed.hostel_name : 'N/A',
-      room_number: person.bed ? person.bed.room_number : 'N/A',
       level_number: person.bed ? person.bed.level_number : 'N/A',
+      room_number: person.bed ? person.bed.room_number : 'N/A',
       bed_number: person.bed ? person.bed.bed_number : 'N/A',
     }));
     console.log('Fetched students:', response.data);
