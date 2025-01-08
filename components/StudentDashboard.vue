@@ -21,15 +21,19 @@ interface Person {
 }
 
 const columns = [
-  { key: 'id', label: 'id' },
+  { key: 'id', label: 'ID' },
   { key: "date", label: 'Date' },
   { key: 'name', label: 'Name', sortable: true },
   { key: 'student_id', label: 'Student ID', sortable: true },
-  { key: 'roomDetails', label: 'Room No', sortable: true },
+  { key: 'hostel_name', label: 'Hostel Name', sortable: true },
+  { key: 'level_number', label: 'Level No', sortable: true },
+  { key: 'room_number', label: 'Room No', sortable: true },
+  { key: 'bed_number', label: 'Bed No', sortable: true },
   { key: 'gender', label: 'Gender', sortable: true },
   { key: 'status', label: 'Status', sortable: true },
   { key: 'extend', label: 'View', sortable: false }
-]
+];
+
 
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
@@ -39,16 +43,16 @@ const q = ref('');
 const isLoading = ref(true);
 const api = $axios()
 
-const hostelData = ref<any[]>([]);
-
 const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/students/");
     people.value = response.data.map((person: any) => ({
       ...person,
-      bedId: person.bed, // Make sure to map `bed` to `bedId`
-      date: new Date().toLocaleDateString(),
+      hostel_name: person.bed ? person.bed.hostel_name : 'N/A',
+      room_number: person.bed ? person.bed.room_number : 'N/A',
+      level_number: person.bed ? person.bed.level_number : 'N/A',
+      bed_number: person.bed ? person.bed.bed_number : 'N/A',
     }));
     console.log('Fetched students:', response.data);
   } catch (error) {
@@ -58,44 +62,10 @@ const fetchData = async () => {
   }
 };
 
-const fetchHostelData = async () => {
-  try {
-    const response = await api.get("/hostels/"); // Replace with your actual hostel endpoint
-    hostelData.value = response.data;
-  } catch (error) {
-    console.error('Error fetching hostel data:', error);
-  }
-};
-
-const getRoomDetailsByBedId = (bedId: number) => {
-  if (!bedId) {
-    console.log('Invalid Bed ID:', bedId);
-    return null; // Handle invalid or missing bedId
-  }
-  for (const building of hostelData.value) {
-    for (const level of building.levels) {
-      for (const room of level.room_details) {
-        for (const bed of room.beds) {
-          if (bed.id === bedId) {
-            return {
-              room: room.number,
-              bed: bed.bed_number,
-              level: level.number,
-              building: building.name,
-            };
-          }
-        }
-      }
-    }
-  }
-  return null; // If not found
-};
-
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
 
 onMounted(() => {
-  fetchHostelData();
   fetchData();
 });
 const visibleButtonIndex = ref<number | null>(null);
@@ -161,12 +131,6 @@ definePageMeta({
 const openPopup = (row: Person) => {
   currentStudent.value = row;
   isPopupVisible.value = true;
-  const roomDetails = getRoomDetailsByBedId(row.bedId);
-  if (roomDetails) {
-    console.log(`Room Details for Bed ID ${row.bedId}:`, roomDetails);
-  } else {
-    console.log(`Room details for Bed ID ${row.bedId} not found.`);
-  }
 };
 
 
