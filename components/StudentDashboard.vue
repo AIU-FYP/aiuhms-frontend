@@ -22,13 +22,12 @@ interface Person {
 
 const columns = [
   { key: 'id', label: 'ID' },
-  { key: "date", label: 'Date' },
   { key: 'name', label: 'Name', sortable: true },
-  { key: 'student_id', label: 'Student ID', sortable: true },
+  { key: 'student_id', label: 'Student ID', },
   { key: 'hostel_name', label: 'Hostel Name', sortable: true },
-  { key: 'level_number', label: 'Level No', sortable: true },
-  { key: 'room_number', label: 'Room No', sortable: true },
-  { key: 'bed_number', label: 'Bed No', sortable: true },
+  { key: 'level_number', label: 'Level No',},
+  { key: 'room_number', label: 'Room No',},
+  { key: 'bed_number', label: 'Bed No',},
   { key: 'gender', label: 'Gender', sortable: true },
   { key: 'status', label: 'Status', sortable: true },
   { key: 'extend', label: 'View', sortable: false }

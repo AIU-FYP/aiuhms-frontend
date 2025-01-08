@@ -1,411 +1,259 @@
-<script setup>
-import {computed, reactive, ref, watch} from 'vue';
-import Popup from '~/components/AdminSubmitPopup.vue'
-import {z} from 'zod';
-import { religions, femaleBlockOptions, maleBlockOptions, nationalities,blockData} from "~/utils/dropdownOptions.js";
+<script setup lang="ts">
+import {ref} from 'vue';
 
-const form = reactive({});
-const errors = reactive({});
-
-const userNationalityInput = ref('');
-const filteredNationalities = computed(() => {
-  if (!userNationalityInput.value) {
-    return nationalities;
+const members = ref([
+  {
+    name: "Nidhoil Mohamed Ibrahim",
+    position: "DIRECTOR OF STUDENT AFFAIRS",
+    photoURL: "/images/Nidhoil-200x200.jpg",
+    alt: "Nidhoil Mohamed Ibrahim"
+  },
+  {
+    name: "Nurul Huda Bt Hassan Bakri",
+    position: "Deputy Director of Student Affairs",
+    photoURL: "/images/Nurul-Huda-Hassan-01-200x200.jpg",
+    alt: "Nurul Huda Bt Hassan Bakri"
+  },
+  {
+    name: "Fazlia Binti Azhari",
+    position: "Counsellor",
+    photoURL: "/images/fazlia-200x200.jpg",
+    alt: "Fazlia Binti Azhari"
+  },
+  {
+    name: "Mohammad Hafis Shafiq Bin Mohammad Sopian",
+    position: "Counsellor",
+    photoURL: "/images/hafis-shafiq-200x200.png",
+    alt: "Mohammad Hafis Shafiq Bin Mohammad Sopian"
+  },
+  {
+    name: "Ahmad Muaz Azizan",
+    position: "Executive cum Warden",
+    photoURL: "/images/Muaz-240x300-1-200x200.png",
+    alt: "Ahmad Muaz Azizan"
+  },
+  {
+    name: "Nurul Elina Afiqah Binti Badrulhisham",
+    position: "Executive cum Warden",
+    photoURL: "/images/Elina-200x200.jpg",
+    alt: "Nurul Elina Afiqah Binti Badrulhisham"
+  },
+  {
+    name: "Hazween Eyzwann Bin Sharif",
+    position: "Executive cum Warden",
+    photoURL: "/images/Hazween-200x200.jpg",
+    alt: "Hazween Eyzwann Bin Sharif"
+  },
+  {
+    name: "Nurul Izzati Binti Ramli",
+    position: "Executive cum Warden",
+    photoURL: "/images/izzati-200x200.jpg",
+    alt: "Nurul Izzati Binti Ramli"
+  },
+  {
+    name: "Ainun Nadiah Binti Samsudin",
+    position: "Executive (Career & Alumni)",
+    photoURL: "/images/ainun-200x200.jpg",
+    alt: "Ainun Nadiah Binti Samsudin"
+  },
+  {
+    name: "Muhammad Zhafran Bin Jasmi",
+    position: "Sport Officer",
+    photoURL: "/images/zhafran.jasmi@aiu.edu_.my_-200x200.jpg",
+    alt: "Muhammad Zhafran Bin Jasmi"
+  },
+  {
+    name: "Mohamad Nor Hisyam Bin Musa",
+    position: "Warden",
+    photoURL: "/images/Hisyam-Musa-1-200x200.jpg",
+    alt: "Mohamad Nor Hisyam Bin Musa"
+  },
+  {
+    name: "Farah Nadiah Binti Abdul Kudus",
+    position: "Warden",
+    photoURL: "/images/Fatin-Nadiah.jpg",
+    alt: "Farah Nadiah Binti Abdul Kudus"
+  },
+  {
+    name: "Nadia Affiqa Abdul Nasir",
+    position: "Warden",
+    photoURL: "/images/nadia-200x200.jpg",
+    alt: "Nadia Affiqa Abdul Nasir"
   }
-  return nationalities.filter(n =>
-      n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
-  );
-});
+]);
 
-const userReligionsInput = ref('');
-const filteredReligions = computed(() => {
-  if (!userReligionsInput.value) {
-    return religions;
-  }
-  return religions.filter(n =>
-      n.toLowerCase().startsWith(userReligionsInput.value.toLowerCase())
-  );
-});
+const currentIndex = ref(0);
 
-const isPopupVisible = ref(false);
+const goToNext = () => {
+  currentIndex.value = (currentIndex.value + 3) % members.value.length;
+};
 
-const previousQuestions = [
-  {
-    label: "Name",
-    type: "text",
-    placeholder: "Enter your name",
-    id:"name",
-  },
-  {
-    label: "Student ID",
-    type: "text",
-    placeholder: "Enter your student ID (e.g., AIU21011234)",
-    id: "student_id",
-  },
-  {
-    label: "Passport No",
-    type: "text",
-    placeholder: "Enter your passport No",
-    id: "passport",
-  },
-  {
-    label: "Date of Arrive",
-    type: "date",
-    placeholder: "Select your date of birth",
-    id: "arrival_date",
-  },
-  {
-    label: "WhatsApp No",
-    type: "text",
-    placeholder: "Enter your WhatsApp No",
-    id : "phone",
-  },
-  {
-    label: "Email Address (Student Email Only)",
-    type: "text",
-    placeholder: "Enter your email address",
-    id : "email",
-  },
-  {
-    label: "Gender",
-    type: "select",
-    options: ["male", "female"],
-    placeholder: "Select your gender",
-    model: ref(""),
-    id: "gender",
-  },
-  {
-    label: "Religion",
-    type: "select",
-    options: filteredReligions.value,
-    placeholder: "Select Your religion",
-    id :"religion",
-  },
-  {
-    label: "Nationality",
-    type: "select",
-    options: filteredNationalities.value,
-    placeholder: "Select Your nationality",
-    id : "nationality",
-  },
-  {
-    label: "Program/Major",
-    type: "select",
-    options: ["Freshman", "Sophomore", "Junior", "Senior"],
-    placeholder: "Select your program or major",
-    id : "major",
-  },
-  {
-    label: "Block Name",
-    type: "select",
-    options: [],
-    placeholder: "Select Block Name (e.g., 25i)",
-    model: ref(""),
-    id :"block_name"
-  },
-  {
-    label: "Level No",
-    type: "select",
-    options: [],
-    placeholder: "Select Level No (e.g., Level one)",
-    model: ref(""),
-    id :"level_number"
-  },
-  {
-    label: "Room No",
-    type: "select",
-    options: [],
-    placeholder: "Select Room No (e.g., 02)",
-    model: ref(""),
-    id : "room"
-  },
-  {
-    label: "Which Zone",
-    type: "select",
-    options:[],
-    placeholder: "How many seats are in the room?",
-    id :"room_zone",
-  },
-];
-
-
-watch(
-    () => form["gender"],
-    (newGender) => {
-      const blockNameQuestion = previousQuestions.find(q => q.id === "block_name");
-      if (newGender === "male") {
-        blockNameQuestion.options = maleBlockOptions;
-      } else if (newGender === "female") {
-        blockNameQuestion.options = femaleBlockOptions;
-      } else {
-        blockNameQuestion.options = [];
-      }
-    }
-);
-
-watch(
-    () => form["block_name"],
-    (newBlock) => {
-      const levelQuestion = previousQuestions.find(q => q.id === "level_number");
-      if (blockData[newBlock]) {
-        levelQuestion.options = Object.keys(blockData[newBlock]);
-      } else {
-        levelQuestion.options = [];
-      }
-    }
-);
-
-watch(
-    () => form["level_number"],
-    (newLevel) => {
-      const roomQuestion = previousQuestions.find(q => q.id === "room");
-      const selectedBlock = form["block_name"];
-
-      if (blockData[selectedBlock] && blockData[selectedBlock][newLevel]) {
-        roomQuestion.options = Object.keys(blockData[selectedBlock][newLevel]);
-      } else {
-        roomQuestion.options = [];
-      }
-    }
-);
-
-
-watch(
-    () => [form["block_name"], form["level_number"], form["room"]],
-    ([selectedBlock, selectedLevel, selectedRoom]) => {
-      const zoneQuestion = previousQuestions.find(q => q.id === "room_zone");
-
-      if (
-          blockData[selectedBlock] &&
-          blockData[selectedBlock][selectedLevel] &&
-          blockData[selectedBlock][selectedLevel][selectedRoom]
-      ) {
-        zoneQuestion.options = blockData[selectedBlock][selectedLevel][selectedRoom];
-      } else {
-        zoneQuestion.options = [];
-      }
-    }
-);
-
-
-const formSchema = z.object({
-  "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
-  "passport": z.string().regex(/^\d{6,15}$/, "Invalid Passport Number format").nonempty("Passport Number is required"),
-  "arrival_date": z.string().nonempty("Date of Birth is required"),
-  "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format").nonempty("WhatsApp number is required"),
-  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'").nonempty("Email address is required"),
-  "gender": z.string().nonempty("Gender is required"),
-  "religion": z.string().optional(),
-  "nationality": z.string().optional(),
-  "major": z.string().optional(),
-  "block_name": z.string().nonempty("Block Name is required"),
-  "room": z.string().optional(),
-  "level_number": z.string().optional(),
-  "room_zone": z.string().optional(),
-});
-
-previousQuestions.forEach((question) => {
-  form[question.id] = "";
-  errors[question.id] = "";
-});
-
-function validateField(field) {
-  try {
-    formSchema.shape[field].parse(form[field]);
-    errors[field] = "";
-  } catch (error) {
-    errors[field] = error.errors ? error.errors[0].message : error.message;
-  }
-}
-
-previousQuestions.forEach((question) => {
-  watch(() => form[question.id], () => validateField(question.id));
-});
-
-async function handleSubmit() {
-  const api = useApi();
-  form.Date = new Date().toLocaleDateString("en-GB");
-
-  const validationResults = formSchema.safeParse(form);
-  console.log('Form data:', form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const response = await api.post("/students/", { ...form });
-      console.log("Response Data:", response.data);
-      isPopupVisible.value = true;
-      Object.keys(form).forEach((key) => (form[key] = ""));
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-      }
-    }
-  } else {
-    console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
-    alert("Please correct the errors in the form.");
-  }
-}
-
+const goToPrevious = () => {
+  currentIndex.value = (currentIndex.value - 3 + members.value.length) % members.value.length;
+};
 </script>
 
 <template>
-  <div class="new-student-sec">
-    <div class="container">
-      <div class="form-header">
-        <h2>Student Registration Form</h2>
-      </div>
-      <div class="box-form">
-        <form @submit.prevent="handleSubmit">
-          <div class="form-container">
-            <div class="info" v-for="(question, index) in previousQuestions" :key="index">
-              <label class="question-title" :for="question.label">{{ question.label }}</label>
-
-              <input
-                  v-if="question.type === 'text' || question.type === 'file' ||question.type==='date'"
-                  :type="question.type"
-                  v-model="form[question.id]"
-                  :placeholder="question.placeholder"
-                  :id="question.label"
-                  @input="validateField(question.id)"
-              />
-
-              <select
-                  v-if="question.type === 'select'"
-                  v-model="form[question.id]"
-                  :id="question.label"
-                  @change="validateField(question.id)"
-              >
-                <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option" :value="option">{{ option }}</option>
-              </select>
-              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
-
-              <textarea
-                  v-if="question.type === 'textarea'"
-                  :id="question.id"
-                  :name="question.label"
-                  :placeholder="question.placeholder"
-                  v-model="form[question.id]"
-              />
-
+  <div class="staff-section">
+    <div class="staff-container">
+      <h2 class="staff-title">Members of Staff</h2>
+      <hr class="staff-divider">
+      <div class="staff-content">
+        <div class="carousel-control">
+          <span class="carousel-box">
+            <button @click="goToPrevious" class="carousel-button">
+              <UIcon name="chevron-left" size="24"/>
+            </button>
+          </span>
+        </div>
+        <div class="carousel-main">
+          <div class="carousel">
+            <div
+                v-for="(member, index) in members.slice(currentIndex, currentIndex + 3)"
+                :key="index"
+                class="staff-member"
+            >
+              <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
+              <div class="staff-info">
+                <h3 class="staff-name">{{ member.name }}</h3>
+                <h3 class="staff-position">{{ member.position }}</h3>
+              </div>
             </div>
           </div>
-
-          <div>
-            <button @click.once="isPopupVisible = true" class="submit" type="submit">Submit</button>
-            <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
-            </Popup>
-          </div>
-
-        </form>
-
+        </div>
+        <div class="carousel-control">
+          <span class="carousel-box">
+            <button @click="goToNext" class="carousel-button">
+              <UIcon name="chevron-right" size="24"/>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
-.container {
-  display: block;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-width: 1300px;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
-
+.staff-container {
+  padding: 5rem;
 }
 
-@media (max-width: 1200px) {
-  .container {
-    margin: 3rem 0;
-    width: 100%;
-  }
-}
-
-.form-header {
-  width: 100%;
-  text-align: center;
-  margin: 0;
-  padding: .5rem 0;
-  background-color: var(--text-light-color);
-  border: none;
-  outline: none;
-  font-size: 1.5rem;
-  color: var(--primary-color);
-}
-
-.container .box-form {
-  width: 90%;
-  margin: 0 auto;
-  padding: 1rem 0;
-}
-
-@media (max-width: 1200px) {
-  .container div {
-    display: block;
-  }
-}
-
-.form-container {
+.staff-content {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  gap: 0.5rem 1rem;
+  background-color: var(--text-hover-color);
+  border-radius: 3rem;
+  margin: 5rem 0;
 }
 
-.info {
-  flex-basis: calc(50% - 10px);
-  box-sizing: border-box;
+.carousel-main {
+  flex: 85%;
+}
+
+.carousel-control {
+  flex: 5%;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  margin: auto;
+  background: white;
+}
+
+.carousel-box {
+  margin: auto 10px;
+  background-color: transparent;
+}
+
+.staff-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 0 2rem;
+
+}
+
+.staff-divider {
+  margin: 1rem auto;
+  border: 2px solid var(--primary-color);
+  width: 100%;
+}
+
+.carousel {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  min-height: 300px;
+}
+
+@media (max-width: 1200px) {
+  .carousel {
+    flex-direction: column;
+  }
+}
+
+.staff-member {
   display: block;
-}
-
-.form-container .question-title {
-  font-size: 1rem;
-  color: var(--primary-hover-color);
-}
-
-.form-container input,
-.form-container select {
-  width: 100%;
-  padding: .5rem 1rem;
-  border: 2px solid var(--text-light-color);
-  border-radius: 5px;
-  outline: none;
-}
-
-.error {
-  color: red;
-  font-size: 1rem;
-}
-
-.submit {
-  width: 100%;
   text-align: center;
-  margin-top: 2rem;
-  padding: .5rem 2rem;
-  font-size: 1.2rem;
-  border-radius: 1rem 0;
-  background-color: var(--primary-hover-color);
-  color: var(--text-hover-color);
+  flex: 1;
+  margin-bottom: 1rem;
+  min-height: 200px;
 }
 
-.submit:hover {
-  background-color: var(--primary-color);
-  transition: .3s ease-in-out;
+.staff-photo {
+  margin: 10px auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }
 
+.staff-info {
+  min-height: 100px;
+}
 
+.staff-info h3 {
+  height: 60px;
+}
+
+.staff-name {
+  font-size: 1rem;
+  padding: .5rem 0;
+  color: var(--primary-color);
+  max-width: 200px;
+  margin: auto;
+  font-weight: bold;
+}
+
+.staff-position {
+  font-size: .8rem;
+  color: var(--primary-color);
+  max-width: 200px;
+  margin: auto;
+}
+
+.carousel-button {
+  background-color: var(--text-light-color);
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.carousel-button:hover {
+  background-color: var(--text-hover-color);
+  transition: ease-in-out .3s;
+}
+
+@media (max-width: 800px) {
+  .staff-container {
+    padding: 0 1rem;
+  }
+
+  .carousel-button {
+    padding: 0.5rem 1rem;
+  }
+}
 </style>

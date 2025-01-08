@@ -5,6 +5,7 @@
 
 <template>
   <Header/>
+  <TestCode/>
 </template>
 
 <style scoped></style>
