@@ -8,6 +8,10 @@ const props = defineProps({
   student: Object,
 });
 
+const religionOptions = Array.isArray(religions)
+    ? religions
+    : Array.from(religions.values());
+
 const emit = defineEmits(['update:show']);
 
 const studentFields = [
@@ -23,10 +27,10 @@ const studentFields = [
     editable: true,
     type: 'select',
     options: [
-        { value: "active", label : "Active"},
-        { value: "inactive", label : "Inactive"},
-        { value: "graduated", label : "Graduated"},
-        { value: "terminated", label : "Terminated"},
+      { value: "active", label : "Active"},
+      { value: "inactive", label : "Inactive"},
+      { value: "graduated", label : "Graduated"},
+      { value: "terminated", label : "Terminated"},
 
     ]
 
@@ -79,7 +83,7 @@ const studentFields = [
     key: 'religion',
     editable: true,
     type: 'select',
-    options: religions.values()
+    options: religionOptions
   },
   {
     label: 'Nationality',
@@ -173,6 +177,7 @@ const deleteStudent = async () => {
           <UIcon name="fontisto-close"/>
         </span>
       </div>
+
       <hr class="divider">
 
       <div class="popup-content">
