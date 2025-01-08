@@ -108,7 +108,9 @@ const studentFields = ref([
   {
     label: 'Level No',
     key: 'level',
-    editable: false
+    editable: true,
+    type: 'select',
+    options: []
   },
   {
     label: 'Room No',
@@ -129,6 +131,13 @@ const closePopup = () => {
 let {$axios} = useNuxtApp()
 const api = $axios()
 
+const updateHostelOptions = (gender) => {
+  const blockField = studentFields.value.find(field => field.key === 'block_name');
+  if (blockField) {
+    blockField.options = allHostels.value.filter(hostel => hostel.gender === gender);
+  }
+};
+
 onMounted(async () => {
   try {
     const {data} = await api.get('/hostels/');
@@ -137,16 +146,10 @@ onMounted(async () => {
     allHostels.value = data.map(hostel => ({
       value: hostel.id,
       label: hostel.name,
+      gender: hostel.gender,
     }));
 
-    console.log('Transformed Hostel Options:', allHostels.value);
-
-
-    const blockField = studentFields.value.find(field => field.key === 'block_name');
-    if (blockField) {
-      blockField.options = allHostels.value; // Update dynamically
-      console.log('Updated Block Name Options:', blockField.options);
-    }
+    updateHostelOptions(props.student.gender);
 
   } catch (error) {
     console.error('Error fetching hostels:', error);
