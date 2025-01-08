@@ -17,6 +17,7 @@ interface Person {
   gender: string
   status: string
   extend?: boolean | string
+  bedId: number;
 }
 
 const columns = [
@@ -24,7 +25,7 @@ const columns = [
   { key: "date", label: 'Date' },
   { key: 'name', label: 'Name', sortable: true },
   { key: 'student_id', label: 'Student ID', sortable: true },
-  { key: 'bed', label: 'Room No', sortable: true },
+  { key: 'roomDetails', label: 'Room No', sortable: true },
   { key: 'gender', label: 'Gender', sortable: true },
   { key: 'status', label: 'Status', sortable: true },
   { key: 'extend', label: 'View', sortable: false }
@@ -38,15 +39,18 @@ const q = ref('');
 const isLoading = ref(true);
 const api = $axios()
 
+const hostelData = ref<any[]>([]);
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/students/");
-    people.value = response.data.map((person: Person) => ({
+    people.value = response.data.map((person: any) => ({
       ...person,
+      bedId: person.bed, // Make sure to map `bed` to `bedId`
       date: new Date().toLocaleDateString(),
     }));
-    totalItems.value = response.data.length;
+    console.log('Fetched students:', response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -54,11 +58,46 @@ const fetchData = async () => {
   }
 };
 
+const fetchHostelData = async () => {
+  try {
+    const response = await api.get("/hostels/"); // Replace with your actual hostel endpoint
+    hostelData.value = response.data;
+  } catch (error) {
+    console.error('Error fetching hostel data:', error);
+  }
+};
+
+const getRoomDetailsByBedId = (bedId: number) => {
+  if (!bedId) {
+    console.log('Invalid Bed ID:', bedId);
+    return null; // Handle invalid or missing bedId
+  }
+  for (const building of hostelData.value) {
+    for (const level of building.levels) {
+      for (const room of level.room_details) {
+        for (const bed of room.beds) {
+          if (bed.id === bedId) {
+            return {
+              room: room.number,
+              bed: bed.bed_number,
+              level: level.number,
+              building: building.name,
+            };
+          }
+        }
+      }
+    }
+  }
+  return null; // If not found
+};
+
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
 
-onMounted(fetchData)
-
+onMounted(() => {
+  fetchHostelData();
+  fetchData();
+});
 const visibleButtonIndex = ref<number | null>(null);
 
 const navigationButtons = [
@@ -122,7 +161,14 @@ definePageMeta({
 const openPopup = (row: Person) => {
   currentStudent.value = row;
   isPopupVisible.value = true;
+  const roomDetails = getRoomDetailsByBedId(row.bedId);
+  if (roomDetails) {
+    console.log(`Room Details for Bed ID ${row.bedId}:`, roomDetails);
+  } else {
+    console.log(`Room details for Bed ID ${row.bedId} not found.`);
+  }
 };
+
 
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
@@ -136,16 +182,16 @@ const handlePageChange = (newPage: number) => {
 
 onMounted(fetchData)
 
-const selectedFilter = ref('all');
+const selectedFilter = ref('active');
 
 const filterOptions = [
-  { value: 'all', label: 'All Students' },
+  { value: 'graduated', label: 'Graduated Students' },
   { value: 'active', label: 'Active Students' },
   { value: 'inactive', label: 'Non-Active Students' },
 ];
 
 const filteredRows = computed(() => {
-  if (selectedFilter.value === 'all') {
+  if (selectedFilter.value === 'graduated') {
     return people.value;
   } else if (selectedFilter.value === 'active') {
     return people.value.filter(person => person.status === 'active');
@@ -187,6 +233,7 @@ const filteredRows = computed(() => {
         <div class="sub-container">
           <div class="content">
             <div class="header">
+
               <div class="search-container">
                 <UInput v-model="q" placeholder="Filter students..." />
               </div>
