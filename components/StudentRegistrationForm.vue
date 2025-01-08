@@ -56,7 +56,7 @@ const selectedHostelIndex = ref(0)
 const allHostels = ref([])
 const selectedHostel = computed(() => allHostels[selectedHostelIndex])
 
-const previousQuestions = computed(() => {
+const questions = computed(() => {
   return [
     {
       label: "Name",
@@ -146,7 +146,7 @@ const previousQuestions = computed(() => {
       type: "select",
       placeholder: "Select Room No (e.g., 02)",
       options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number === Number(form['level_number']))?.room_details.map(r => ({
-        value: r.number ,
+        value: r.number,
         label: `Room ${r.number}`
       })) || [],
       model: ref(""),
@@ -165,7 +165,7 @@ const previousQuestions = computed(() => {
   ]
 });
 
-previousQuestions.value.forEach((question) => {
+questions.value.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -179,7 +179,7 @@ function validateField(field) {
   }
 }
 
-previousQuestions.value.forEach((question) => {
+questions.value.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
@@ -250,7 +250,7 @@ async function handleSubmit() {
       <div class="box-form">
         <form @submit.prevent="handleSubmit">
           <div class="form-container">
-            <div class="info" v-for="(question, index) in previousQuestions" :key="index">
+            <div class="info" v-for="(question, index) in questions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
