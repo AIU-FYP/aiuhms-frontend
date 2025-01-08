@@ -102,7 +102,7 @@ const goToPrevious = () => {
         <div class="carousel-control">
           <span class="carousel-box">
             <button @click="goToPrevious" class="carousel-button">
-              <UIcon name="chevron-left" size="24"/>
+              <UIcon name="mdi-arrow-left" size="24"/>
             </button>
           </span>
         </div>
@@ -121,10 +121,11 @@ const goToPrevious = () => {
             </div>
           </div>
         </div>
+
         <div class="carousel-control">
           <span class="carousel-box">
             <button @click="goToNext" class="carousel-button">
-              <UIcon name="chevron-right" size="24"/>
+              <UIcon name="mdi-arrow-right" size="24"/>
             </button>
           </span>
         </div>
@@ -156,14 +157,17 @@ const goToPrevious = () => {
   flex: 5%;
   width: 100%;
   height: 100%;
-  padding: 10px;
   margin: auto;
   background: white;
+  padding: 5px;
+  border-radius: 0 50%;
 }
 
 .carousel-box {
-  margin: auto 10px;
+  margin: 10px;;
   background-color: transparent;
+  outline: none;
+  border: none;
 }
 
 .staff-title {
