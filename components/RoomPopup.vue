@@ -1,6 +1,6 @@
 <script setup>
-import { defineEmits, defineProps } from "vue";
-import { useNuxtApp } from "#app";
+import {defineEmits, defineProps} from "vue";
+import {useNuxtApp} from "#app";
 
 const props = defineProps({
   show: Boolean,
@@ -30,7 +30,7 @@ const bedStatusColor = (status) => {
   }
 };
 
-let { $axios } = useNuxtApp();
+let {$axios} = useNuxtApp();
 const api = $axios();
 
 const toggleBedStatus = async (bed, newStatus) => {
@@ -41,7 +41,7 @@ const toggleBedStatus = async (bed, newStatus) => {
   }
 
   try {
-    await api.patch(`/beds/${bed.id}/`, { status: newStatus });
+    await api.patch(`/beds/${bed.id}/`, {status: newStatus});
     console.log('Bed ID:', bed.id);
     bed.status = newStatus;
     alert("Bed status updated successfully!");
@@ -69,11 +69,11 @@ const toggleBedStatus = async (bed, newStatus) => {
           }} students
         </span>
         <span @click="closePopup" class="close-btn">
-          <UIcon name="fontisto-close" />
+          <UIcon name="fontisto-close"/>
         </span>
       </div>
 
-      <hr class="divider" />
+      <hr class="divider"/>
 
       <div class="status">
         <div class="box-status">
@@ -105,7 +105,7 @@ const toggleBedStatus = async (bed, newStatus) => {
                         :style="{ backgroundColor: bedStatusColor(bed.status) }"
                         @click="toggleBedStatus(bed, bed.status === 'available' ? 'under_maintenance' : 'available')"
                     >
-                      <UIcon name="mdi-bed" class="icon" />
+                      <UIcon name="mdi-bed" class="icon"/>
                       <span>{{ convertToLetter(bed.bed_number) }}</span>
                     </div>
 
@@ -216,6 +216,7 @@ span {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  border-radius: 50%;
 }
 
 .status-span.occupied {
@@ -260,20 +261,20 @@ span {
   flex-direction: row;
   flex-wrap: wrap;
   margin: 10px;
-  max-height: 350px;
+  max-height: 300px;
   overflow-y: auto;
   gap: 20px;
 }
 
 .level-box div {
-  width: 230px;
+  width: 250px;
   height: auto;
   text-align: center;
   color: black;
 }
 
 @media (max-width: 1200px) {
-  .level-box div{
+  .level-box div {
     margin: auto;
     gap: 20px;
   }
