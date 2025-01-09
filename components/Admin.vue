@@ -155,15 +155,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <div class="container">
-      <aside class="sidebar">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <aside class="dashboard-sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="btn-container">
+          <div class="button-wrapper">
             <button
                 @click="toggleLinkVisibility(index)"
                 :aria-expanded="visibleButtonIndex === index"
-                class="sidebar-button"
+                class="sidebar-btn"
             >
               <UIcon
                   :name="button.icon"
@@ -179,39 +179,39 @@ onMounted(() => {
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <main class="content-area">
 
-        <section class="dashboard-info-content">
-          <div class="welcome-info">
+        <section class="info-content">
+          <div class="welcome-wrapper">
             <h2>Welcome back </h2>
           </div>
-          <div class="image-container">
+          <div class="image-wrapper">
             <img src="/images/login.webp" alt="welcome-image">
           </div>
         </section>
 
-        <div v-if="isFetching" class="loading">
+        <div v-if="isFetching" class="loading-indicator">
           <Loader/>
         </div>
         <section
             v-else
             v-for="item in dashboardItems"
             :key="item.title"
-            class="analysis-section"
+            class="analysis-wrapper"
         >
-          <div class="stat-cards">
+          <div class="stat-wrapper">
             <div
                 v-for="(stat, index) in item.maintenanceStats"
                 :key="index"
-                class="stat-card"
+                class="stat-item"
             >
-              <div class="box">
+              <div class="stat-box">
                 <h4>{{ stat.subTitle }}</h4>
                 <span class="stat-icon">
               <UIcon :name="stat.icon" />
             </span>
               </div>
-              <div class="num">
+              <div class="stat-number">
                 <span>{{ stat.totalNum }}</span>
               </div>
             </div>
@@ -225,12 +225,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-wrapper {
   display: block;
   background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
@@ -241,7 +241,7 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-.sidebar {
+.dashboard-sidebar {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -250,36 +250,35 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-.dashboard-content{
+.content-area{
   flex: 6;
 }
 
 @media (max-width: 1200px) {
-  .admin-dashboard {
+  .dashboard-wrapper {
     display: block;
   }
 
-  .container{
+  .dashboard-container{
     flex-direction: column;
   }
 
-  .sidebar {
+  .dashboard-sidebar {
     min-height: 30vh;
   }
 }
 
 
-
-.btn-container {
+.button-wrapper {
   padding: .5rem;
   background-color: transparent;
 }
 
-.btn-container:hover {
+.button-wrapper:hover {
   background-color: var(--primary-hover-color);
 }
 
-.sidebar-button {
+.sidebar-btn {
   font-size: 1rem;
   color: var(--text-light-color);
   margin-bottom: 0.5rem;
@@ -288,11 +287,11 @@ onMounted(() => {
   transition: 0.3s ease-in-out;
 }
 
-.sidebar-button:hover {
+.sidebar-btn:hover {
   color: var(--text-hover-color);
 }
 
-.sidebar ul li {
+.dashboard-sidebar ul li {
   list-style: none;
   margin: 0.5rem;
   padding: 0.5rem;
@@ -304,19 +303,19 @@ onMounted(() => {
   background-color: transparent;
 }
 
-.sidebar li:hover {
+.dashboard-sidebar li:hover {
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
-.dashboard-content {
+.content-area {
   flex: 10;
   padding: 2rem;
   background-color: #eeeeee;
 }
 
-.dashboard-info-content {
+.info-content {
   display: flex;
   justify-content: space-between;
   padding: 0;
@@ -325,37 +324,37 @@ onMounted(() => {
 }
 
 @media (max-width: 1200px) {
-  .dashboard-info-content {
+  .info-content {
     display: block;
   }
 }
 
-.dashboard-info-content div {
+.info-content div {
   margin: 1rem;
 }
 
-.welcome-info h2 {
+.welcome-wrapper h2 {
   font-size: 1.5rem;
   color: var(--primary-color);
 }
 
-.dashboard-info-content .image-container {
+.info-content .image-wrapper {
   width: 120px;
   height: 120px;
 }
 
-.analysis-section {
+.analysis-wrapper {
   margin-bottom: 2rem;
 }
 
-.stat-cards {
+.stat-wrapper {
   display: flex;
   gap: 1rem;
   margin: 2rem 0;
   flex-wrap: wrap;
 }
 
-.stat-card {
+.stat-item {
   flex: 1 1 20%;
   display: flex;
   flex-direction: row;
@@ -366,19 +365,19 @@ onMounted(() => {
   border-radius: 0 1rem 1rem 0 !important;
 }
 
-.stat-card .box {
+.stat-item .stat-box {
   flex: 5;
   padding: 1rem 0.5rem;
 }
 
-.stat-card .num {
+.stat-item .stat-number {
   padding: 1rem 0.5rem;
   flex: 2;
   border-radius: 0 1rem 1rem 0;
   background-color: var(--primary-color);
 }
 
-.stat-card .num > span {
+.stat-item .stat-number > span {
   display: flex;
   margin: 2rem 0;
   align-items: center;
@@ -387,7 +386,7 @@ onMounted(() => {
   color: var(--text-light-color);
 }
 
-.stat-card h4 {
+.stat-item h4 {
   font-size: 1.1rem;
   color: var(--primary-color);
 }
@@ -399,16 +398,17 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .sidebar {
+  .dashboard-sidebar {
     flex-basis: 100%;
   }
 
-  .dashboard-content {
+  .content-area {
     padding: 1rem;
   }
 
-  .stat-cards {
+  .stat-wrapper {
     flex-direction: column;
   }
 }
 </style>
+
