@@ -97,15 +97,20 @@ const toggleFaq = (index: number) => {
   margin-bottom: 2rem;
 }
 
-.process-maintenance-room .container{
+.process-maintenance-room .container {
   max-width: 1200px;
+  margin: 0 auto;
+}
+
+.process-maintenance-room-section {
+  width: 80%;
   margin: 0 auto;
 }
 
 .process-item {
   background-color: #f5f5f5;
-  color: var(--primary-hover-color);
   margin-bottom: 1.5rem;
+  color: var(--primary-hover-color);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -114,7 +119,7 @@ const toggleFaq = (index: number) => {
 }
 
 @media (max-width: 1200px) {
-  .process-item{
+  .process-item {
     width: 90%;
     margin: 1.5rem auto;
   }
@@ -154,7 +159,7 @@ const toggleFaq = (index: number) => {
 
 .link-btn {
   display: inline-block;
-  margin-top: 2rem;
+  margin-top: 1rem;
   text-align: center;
   background-color: #f5f5f5;
   color: var(--primary-hover-color);
@@ -168,7 +173,7 @@ const toggleFaq = (index: number) => {
 .link-btn:hover {
   background-color: var(--primary-color);
   color: var(--text-light-color);
-  transition:  0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 @media (max-width: 820px) {

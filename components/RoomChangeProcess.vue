@@ -110,11 +110,15 @@ const toggleFaq = (index: number) => {
   margin: 0 auto;
 }
 
+.room-change-request-section {
+  width: 80%;
+  margin: 0 auto;
+}
+
 .process-item {
   background-color: #f5f5f5;
-  width: 90%;
   color: var(--primary-hover-color);
-  margin: 1.5rem auto;
+  margin-bottom: 1.5rem;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -163,7 +167,7 @@ const toggleFaq = (index: number) => {
 
 .link-btn {
   display: inline-block;
-  margin: 2rem;
+  margin-top: 1rem;
   text-align: center;
   background-color: #f5f5f5;
   color: var(--primary-hover-color);
