@@ -100,32 +100,32 @@ const studentFields = computed(() => {
     },
     {
       label: 'Block Name',
-      key: 'hostel_name',
+      key: 'hostel_id',
       editable: true,
       type: 'select',
       options: allHostels.value.filter(h => h.gender === props.student['gender']).map(h => ({
-        value: h.name,
+        value: h.id,
         label: h.name
       })),
     },
     {
       label: 'Level No',
-      key: 'level_number',
+      key: 'level_id',
       selected: props.student['level_id'],
       editable: true,
       type: 'select',
       options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.map(l => ({
-        value: l.number.toString(),
+        value: l.id,
         label: `Level ${l.number}`
       })) || [],
     },
     {
       label: 'Room No',
-      key: 'room_number',
+      key: 'room_id',
       editable: true,
       type: 'select',
       options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.find(l => l.id === props.student['level_id'])?.room_details.map(r => ({
-        value: r.number,
+        value: r.id,
         label: `Room ${r.number}`
       })) || [],
     },
