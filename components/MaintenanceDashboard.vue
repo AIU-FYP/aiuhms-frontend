@@ -149,16 +149,16 @@ onMounted(fetchData)
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <div class="container">
+  <div class="dashboard-layout">
+    <div class="dashboard-container">
 
-      <aside class="sidebar">
+      <aside class="navigation-panel">
         <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="btn-container">
+          <div class="navigation-button-wrapper">
             <button
                 @click="toggleLinkVisibility(index)"
                 :aria-expanded="visibleButtonIndex === index"
-                class="sidebar-button"
+                class="navigation-button"
             >
               <UIcon
                   :name="button.icon"
@@ -166,30 +166,30 @@ onMounted(fetchData)
               {{ button.name }}
             </button>
           </div>
-          <ul v-if="visibleButtonIndex === index">
-            <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url)" style="cursor: pointer">{{ link.text }}</a>
+          <ul v-if="visibleButtonIndex === index" class="navigation-links">
+            <li v-for="(link, linkIndex) in button.links" :key="linkIndex" class="navigation-link-item">
+              <a @click.prevent="navigateToPage(link.url)" class="navigation-link">{{ link.text }}</a>
             </li>
           </ul>
         </div>
       </aside>
 
-      <loader v-if="isLoading"/>
+      <loader v-if="isLoading" />
 
-      <main class="dashboard-content" v-else>
-        <div class="sub-container">
+      <main class="content-area" v-else>
+        <div class="content-wrapper">
 
-          <div class="content">
-            <div class="header">
+          <div class="content-body">
+            <div class="header-section">
 
-              <div class="search-container">
-                <UInput v-model="q" placeholder="Filter students..."/>
+              <div class="search-wrapper">
+                <UInput v-model="q" placeholder="Filter students..." />
               </div>
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">View</a>
+                <a @click="openPopup(row)" class="view-button">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
@@ -198,26 +198,23 @@ onMounted(fetchData)
               </template>
             </UTable>
 
-            <div class="pagination">
+            <div class="pagination-controls">
               <button
                   :disabled="currentPage === 1"
                   @click="handlePageChange(currentPage - 1)"
+                  class="pagination-button"
               >
-                <UIcon
-                    name="mdi-arrow-left"
-                />
+                <UIcon name="mdi-arrow-left" />
               </button>
-              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
               <button
                   :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
                   @click="handlePageChange(currentPage + 1)"
+                  class="pagination-button"
               >
-                <UIcon
-                    name="mdi-arrow-right"
-                />
+                <UIcon name="mdi-arrow-right" />
               </button>
             </div>
-            <hr class="divider"/>
           </div>
         </div>
       </main>
@@ -227,12 +224,11 @@ onMounted(fetchData)
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-layout {
   display: block;
-  background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -242,7 +238,7 @@ onMounted(fetchData)
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-panel {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -251,30 +247,30 @@ onMounted(fetchData)
   min-height: 100vh;
 }
 
-.dashboard-content {
+.content-area {
   flex: 6;
 }
 
 @media (max-width: 1200px) {
-  .admin-dashboard {
+  .dashboard-layout {
     display: block;
   }
 
-  .sidebar {
+  .navigation-panel {
     min-height: 30vh;
   }
 }
 
-.btn-container {
+.navigation-button-wrapper {
   padding: .5rem;
   background-color: transparent;
 }
 
-.btn-container:hover {
+.navigation-button-wrapper:hover {
   background-color: var(--primary-hover-color);
 }
 
-.sidebar-button {
+.navigation-button {
   font-size: 1rem;
   color: var(--text-light-color);
   margin-bottom: 0.5rem;
@@ -283,12 +279,17 @@ onMounted(fetchData)
   transition: 0.3s ease-in-out;
 }
 
-.sidebar-button:hover {
+.navigation-button:hover {
   color: var(--text-hover-color);
 }
 
-.sidebar ul li {
+.navigation-links {
+  padding: 0;
+  margin: 0;
   list-style: none;
+}
+
+.navigation-link-item {
   margin: 0.5rem;
   padding: 0.5rem;
   font-size: 1rem;
@@ -299,33 +300,35 @@ onMounted(fetchData)
   background-color: transparent;
 }
 
-.sidebar li:hover {
+.navigation-link-item:hover {
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
-.dashboard-content {
+.navigation-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.content-wrapper {
   flex: 10;
   background-color: #eeeeee;
+  padding: 50px 0;
 }
 
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.dashboard-content .header {
+.header-section {
   display: inline-flex;
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
 }
 
-.extend-btn {
+.search-wrapper {
+  padding: 1rem;
+}
+
+.view-button {
   padding: .5rem;
   border-radius: .5rem 0;
   color: var(--text-hover-color);
@@ -333,38 +336,25 @@ onMounted(fetchData)
   cursor: pointer;
 }
 
-.extend-btn:hover {
+.view-button:hover {
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
-.header h2,
-.footer h2 {
-  font-size: 1.5rem;
-  color: var(--primary-hover-color);
-  text-align: center;
-  margin: 1rem auto;
-}
-
-.divider {
-  border-bottom: 2px solid var(--primary-hover-color);
-  margin: 1rem 0;
-}
-
-.pagination {
+.pagination-controls {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
 }
 
-.pagination span {
+.pagination-info {
   padding: .5rem 1rem;
   border-radius: .5rem;
   transition: 0.3s ease-in-out;
 }
 
-.pagination button {
+.pagination-button {
   padding: .5rem;
   border-radius: .5rem;
   color: var(--text-light-color);
@@ -372,21 +362,21 @@ onMounted(fetchData)
   transition: 0.3s ease-in-out;
 }
 
+
 @media (max-width: 1200px) {
-  .container {
+  .dashboard-container {
     display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .sidebar {
+  .navigation-panel {
     flex-basis: 100%;
   }
 
-  .dashboard-content {
+  .content-area {
     padding: 1rem;
   }
 }
-
-
 </style>
+
