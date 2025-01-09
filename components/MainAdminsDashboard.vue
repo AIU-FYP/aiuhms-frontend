@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import Popup from "~/components/AdminInfoPopup.vue";
-import { useNuxtApp } from "#app";
+import {computed, onMounted, ref} from 'vue';
+import Popup from '~/components/AdminInfoPopup.vue'
+import {useNuxtApp} from "#app";
 
-let { $axios } = useNuxtApp();
+let {$axios} = useNuxtApp()
+const api = $axios()
 
 interface User {
   id: number;
@@ -18,59 +19,53 @@ interface User {
 }
 
 const columns = [
-  { key: "id", label: "ID" },
-  { key: "username", label: "Username" },
-  { key: "name", label: "Name" },
-  { key: "position", label: "Position" },
-  { key: "staff_ID", label: "Staff ID" },
-  { key: "phone", label: "Phone" },
-  { key: "staff_type", label: "Staff Type" },
-  { key: "extend", label: "View", sortable: false },
+  { key: 'id', label: 'ID' },
+  { key: 'username', label: 'Username' },
+  { key: 'name', label: 'Name' },
+  { key: 'position', label: 'Position' },
+  { key: 'staff_ID', label: 'Staff ID' },
+  { key: 'phone', label: 'Phone' },
+  { key: 'staff_type', label: 'Staff Type' },
+  { key: 'extend', label: 'View', sortable: false },
 ];
 
 const admins = ref<User[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const totalItems = ref(0);
-const q = ref("");
-const api = $axios;
-const isLoading = ref(true);
+const q = ref('');
 
 const fetchData = async () => {
-  isLoading.value = true;
   try {
     const response = await api.get("/users/");
-    admins.value = response.data.map((person: any) => ({
-      id: person.id || 0,
-      username: person.username || "",
-      password: person.password || "",
-      name: person.profile?.name || "",
-      position: person.profile?.position || "",
-      staff_ID: person.profile?.staff_ID || "",
-      phone: person.profile?.phone || "",
-      email: person.profile?.email || "",
-      staff_type: person.profile?.staff_type || null,
+    admins.value = response.data.map((admin: any, index: number) => ({
+      id: index + 1,
+      username: admin.username || '',
+      password: admin.password || '',
+      name: admin.profile?.name || '',
+      position: admin.profile?.position || '',
+      staff_ID: admin.profile?.staff_ID || '',
+      phone: admin.profile?.phone || '',
+      email: admin.profile?.email || '',
+      staff_type: admin.profile?.staff_type || null,
     }));
     totalItems.value = response.data.length;
-    console.log("Fetched admins:", admins.value);
   } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    isLoading.value = false;
+    console.error('Error fetching data:', error);
   }
 };
 
 const isPopupVisible = ref(false);
-const currentAdmin = ref<User | null>(null);
+const currentStudent = ref({});
 
-onMounted(fetchData);
+onMounted(fetchData)
 
 definePageMeta({
-  middleware: "auth",
+  middleware: 'auth',
 });
 
-const openPopup = (admin: User) => {
-  currentAdmin.value = admin;
+const openPopup = (row: User) => {
+  currentStudent.value = row;
   isPopupVisible.value = true;
 };
 
@@ -78,11 +73,12 @@ const filteredRows = computed(() => {
   if (!q.value) {
     return admins.value;
   }
-  return admins.value.filter((admin) =>
-      Object.values(admin).some((value) =>
-          String(value).toLowerCase().includes(q.value.toLowerCase())
-      )
-  );
+
+  return admins.value.filter((admin) => {
+    return Object.values(admin).some((value) => {
+      return String(value).toLowerCase().includes(q.value.toLowerCase());
+    });
+  });
 });
 
 const paginatedRows = computed(() => {
@@ -94,45 +90,62 @@ const paginatedRows = computed(() => {
 const handlePageChange = (newPage: number) => {
   currentPage.value = newPage;
 };
+
+onMounted(fetchData)
+
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <div class="dashboard-wrapper">
-      <main class="content-area">
-        <div class="header-section">
-          <div class="search-box">
-            <UInput v-model="q" placeholder="Filter admins..." />
+  <div class="admin-dashboard" >
+    <div class="container">
+      <main class="dashboard-content">
+        <div class="sub-container">
+
+          <div class="content">
+            <div class="header">
+
+              <div class="search-container">
+                <UInput v-model="q" placeholder="Filter admins..."/>
+              </div>
+            </div>
+
+            <UTable :columns="columns" :rows="paginatedRows">
+              <template #extend-data="{ row }">
+                <a @click="openPopup(row)" class="extend-btn">View</a>
+                <Popup
+                    :show="isPopupVisible"
+                    @update:show="isPopupVisible = $event"
+                    :admins="currentStudent"
+                />
+              </template>
+            </UTable>
+            <div class="pagination">
+              <button
+                  :disabled="currentPage === 1"
+                  @click="handlePageChange(currentPage - 1)"
+              >
+                <UIcon
+                    name="mdi-arrow-left"
+                />
+              </button>
+              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+              <button
+                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)"
+              >
+                <UIcon
+                    name="mdi-arrow-right"
+                />
+              </button>
+            </div>
+
+
+            <hr class="divider"/>
+
           </div>
         </div>
-        <UTable :columns="columns" :rows="paginatedRows">
-          <template #extend-data="{ row }">
-            <a @click="openPopup(row)" class="view-button">View</a>
-            <Popup
-                :show="isPopupVisible"
-                @update:show="isPopupVisible = $event"
-                :admins="currentAdmin"
-            />
-          </template>
-        </UTable>
-        <div class="pagination-controls">
-          <button
-              :disabled="currentPage === 1"
-              @click="handlePageChange(currentPage - 1)"
-          >
-            <UIcon name="mdi-arrow-left" />
-          </button>
-          <span>
-            Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}
-          </span>
-          <button
-              :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-              @click="handlePageChange(currentPage + 1)"
-          >
-            <UIcon name="mdi-arrow-right" />
-          </button>
-        </div>
       </main>
+
     </div>
   </div>
 </template>
@@ -143,62 +156,123 @@ const handlePageChange = (newPage: number) => {
   background-color: var(--primary-color);
 }
 
-.dashboard-wrapper {
+.container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: nowrap;
   padding: 0;
   border-top: 3px solid var(--text-hover-color);
   border-bottom: 3px solid var(--text-hover-color);
-  margin: 0 auto;
   width: 100%;
+  margin: 0 auto;
 }
 
-.content-area {
+.dashboard-content {
+  flex: 6;
+}
+
+@media (max-width: 1200px) {
+  .admin-dashboard {
+    display: block;
+  }
+
+}
+
+.sidebar ul li {
+  list-style: none;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: start;
+  text-transform: capitalize;
+  font-weight: normal;
+  color: var(--text-hover-color);
+  background-color: transparent;
+}
+
+.sidebar li:hover {
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
+  transition: .3s ease-in-out;
+}
+
+.dashboard-content {
+  flex: 10;
   background-color: #eeeeee;
-  padding: 1rem;
-  flex: 1;
 }
 
-.header-section {
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
+.dashboard-info-content div {
+  margin: 1rem;
+}
+
+.dashboard-info-content div {
+  margin: 1rem;
+}
+
+.dashboard-content .header {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0.5rem;
   align-items: center;
 }
 
-.search-box {
-  width: 100%;
+.extend-btn {
+  padding: .5rem;
+  border-radius: .5rem 0;
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
+  cursor: pointer;
 }
 
-.pagination-controls {
+.extend-btn:hover {
+  color: var(--text-light-color);
+  background-color: var(--primary-color);
+  transition: .3s ease-in-out;
+}
+
+.header h2,
+.footer h2 {
+  font-size: 1.5rem;
+  color: var(--primary-hover-color);
+  text-align: center;
+  margin: 1rem auto;
+}
+
+.divider {
+  border-bottom: 2px solid var(--primary-hover-color);
+  margin: 1rem 0;
+}
+
+.pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
 
-.pagination-controls button {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+.pagination span {
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  transition: 0.3s ease-in-out;
+}
+
+.pagination button {
+  padding: .5rem;
+  border-radius: .5rem;
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: 0.3s ease-in-out;
 }
 
-.pagination-controls span {
-  margin: 0 1rem;
+@media (max-width: 1200px) {
+  .container {
+    display: block;
+  }
 }
 
-.view-button {
-  color: var(--primary-color);
-  background-color: var(--primary-hover-color);
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 1rem;
+  }
 }
 
-.view-button:hover {
-  background-color: var(--primary-color);
-  color: var(--text-hover-color);
-}
+
 </style>

@@ -5,7 +5,6 @@
 
 <template>
   <Header/>
-  <AdminDashboard/>
 </template>
 
 <style scoped></style>
