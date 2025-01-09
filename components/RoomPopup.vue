@@ -267,7 +267,7 @@ span {
 }
 
 .level-box div {
-  width: 250px;
+  width: 220px;
   height: auto;
   text-align: center;
   color: black;

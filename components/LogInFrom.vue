@@ -76,7 +76,7 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      alert("Login successful");
+      // alert("Login successful");
 
       console.log('Response:', response.data);
       console.log('Token from response:', response.data.access);
