@@ -59,17 +59,15 @@ function toggleLinkVisibility(index: number) {
 </script>
 
 <template>
-
-  <div class="admin-dashboard">
-    <div class="container">
-
-      <aside class="sidebar">
+  <div class="dashboard-layout">
+    <div class="dashboard-container">
+      <aside class="navigation-sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="btn-container">
+          <div class="navigation-button-wrapper">
             <button
                 @click="toggleLinkVisibility(index)"
                 :aria-expanded="visibleButtonIndex === index"
-                class="sidebar-button"
+                class="navigation-button"
             >
               <UIcon
                   :name="button.icon"
@@ -77,15 +75,15 @@ function toggleLinkVisibility(index: number) {
               {{ button.name }}
             </button>
           </div>
-          <ul v-if="visibleButtonIndex === index">
-            <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a :href="link.url">{{ link.text }}</a>
+          <ul v-if="visibleButtonIndex === index" class="navigation-links">
+            <li v-for="(link, linkIndex) in button.links" :key="linkIndex" class="navigation-link-item">
+              <a :href="link.url" class="navigation-link">{{ link.text }}</a>
             </li>
           </ul>
         </div>
       </aside>
 
-      <main class="dashboard-content">
+      <main class="content-section">
         <StudentRegistrationForm/>
       </main>
     </div>
@@ -93,12 +91,12 @@ function toggleLinkVisibility(index: number) {
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-layout {
   display: block;
   background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -107,7 +105,7 @@ function toggleLinkVisibility(index: number) {
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-sidebar {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -116,30 +114,32 @@ function toggleLinkVisibility(index: number) {
   min-height: 100vh;
 }
 
-.dashboard-content{
+.content-section {
   flex: 6;
+  padding: 2rem;
+  background-color: #eeeeee;
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .dashboard-container {
     display: block;
   }
 
-  .sidebar {
+  .navigation-sidebar {
     min-height: 30vh;
   }
 }
 
-.btn-container {
+.navigation-button-wrapper {
   padding: .5rem;
   background-color: transparent;
 }
 
-.btn-container:hover {
+.navigation-button-wrapper:hover {
   background-color: var(--primary-hover-color);
 }
 
-.sidebar-button {
+.navigation-button {
   font-size: 1rem;
   color: var(--text-light-color);
   margin-bottom: 0.5rem;
@@ -148,12 +148,17 @@ function toggleLinkVisibility(index: number) {
   transition: 0.3s ease-in-out;
 }
 
-.sidebar-button:hover {
+.navigation-button:hover {
   color: var(--text-hover-color);
 }
 
-.sidebar ul li {
+.navigation-links {
+  padding: 0;
+  margin: 0;
   list-style: none;
+}
+
+.navigation-link-item {
   margin: 0.5rem;
   padding: 0.5rem;
   font-size: 1rem;
@@ -164,38 +169,25 @@ function toggleLinkVisibility(index: number) {
   background-color: transparent;
 }
 
-.sidebar li:hover {
+.navigation-link-item:hover {
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
-.dashboard-content {
-  flex: 10;
-  padding: 2rem;
-  background-color: #eeeeee;
-}
-
-
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.header h2,
-.footer h2{
-  font-size: 1.5rem;
-  color: var(--primary-hover-color);
-  text-align: center;
-  margin: 1rem auto;
+.navigation-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 @media (max-width: 768px) {
-  .sidebar {
+  .navigation-sidebar {
     flex-basis: 100%;
   }
 
-  .dashboard-content {
+  .content-section {
     padding: 1rem;
   }
 }
 </style>
+
