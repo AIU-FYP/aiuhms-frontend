@@ -19,10 +19,15 @@ const previousQuestions = [
     id: "name"
   },
   {
-    label: "Position",
-    type: "text",
-    placeholder: "Enter your position",
+    label: "Enter your Position",
+    type: "select",
+    placeholder: "Position",
     required: true,
+    options: [
+        {value: "student_affairs", label: "Student Affairs"},
+        {value: "ppk", label: "PPK"},
+        {value: "assistance", label: "Assistance"},
+    ],
     id: "position"
   },
   {
@@ -73,13 +78,14 @@ const previousQuestions = [
 const formSchema = z.object({
   "username": z.string().min(4, "Name must be at least 4 characters long").nonempty("Name is required"),
   "name": z.string().min(4, "Name must be at least 4 characters long").nonempty("Name is required"),
-  "position": z.string().min(5, "Position must be at least 5 characters long").nonempty("Position is required"),
+  "position": z.string().optional(),
   "staff_ID": z.string().regex(/^AIU\d{8}$/, "Invalid Staff ID format").nonempty("Staff ID is required"),
   "phone": z.string().regex(/^\d{8,15}$/, "Invalid phone number").nonempty("Phone Number is required"),
   "email": z
       .string()
       .email("Invalid email format")
-      .regex(/@aiu\.edu\.my$/, "Must be a staff email ending with '@aiu.edu.my'"),
+      .regex(/@(aiu\.edu\.my|ppksb\.com\.my)$/, "Email must belong to 'aiu.edu.my' or 'ppksb.com.my'"),
+
   "staff_type": z.string().nonempty("Admin type is required"),
   "password": z
       .string()
@@ -181,41 +187,41 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="settings-page">
-    <div class="container">
-      <aside class="sidebar">
-        <h1>Account Settings</h1>
+  <div class="account-settings-page">
+    <div class="layout-container">
+      <aside class="navigation-sidebar">
+        <h1 class="sidebar-title">Account Settings</h1>
         <nav>
-          <ul class="menu">
-            <li>
-              <UIcon name="mdi-password" class="icon"/>
+          <ul class="navigation-menu">
+            <li class="menu-item">
+              <UIcon name="mdi-password" class="menu-icon"/>
               <router-link to="change-admin-password">Change Password</router-link>
             </li>
-            <li>
-              <UIcon name="subway-admin-1" class="icon"/>
+            <li class="menu-item">
+              <UIcon name="subway-admin-1" class="menu-icon"/>
               <router-link to="new-admin">Add New Admin</router-link>
             </li>
-            <li>
-              <UIcon name="grommet-icons-user-admin" class="icon"/>
-              <router-link to="admin-dashboard">Admin dashboard</router-link>
+            <li class="menu-item">
+              <UIcon name="grommet-icons-user-admin" class="menu-icon"/>
+              <router-link to="admin-dashboard">Admin Dashboard</router-link>
             </li>
-            <li>
-              <UIcon name="eos-icons-admin" class="icon"/>
+            <li class="menu-item">
+              <UIcon name="eos-icons-admin" class="menu-icon"/>
               <router-link to="admin">Admin</router-link>
             </li>
-            <li>
-              <UIcon name="uiw-logout" class="icon"/>
+            <li class="menu-item">
+              <UIcon name="uiw-logout" class="menu-icon"/>
               <router-link to="login">Log Out</router-link>
             </li>
           </ul>
         </nav>
       </aside>
-      <main class="content">
-        <h2>Add new admin</h2>
-        <form @submit.prevent="handleSubmit">
-          <div v-for="(question, index) in previousQuestions" :key="index" class="form-group">
-            <div class="form-control">
-              <label class="question-title" :for="question.label">{{ question.label }}:</label>
+      <main class="form-content-area">
+        <h2 class="content-header">Add New Admin</h2>
+        <form @submit.prevent="handleSubmit" class="admin-form">
+          <div v-for="(question, index) in previousQuestions" :key="index" class="form-field">
+            <div class="input-container">
+              <label class="input-label" :for="question.label">{{ question.label }}:</label>
 
               <input
                   v-if="question.type === 'text' || question.type === 'password'"
@@ -223,21 +229,23 @@ async function handleSubmit() {
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.id"
+                  class="input-field"
               />
 
               <select
                   v-if="question.type === 'select'"
                   v-model="form[question.id]"
                   :id="question.id"
+                  class="select-field"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
                 <option v-for="option in question.options" :key="option" :value="option.value">{{ option.label }}</option>
               </select>
 
-              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
+              <span v-if="errors[question.id]" class="error-message">{{ errors[question.id] }}</span>
             </div>
           </div>
-          <button type="submit" class="submit-btn">Save Changes</button>
+          <button type="submit" class="submit-button">Save Changes</button>
         </form>
       </main>
     </div>
@@ -245,19 +253,19 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
-.settings-page {
+.account-settings-page {
   display: flex;
   padding: 20px;
 }
 
-.container {
+.layout-container {
   display: flex;
   gap: 20px;
   width: 100%;
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-sidebar {
   flex: 1;
   background-color: var(--primary-color);
   padding: 20px;
@@ -266,17 +274,17 @@ async function handleSubmit() {
   min-height: 81vh;
 }
 
-.sidebar h1 {
+.sidebar-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.menu {
+.navigation-menu {
   list-style: none;
   padding: 0;
 }
 
-.menu li {
+.menu-item {
   display: flex;
   align-items: center;
   padding: .5rem;
@@ -286,43 +294,53 @@ async function handleSubmit() {
   background-color: transparent;
 }
 
-.menu li:hover {
+.menu-item:hover {
   background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
-.menu li .icon {
+.menu-icon {
   margin-right: 10px;
 }
 
-.menu li a {
+.menu-item a {
   text-decoration: none;
 }
 
-.content {
+.form-content-area {
   flex: 3;
   background-color: #ecf0f1;
   padding: 20px;
   border-radius: 1rem;
 }
 
-.content h2 {
+.content-header {
   font-size: 1.5rem;
   margin-bottom: 20px;
   color: var(--primary-hover-color);
 }
 
-.form-group {
+.admin-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field {
   margin-bottom: 20px;
 }
 
-.form-group label {
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
   display: block;
   margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group select{
+.input-field,
+.select-field {
   width: 100%;
   padding: 10px;
   border: 2px solid var(--text-light-color);
@@ -330,13 +348,13 @@ async function handleSubmit() {
   outline: none;
 }
 
-.error {
+.error-message {
   color: red;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
-.submit-btn {
+.submit-button {
   padding: 10px 20px;
   background-color: var(--primary-hover-color);
   color: var(--text-light-color);
@@ -345,19 +363,20 @@ async function handleSubmit() {
   cursor: pointer;
 }
 
-.submit-btn:hover {
+.submit-button:hover {
   background-color: var(--primary-color);
   color: var(--text-hover-color);
   transition: .3s ease-in-out;
 }
 
 @media (max-width: 768px) {
-  .container {
+  .layout-container {
     flex-direction: column;
   }
 
-  .sidebar {
+  .navigation-sidebar {
     margin-bottom: 20px;
   }
 }
 </style>
+
