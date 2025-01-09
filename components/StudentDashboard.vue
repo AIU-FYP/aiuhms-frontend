@@ -5,6 +5,7 @@ import {useNuxtApp} from "#app";
 import {useRouter} from 'vue-router'
 
 let {$axios} = useNuxtApp()
+const api = $axios()
 
 interface Person {
   id: number
@@ -33,14 +34,12 @@ const columns = [
   {key: 'extend', label: 'View', sortable: false}
 ];
 
-
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const totalItems = ref(0);
 const q = ref('');
 const isLoading = ref(true);
-const api = $axios()
 
 const fetchData = async () => {
   isLoading.value = true;

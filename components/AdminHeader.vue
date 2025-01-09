@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import {navigateTo } from '#app';
+import { ref } from "vue";
+import { navigateTo } from "#app";
 
 function handleLogout() {
-  useCookie('token').value = null;
-  navigateTo('/login');
+  useCookie("token").value = null;
+  navigateTo("/login");
 }
 
 const isLoading = ref(false);
 
-const handleSettingsNavigation = async () => {
+const handleSettingsNavigation = () => {
   isLoading.value = true;
   try {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    navigateTo('/login');
+    navigateTo("/setting");
   } finally {
     isLoading.value = false;
   }
 };
+
+
+definePageMeta({
+  middleware: 'auth',
+});
 
 </script>
 
@@ -25,35 +29,30 @@ const handleSettingsNavigation = async () => {
   <div class="header-admin-section">
     <div class="container">
       <div class="container-box">
-
         <div class="image-logo">
           <a href="https://aiu.edu.my/">
-            <img src="/images/AIU-Official-Logo.png" alt="image-logo">
+            <img src="/images/AIU-Official-Logo.png" alt="AIU Logo" />
           </a>
         </div>
 
         <div class="title">
-          <h1> <router-link to="/admin">Admin Dashboard</router-link> </h1>
+          <h1>
+            <router-link to="/admin">Admin Dashboard</router-link>
+          </h1>
         </div>
 
         <div class="bar-btn">
           <a class="nav-item" @click="handleSettingsNavigation">
-            <router-link to="/setting">
             <span class="icon">
-              <UIcon
-                  name="uil-setting"
-              />
+              <UIcon name="uil-setting" />
             </span>
-              Setting
-            </router-link>
+            Setting
           </a>
           <a class="nav-item" @click="handleLogout">
             <span class="icon">
-              <UIcon
-                  name="material-symbols-logout-sharp"
-              />
+              <UIcon name="material-symbols-logout-sharp" />
             </span>
-              Log Out
+            Logout
           </a>
         </div>
       </div>
@@ -77,7 +76,7 @@ const handleSettingsNavigation = async () => {
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .container-box .image-logo img {
@@ -104,7 +103,6 @@ const handleSettingsNavigation = async () => {
   padding: 0.5rem;
   border-radius: 0.5rem;
   align-items: center;
-
 }
 
 .icon {
@@ -115,7 +113,7 @@ const handleSettingsNavigation = async () => {
 
 .bar-btn a:hover {
   background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .nav-item {
@@ -138,24 +136,11 @@ const handleSettingsNavigation = async () => {
     color: var(--text-hover-color);
   }
 
-
-  .sublist a {
-    display: block;
-    padding: .3rem .5rem;
-    white-space: nowrap;
-  }
-
-  .sublist a:hover {
-    background-color: var(--primary-hover-color);
-  }
-
-
-
   .container-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .5rem;
+    padding: 0.5rem;
   }
 
   .header-container .image-logo img {
@@ -166,10 +151,6 @@ const handleSettingsNavigation = async () => {
   .title {
     font-size: 1.5rem;
     color: var(--text-light-color);
-  }
-
-  .bar-btn {
-    position: relative;
   }
 
   .bar-btn button {
@@ -185,12 +166,11 @@ const handleSettingsNavigation = async () => {
 
   .bar-btn button:hover {
     background-color: var(--primary-hover-color);
-    transition: .3s ease-in-out;
+    transition: 0.3s ease-in-out;
   }
 
   .nav-item {
     position: relative;
   }
-
 }
 </style>

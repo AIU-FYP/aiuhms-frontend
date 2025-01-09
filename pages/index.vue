@@ -5,7 +5,7 @@
 
 <template>
   <Header/>
-  <TestCode/>
+  <AdminDashboard/>
 </template>
 
 <style scoped></style>
