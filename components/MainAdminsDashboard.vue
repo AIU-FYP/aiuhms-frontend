@@ -19,14 +19,14 @@ interface User {
 }
 
 const columns = [
-  { key: 'id', label: 'ID' },
-  { key: 'username', label: 'Username' },
-  { key: 'name', label: 'Name' },
-  { key: 'position', label: 'Position' },
-  { key: 'staff_ID', label: 'Staff ID' },
-  { key: 'phone', label: 'Phone' },
-  { key: 'staff_type', label: 'Staff Type' },
-  { key: 'extend', label: 'View', sortable: false },
+  {key: 'id', label: 'ID'},
+  {key: 'username', label: 'Username'},
+  {key: 'name', label: 'Name'},
+  {key: 'position', label: 'Position', sortable: true},
+  {key: 'staff_ID', label: 'ID'},
+  {key: 'phone', label: 'Phone'},
+  {key: 'staff_type', label: 'Type', sortable: true},
+  {key: 'extend', label: 'View',},
 ];
 
 const admins = ref<User[]>([]);
@@ -96,67 +96,57 @@ onMounted(fetchData)
 </script>
 
 <template>
-  <div class="admin-dashboard" >
-    <div class="container">
-      <main class="dashboard-content">
-        <div class="sub-container">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <main class="content-wrapper">
 
-          <div class="content">
-            <div class="header">
+        <div class="content-body">
 
-              <div class="search-container">
-                <UInput v-model="q" placeholder="Filter admins..."/>
-              </div>
+          <div class="content-header">
+            <div class="search-box">
+              <UInput v-model="q" placeholder="Filter admins..."/>
             </div>
+          </div>
 
-            <UTable :columns="columns" :rows="paginatedRows">
-              <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">View</a>
-                <Popup
-                    :show="isPopupVisible"
-                    @update:show="isPopupVisible = $event"
-                    :admins="currentStudent"
-                />
-              </template>
-            </UTable>
-            <div class="pagination">
-              <button
-                  :disabled="currentPage === 1"
-                  @click="handlePageChange(currentPage - 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-left"
-                />
-              </button>
-              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button
-                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-right"
-                />
-              </button>
-            </div>
+          <UTable :columns="columns" :rows="paginatedRows">
+            <template #extend-data="{ row }">
+              <a @click="openPopup(row)" class="view-button">View</a>
+              <Popup
+                  :show="isPopupVisible"
+                  @update:show="isPopupVisible = $event"
+                  :admins="currentStudent"
+              />
+            </template>
+          </UTable>
 
-
-            <hr class="divider"/>
-
+          <div class="pagination-controls">
+            <button
+                :disabled="currentPage === 1"
+                @click="handlePageChange(currentPage - 1)"
+            >
+              <UIcon name="mdi-arrow-left"/>
+            </button>
+            <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+            <button
+                :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                @click="handlePageChange(currentPage + 1)"
+            >
+              <UIcon name="mdi-arrow-right"/>
+            </button>
           </div>
         </div>
-      </main>
 
+      </main>
     </div>
   </div>
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-wrapper {
   display: block;
-  background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -166,113 +156,69 @@ onMounted(fetchData)
   margin: 0 auto;
 }
 
-.dashboard-content {
+.content-wrapper {
   flex: 6;
 }
 
-@media (max-width: 1200px) {
-  .admin-dashboard {
-    display: block;
-  }
-
-}
-
-.sidebar ul li {
-  list-style: none;
-  margin: 0.5rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  text-align: start;
-  text-transform: capitalize;
-  font-weight: normal;
-  color: var(--text-hover-color);
-  background-color: transparent;
-}
-
-.sidebar li:hover {
-  color: var(--text-hover-color);
-  background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
-}
-
-.dashboard-content {
-  flex: 10;
-  background-color: #eeeeee;
-}
-
-.dashboard-info-content div {
+.content-body {
   margin: 1rem;
 }
 
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.dashboard-content .header {
+.content-header {
   display: inline-flex;
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
 }
 
-.extend-btn {
-  padding: .5rem;
-  border-radius: .5rem 0;
+.search-box {
+  margin-bottom: 1rem;
+}
+
+.view-button {
+  padding: 0.5rem;
+  border-radius: 0.5rem 0;
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
   cursor: pointer;
 }
 
-.extend-btn:hover {
+.view-button:hover {
   color: var(--text-light-color);
   background-color: var(--primary-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
-.header h2,
-.footer h2 {
-  font-size: 1.5rem;
-  color: var(--primary-hover-color);
-  text-align: center;
-  margin: 1rem auto;
-}
-
-.divider {
-  border-bottom: 2px solid var(--primary-hover-color);
-  margin: 1rem 0;
-}
-
-.pagination {
+.pagination-controls {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
 }
 
-.pagination span {
-  padding: .5rem 1rem;
-  border-radius: .5rem;
+.pagination-controls span {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
   transition: 0.3s ease-in-out;
 }
 
-.pagination button {
-  padding: .5rem;
-  border-radius: .5rem;
+.pagination-controls button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: 0.3s ease-in-out;
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .dashboard-container {
     display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .dashboard-content {
+  .content-wrapper {
     padding: 1rem;
   }
 }
-
-
 </style>
+
