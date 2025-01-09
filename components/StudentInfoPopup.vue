@@ -1,7 +1,7 @@
 <script setup>
-import { defineEmits, defineProps, ref, onMounted } from 'vue';
-import { useNuxtApp } from "#app";
-import { religions } from "~/utils/dropdownOptions.js";
+import {defineEmits, defineProps, ref, onMounted} from 'vue';
+import {useNuxtApp} from "#app";
+import {religions} from "~/utils/dropdownOptions.js";
 
 const props = defineProps({
   show: Boolean,
@@ -16,183 +16,162 @@ const allHostels = ref([]);
 const isLoading = ref(true);
 const emit = defineEmits(['update:show']);
 
-const studentFields = ref([
-  {
-    label: 'ID ',
-    key: 'id',
-    editable: false,
-    type: 'input'
-  },
-  {
-    label: 'Status',
-    key: 'status',
-    editable: true,
-    type: 'select',
-    options: [
-      { value: "active", label: "Active" },
-      { value: "inactive", label: "Inactive" },
-      { value: "graduated", label: "Graduated" },
-      { value: "terminated", label: "Terminated" },
-    ]
-  },
-  {
-    label: 'Name',
-    key: 'name',
-    editable: false,
-    type: 'input'
-  },
-  {
-    label: 'Student ID',
-    key: 'student_id',
-    editable: false,
-    type: 'input'
-  },
-  {
-    label: 'Passport No',
-    key: 'passport',
-    editable: true,
-    type: 'input'
-  },
-  {
-    label: 'Date of Arrival',
-    key: 'arrival_date',
-    editable: false,
-    type: 'input'
-  },
-  {
-    label: 'WhatsApp No',
-    key: 'phone',
-    editable: true,
-    type: 'input'
-  },
-  {
-    label: 'Student Email',
-    key: 'email',
-    editable: true,
-    type: 'input'
-  },
-  {
-    label: 'Nationality',
-    key: 'nationality',
-    editable: false,
-    type: "input"
-  },
-  {
-    label: 'Program/Major',
-    key: 'major',
-    editable: true,
-    type: "input"
-  },
-  {
-    label: 'Gender',
-    key: 'gender',
-    editable: true,
-    type: 'select',
-    options: [{ value: "male", label: "Male" }, { value: "female", label: "Female" }]
-  },
-  {
-    label: 'Religion',
-    key: 'religion',
-    editable: true,
-    type: 'select',
-    options: religionOptions
-  },
-  {
-    label: 'Block Name',
-    key: 'hostel_name',
-    editable: true,
-    type: 'select',
-    options: [],
-  },
-  {
-    label: 'Level No',
-    key: 'level_number',
-    editable: true,
-    type: 'select',
-    options: [],
-  },
-  {
-    label: 'Room No',
-    key: 'room_number',
-    editable: true,
-    type: 'select',
-    options: [],
-  },
-  {
-    label: 'Bed',
-    key: 'bed_number',
-    editable: true,
-    type: 'select',
-    options: [],
-  },
-]);
+const studentFields = computed(() => {
+  return [
+    {
+      label: 'ID ',
+      key: 'id',
+      editable: false,
+      type: 'input'
+    },
+    {
+      label: 'Status',
+      key: 'status',
+      editable: true,
+      type: 'select',
+      options: [
+        {value: "active", label: "Active"},
+        {value: "inactive", label: "Inactive"},
+        {value: "graduated", label: "Graduated"},
+        {value: "terminated", label: "Terminated"},
+      ]
+    },
+    {
+      label: 'Name',
+      key: 'name',
+      editable: false,
+      type: 'input'
+    },
+    {
+      label: 'Student ID',
+      key: 'student_id',
+      editable: false,
+      type: 'input'
+    },
+    {
+      label: 'Passport No',
+      key: 'passport',
+      editable: true,
+      type: 'input'
+    },
+    {
+      label: 'Date of Arrival',
+      key: 'arrival_date',
+      editable: false,
+      type: 'input'
+    },
+    {
+      label: 'WhatsApp No',
+      key: 'phone',
+      editable: true,
+      type: 'input'
+    },
+    {
+      label: 'Student Email',
+      key: 'email',
+      editable: true,
+      type: 'input'
+    },
+    {
+      label: 'Nationality',
+      key: 'nationality',
+      editable: false,
+      type: "input"
+    },
+    {
+      label: 'Program/Major',
+      key: 'major',
+      editable: true,
+      type: "input"
+    },
+    {
+      label: 'Gender',
+      key: 'gender',
+      editable: true,
+      type: 'select',
+      options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}]
+    },
+    {
+      label: 'Religion',
+      key: 'religion',
+      editable: true,
+      type: 'select',
+      options: religionOptions
+    },
+    {
+      label: 'Block Name',
+      key: 'hostel_name',
+      editable: true,
+      type: 'select',
+      options: allHostels.value.filter(h => h.gender === props.student['gender']).map(h => ({
+        value: h.name,
+        label: h.name
+      })),
+    },
+    {
+      label: 'Level No',
+      key: 'level_number',
+      selected: props.student['level_id'],
+      editable: true,
+      type: 'select',
+      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.map(l => ({
+        value: l.number.toString(),
+        label: `Level ${l.number}`
+      })) || [],
+    },
+    {
+      label: 'Room No',
+      key: 'room_number',
+      editable: true,
+      type: 'select',
+      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.find(l => l.id === props.student['level_id'])?.room_details.map(r => ({
+        value: r.number,
+        label: `Room ${r.number}`
+      })) || [],
+    },
+    {
+      label: 'Bed',
+      key: 'bed_id',
+      editable: true,
+      type: 'select',
+      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.find(l => l.id === Number(props.student['level_id']))?.room_details.find(r => r.id === props.student['room_id'])?.beds.map(b => ({
+        value: b.id,
+        label: `Zone ${b.bed_number} (${b.status})`
+      })) || [],
+    },
+  ]
+});
 
 const closePopup = () => {
   emit('update:show', false);
 };
 
-let { $axios } = useNuxtApp();
+watch(allHostels, (newValue) => {
+  if (newValue.length) {
+    studentFields.value = studentFields.value
+  }
+}, { immediate: true })
+
+let {$axios} = useNuxtApp();
 const api = $axios();
-
-const updateHostelOptions = (gender) => {
-  const blockField = studentFields.value.find(field => field.key === 'hostel_name');
-  if (blockField) {
-    blockField.options = allHostels.value.filter(hostel => hostel.gender === gender);
-  }
-};
-
-const updateLevelOptions = (hostelId) => {
-  const hostel = allHostels.value.find(h => h.id === hostelId);
-  const levelField = studentFields.value.find(field => field.key === 'level_number');
-  if (levelField && hostel) {
-    levelField.options = hostel.levels.map(level => ({
-      value: level.id,
-      label: level.name
-    }));
-  }
-};
-
-const updateRoomOptions = (levelId) => {
-  const hostel = allHostels.value.find(h => h.levels.some(level => level.id === levelId));
-  const level = hostel?.levels.find(level => level.id === levelId);
-  const roomField = studentFields.value.find(field => field.key === 'room_number');
-  if (roomField && level) {
-    roomField.options = level.rooms.map(room => ({
-      value: room.id,
-      label: room.number
-    }));
-  }
-};
-
-const updateBedOptions = (roomId) => {
-  const hostel = allHostels.value.find(h => h.levels.some(level => level.rooms.some(room => room.id === roomId)));
-  const level = hostel?.levels.find(level => level.rooms.some(room => room.id === roomId));
-  const room = level?.rooms.find(room => room.id === roomId);
-  const bedField = studentFields.value.find(field => field.key === 'bed_number');
-  if (bedField && room) {
-    bedField.options = room.beds.map(bed => ({
-      value: bed.id,
-      label: bed.number
-    }));
-  }
-};
 
 onMounted(async () => {
   try {
-    const { data } = await api.get('/hostels/');
+    const {data} = await api.get('/hostels/');
     console.log('Fetched Hostels:', data);
 
-    allHostels.value = data.map(hostel => ({
-      value: hostel.id,
-      label: hostel.name,
-      gender: hostel.gender,
-      levels: hostel.levels
-    }));
+    allHostels.value = data
+    isLoading.value = false;
 
-    updateHostelOptions(props.student.gender);
-    updateLevelOptions(props.student.hostel_id);
-    updateRoomOptions(props.student.level_id);
-    updateBedOptions(props.student.room_id);
+    console.log('Student data:', props.student);
+    console.log('Fields and their options:', studentFields.value);
+
+    studentFields.value.forEach(field => {
+      console.log(`Field ${field.key}:`, {
+        currentValue: props.student[field.key],
+        availableOptions: field.options.map(o => o.value)
+      });
+    });
 
   } catch (error) {
     console.error('Error fetching hostels:', error);
@@ -248,13 +227,14 @@ const deleteStudent = async () => {
 
       <hr class="divider">
 
-      <div class="popup-content">
+      <div v-if="isLoading" class="loading-container">Loading..</div>
+      <div class="popup-content" v-else>
         <div class="box" v-for="field in studentFields" :key="field.key">
           <span class="student-label-info">
             <span>
               <UIcon style="color: var(--primary-color)" name="ph-student"/>
             </span> {{ field.label }}: </span>
-          <span class="student-key-info">
+          <div class="student-key-info">
             <div v-if="field.type === 'input'">
               <input
                   v-model="props.student[field.key]"
@@ -269,16 +249,15 @@ const deleteStudent = async () => {
                   class="control-input"
               >
                 <option
-                    v-for="option in field.options || []"
+                    v-for="option in field.options"
                     :key="option.value"
                     :value="option.value"
-                    :selected="{ 'selected': option.value == student['bed']['hostel_id'] }"
                 >
                   {{ option.label }}
                 </option>
               </select>
             </div>
-          </span>
+          </div>
         </div>
       </div>
       <hr class="divider">
