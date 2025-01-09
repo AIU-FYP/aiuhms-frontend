@@ -1,6 +1,8 @@
 <script setup>
 import {defineEmits, defineProps, ref, onMounted} from 'vue';
 import {useNuxtApp} from "#app";
+import {useStudentFields} from "@/composables/useStudentFields.ts";
+import {useStudentOperations} from "@/composables/useStudentOperations.ts";
 import {religions} from "~/utils/dropdownOptions.js";
 
 const props = defineProps({
@@ -8,171 +10,28 @@ const props = defineProps({
   student: Object,
 });
 
-const religionOptions = Array.isArray(religions)
-    ? religions
-    : Array.from(religions.values());
 
+const emit = defineEmits(['update:show']);
 const allHostels = ref([]);
 const isLoading = ref(true);
-const emit = defineEmits(['update:show']);
 
-const studentFields = computed(() => {
-  return [
-    {
-      label: 'ID ',
-      key: 'id',
-      editable: false,
-      type: 'input'
-    },
-    {
-      label: 'Status',
-      key: 'status',
-      editable: true,
-      type: 'select',
-      options: [
-        {value: "active", label: "Active"},
-        {value: "inactive", label: "Inactive"},
-        {value: "graduated", label: "Graduated"},
-        {value: "terminated", label: "Terminated"},
-      ]
-    },
-    {
-      label: 'Name',
-      key: 'name',
-      editable: false,
-      type: 'input'
-    },
-    {
-      label: 'Student ID',
-      key: 'student_id',
-      editable: false,
-      type: 'input'
-    },
-    {
-      label: 'Passport No',
-      key: 'passport',
-      editable: true,
-      type: 'input'
-    },
-    {
-      label: 'Date of Arrival',
-      key: 'arrival_date',
-      editable: false,
-      type: 'input'
-    },
-    {
-      label: 'WhatsApp No',
-      key: 'phone',
-      editable: true,
-      type: 'input'
-    },
-    {
-      label: 'Student Email',
-      key: 'email',
-      editable: true,
-      type: 'input'
-    },
-    {
-      label: 'Nationality',
-      key: 'nationality',
-      editable: false,
-      type: "input"
-    },
-    {
-      label: 'Program/Major',
-      key: 'major',
-      editable: true,
-      type: "input"
-    },
-    {
-      label: 'Gender',
-      key: 'gender',
-      editable: true,
-      type: 'select',
-      options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}]
-    },
-    {
-      label: 'Religion',
-      key: 'religion',
-      editable: true,
-      type: 'select',
-      options: religionOptions
-    },
-    {
-      label: 'Block Name',
-      key: 'hostel_id',
-      editable: true,
-      type: 'select',
-      options: allHostels.value.filter(h => h.gender === props.student['gender']).map(h => ({
-        value: h.id,
-        label: h.name
-      })),
-    },
-    {
-      label: 'Level No',
-      key: 'level_id',
-      selected: props.student['level_id'],
-      editable: true,
-      type: 'select',
-      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.map(l => ({
-        value: l.id,
-        label: `Level ${l.number}`
-      })) || [],
-    },
-    {
-      label: 'Room No',
-      key: 'room_id',
-      editable: true,
-      type: 'select',
-      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.find(l => l.id === props.student['level_id'])?.room_details.map(r => ({
-        value: r.id,
-        label: `Room ${r.number}`
-      })) || [],
-    },
-    {
-      label: 'Bed',
-      key: 'bed_id',
-      editable: true,
-      type: 'select',
-      options: allHostels.value.find(h => h.id === props.student['hostel_id'])?.levels.find(l => l.id === Number(props.student['level_id']))?.room_details.find(r => r.id === props.student['room_id'])?.beds.map(b => ({
-        value: b.id,
-        label: `Zone ${b.bed_number} (${b.status})`
-      })) || [],
-    },
-  ]
-});
+const studentRef = toRef(props, 'student');
 
-const closePopup = () => {
-  emit('update:show', false);
-};
+const { fields, options } = useStudentFields(allHostels, studentRef, religions);
+const {updateStudent, deleteStudent, initializeTracking} = useStudentOperations();
 
-watch(allHostels, (newValue) => {
-  if (newValue.length) {
-    studentFields.value = studentFields.value
+watch(() => props.student, (newStudent) => {
+  if (newStudent) {
+    initializeTracking(newStudent);
   }
-}, { immediate: true })
-
-let {$axios} = useNuxtApp();
-const api = $axios();
+}, {immediate: true});
 
 onMounted(async () => {
   try {
-    const {data} = await api.get('/hostels/');
-    console.log('Fetched Hostels:', data);
-
-    allHostels.value = data
-    isLoading.value = false;
-
-    console.log('Student data:', props.student);
-    console.log('Fields and their options:', studentFields.value);
-
-    studentFields.value.forEach(field => {
-      console.log(`Field ${field.key}:`, {
-        currentValue: props.student[field.key],
-        availableOptions: field.options.map(o => o.value)
-      });
-    });
-
+    const {$axios} = useNuxtApp();
+    const {data} = await $axios().get('/hostels/');
+    allHostels.value = data;
+    console.log('Hostels loaded:', data);
   } catch (error) {
     console.error('Error fetching hostels:', error);
   } finally {
@@ -180,91 +39,90 @@ onMounted(async () => {
   }
 });
 
-const updateStudentInfo = async () => {
-  try {
-    const response = await api.patch(`/students/${props.student.id}/`, {
-      ...props.student
-    });
-    console.log('Success:', response.data);
-    alert("Student info updated successfully");
-    emit('update:show', false);
-  } catch (error) {
-    if (error.response) {
-      console.error('Error response:', error.response.data);
+const closePopup = () => emit('update:show', false);
+
+const handleUpdateStudent = async () => {
+  const result = await updateStudent(props.student);
+  if (result.success) {
+    if (result.message) {
+      alert(result.message);
     } else {
-      console.error('Error:', error.message);
+      alert("Student info updated successfully");
+      closePopup();
     }
+  } else {
+    alert(`Update failed: ${result.error}`);
   }
 };
 
-const deleteStudent = async () => {
-  try {
-    const response = await api.delete(`/students/${props.student.id}/`);
-    console.log('Student deleted:', response.data);
+const handleDeleteStudent = async () => {
+  if (!confirm('Are you sure you want to delete this student?')) return;
+
+  const result = await deleteStudent(props.student.id);
+  if (result.success) {
     alert("Student deleted successfully");
-    emit('update:show', false);
-  } catch (error) {
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-    } else {
-      console.error('Error:', error.message);
-    }
+    closePopup();
+  } else {
+    alert(`Delete failed: ${result.error}`);
   }
 };
-
 </script>
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
     <div class="popup-container" @click.stop>
-
+      <!-- Header -->
       <div class="popup-header">
-        <span style="font-size: 1.5rem">Welcome to {{ props.student.name }}</span>
-        <span @click="closePopup" class="close-btn">
-          <UIcon name="fontisto-close"/>
-        </span>
+        <span class="text-xl">Welcome to {{ props.student.name }}</span>
+        <UIcon name="fontisto-close" @click="closePopup" class="close-btn"/>
       </div>
 
       <hr class="divider">
 
+      <!-- Content -->
       <div v-if="isLoading" class="loading-container">Loading..</div>
-      <div class="popup-content" v-else>
-        <div class="box" v-for="field in studentFields" :key="field.key">
+      <div v-else class="popup-content">
+        <div v-for="field in fields" :key="field.key" class="box">
           <span class="student-label-info">
-            <span>
-              <UIcon style="color: var(--primary-color)" name="ph-student"/>
-            </span> {{ field.label }}: </span>
+            <UIcon name="ph-student" class="text-primary"/>
+            {{ field.label }}:
+          </span>
+
           <div class="student-key-info">
-            <div v-if="field.type === 'input'">
+            <template v-if="field.type === 'input'">
               <input
                   v-model="props.student[field.key]"
                   class="control-input"
                   :readonly="!field.editable"
               />
-            </div>
-            <div v-if="field.type === 'select'">
+            </template>
+
+            <template v-else-if="field.type === 'select'">
               <select
                   v-model="props.student[field.key]"
                   :disabled="!field.editable"
                   class="control-input"
               >
+                <option value="">Select {{ field.label }}</option>
                 <option
-                    v-for="option in field.options"
+                    v-for="option in options[field.optionsKey]"
                     :key="option.value"
                     :value="option.value"
                 >
                   {{ option.label }}
                 </option>
               </select>
-            </div>
+            </template>
           </div>
         </div>
       </div>
+
+      <!-- Footer -->
       <hr class="divider">
       <div class="popup-footer">
         <div class="popup-bts">
-          <button @click="deleteStudent" class="delete-student">Delete Student</button>
-          <button @click="updateStudentInfo" class="change-student-info">
+          <button @click="handleDeleteStudent" class="delete-student">Delete Student</button>
+          <button @click="handleUpdateStudent" class="change-student-info">
             Change Student Info
           </button>
         </div>
