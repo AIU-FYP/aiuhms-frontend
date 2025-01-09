@@ -1,129 +1,102 @@
-<script setup>
-import {defineEmits, defineProps} from 'vue'
-import {useNuxtApp} from "#app";
-
-const props = defineProps({
-  show: Boolean,
-  admins: Object
-});
-
-const emit = defineEmits(['update:show'])
-
-const studentFields = [
-
-  {label: 'ID ', key: 'id'},
-  {label: 'Name', key: 'name'},
-  {key: 'username', label: 'User name',},
-  {key: 'staff_ID', label: 'User name',},
-  {key: 'staff_type', label: 'Admin type',},
-  {label: 'WhatsApp No', key: 'phone'},
-  {label: 'Password', key: 'password'},
-  {label: 'Email Address', key: 'email'},
-];
-
-const closePopup = () => {
-  emit('update:show', false)
-  closePopup()
-}
-
-let {$axios} = useNuxtApp()
-const api = $axios()
-
-const updateAdminInfo = async () => {
-  try {
-    const response = await api.patch(`/users/${props.admins.id}/`,
-        { ...props.admins }
-    );
-    console.log('Success:', response.data);
-    alert("Student info updated successfully");
-    emit('update:show', false);
-  } catch (error) {
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-    } else {
-      console.error('Error:', error.message);
-    }
-  }
-};
-
-const deleteAdmin = async () => {
-  try {
-    const response = await api.delete(
-        `/users/${props.admins.id}/`
-    );
-    console.log('Student deleted:', response.data);
-    alert("Student deleted successfully");
-    emit('update:show', false);
-  } catch (error) {
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-    } else {
-      console.error('Error:', error.message);
-    }
-  }
-};
-
-
-</script>
-
 <template>
-  <div v-if="show" class="popup-overlay" @click="closePopup">
-    <div class="popup-container" @click.stop>
-      <div class="popup-header">
+  <div v-if="show" class="modal-overlay" @click="closePopup">
+    <div class="modal-container" @click.stop>
+
+      <div class="modal-header">
         <span style="font-size: 1.5rem">Welcome to {{ props.admins.name }}</span>
-        <span @click="closePopup" class="close-btn">
-          <UIcon
-              name="fontisto-close"
-          />
+        <span @click="closePopup" class="modal-close-btn">
+          <UIcon name="fontisto-close"/>
         </span>
       </div>
-      <hr class="divider">
-      <div class="popup-content">
-        <div class="box" v-for="field in studentFields" :key="field.key">
-          <span class="student-label-info">
-            <span>
-              <UIcon
-                  style="color: var(--primary-color)"
-                  name="ph-student"
-              />
-            </span>
-            {{ field.label }}:</span>
-          <span class="student-key-info">
-            <input
-                v-if="field.key !== 'status'"
-                v-model="admins[field.key]"
-                class="control-input"
-            />
-            <span v-else>{{ admins[field.key] }}</span>
+
+      <div class="modal-content">
+        <div class="field-container" v-for="field in studentFields" :key="field.key">
+          <span class="field-label">
+            <UIcon style="color: var(--primary-color)" name="ph-student"/>
+            {{ field.label }}:
           </span>
+          <span class="field-input">{{ admins[field.key] }}</span>
         </div>
       </div>
-      <hr class="divider">
-      <div class="popup-footer">
-        <div class="popup-bts">
-          <button @click="deleteAdmin" class="delete-admin" id="deleteAdmin">Delete Admin</button>
-          <button @click="updateAdminInfo" class="change-admin-info" id="changeAdminInfo">Change Admin Info</button>
+
+      <div class="modal-footer">
+        <div class="action-buttons">
+          <button @click="deleteAdmin" class="delete-button" id="deleteAdmin">Delete Admin</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script setup>
+import {defineEmits, defineProps} from "vue";
+import {useNuxtApp} from "#app";
+
+const props = defineProps({
+  show: Boolean,
+  admins: Object,
+});
+
+const emit = defineEmits(["update:show"]);
+
+const studentFields = [
+  {label: "ID", key: "id"},
+  {label: "Name", key: "name"},
+  {key: "username", label: "Username"},
+  {key: "staff_ID", label: "Staff ID"},
+  {key: "staff_type", label: "Admin Type"},
+  {label: "WhatsApp No", key: "phone"},
+  {label: "Password", key: "password"},
+  {label: "Email Address", key: "email"},
+];
+
+const closePopup = () => {
+  emit("update:show", false);
+};
+
+let {$axios} = useNuxtApp();
+const api = $axios();
+
+const updateAdminInfo = async () => {
+  try {
+    const response = await api.patch(`/users/${props.admins.id}/`, {
+      ...props.admins,
+    });
+    console.log("Admin updated successfully:", response.data);
+    alert("Admin info updated successfully.");
+    emit("update:show", false);
+  } catch (error) {
+    console.error("Error updating admin:", error.response?.data || error.message);
+  }
+};
+
+const deleteAdmin = async () => {
+  try {
+    const response = await api.delete(`/users/${props.admins.id}/`);
+    console.log("Admin deleted successfully:", response.data);
+    alert("Admin deleted successfully.");
+    emit("update:show", false);
+  } catch (error) {
+    console.error("Error deleting admin:", error.response?.data || error.message);
+  }
+};
+</script>
+
 <style scoped>
-.popup-overlay {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-.popup-container {
+.modal-container {
   background: #fff;
   padding: 2rem;
   width: 60%;
@@ -136,36 +109,17 @@ const deleteAdmin = async () => {
   z-index: 1001;
 }
 
-@media (max-width: 1200px) {
-  .popup-container {
-    width: 90%;
-    max-width: 100%;
-  }
-}
-
-
-@media (max-width: 800px) {
-  .popup-container {
-    width: 100%;
-    max-width: 100%;
-    border-radius: 0;
-  }
-}
-
-.popup-header {
+.modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 20px 0;
 }
 
-span {
-  margin: 0 5px;
-}
-
-.close-btn {
+.modal-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 40px;
+  right: 20px;
   background: transparent;
   border: none;
   font-size: 1.5rem;
@@ -173,124 +127,40 @@ span {
   color: var(--primary-color);
 }
 
-.close-btn:hover {
-  color: #ff0000;
-  transition: .2s ease-in-out;
-}
-
-.divider {
-  margin: 3% 2%;
-  border: 2px solid var(--primary-color);;
-}
-
-.popup-content {
+.modal-content {
   padding: 0 20px;
 }
 
-.box {
+.field-container {
   display: flex;
 }
 
-.student-label-info,
-.student-key-info {
+.field-label,
+.field-input {
   text-align: start;
   text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1.2rem;
   width: 50%;
-  padding: .5rem;
-  border-radius: .5rem 0;
+  padding: 0.5rem;
   background-color: #eeeeee;
-  margin-bottom: .5rem;
+  margin: 0.5rem;
 }
 
-.control-input {
-  text-align: start;
-  text-transform: capitalize;
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  width: 100%;
-  outline: none;
-  background-color: #eeeeee;
-  margin-bottom: .5rem;
-}
-
-@media (max-width: 800px) {
-  .box {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .student-label-info,
-  .student-key-info {
-    width: 100%;
-    font-size: .9rem;
-  }
-}
-
-.popup-bts {
+.action-buttons {
   display: flex;
-  align-items: center;
   justify-content: space-around;
+  margin: 10px ;
 }
 
-
-@media (max-width: 800px){
-  .popup-bts{
-    flex-direction: column;
-    padding: 0;
-    margin: 0;
-    gap: 0;
-  }
-  .popup-bts button {
-    padding: .5rem;
-    margin: 1rem 0;
-    font-size: 1rem;
-  }
-}
-
-.popup-bts button {
-  padding: .5rem;
-  font-size: 1.2rem;
-  text-transform: capitalize;
-}
-
-.popup-bts .change-admin-info {
-  border-radius: 0 1rem;
-  border: 2px solid var(--primary-color);
-}
-
-.popup-bts .change-admin-info:hover {
-  background: var(--primary-color);
-  color: var(--text-hover-color);
-  transition: .4s ease-in-out;
-}
-
-.popup-bts .delete-admin {
-  border-radius: 0 1rem;
+.delete-button {
   border: 2px solid red;
+  padding: 0.5rem;
+  border-radius: 0 1rem;
 }
 
-.popup-bts .delete-admin:hover {
+.delete-button:hover {
   background: red;
   color: var(--text-hover-color);
-  transition: .4s ease-in-out;
 }
-
-@media (max-width: 800px) {
-  .popup-bts button {
-    padding: .5rem;
-    margin: 1rem 0;
-    font-size: 1rem;
-  }
-}
-
-h2 {
-  font-size: 1.5rem;
-  text-align: center;
-  text-transform: capitalize;
-}
-
 </style>
-
-
