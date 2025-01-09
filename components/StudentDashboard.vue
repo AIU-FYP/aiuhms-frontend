@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import Popup from '~/components/StudentInfoPopup.vue'
-import { useNuxtApp } from "#app";
-import { useRouter } from 'vue-router'
+import {useNuxtApp} from "#app";
+import {useRouter} from 'vue-router'
 
-let { $axios } = useNuxtApp()
+let {$axios} = useNuxtApp()
 
 interface Person {
   id: number
@@ -21,16 +21,16 @@ interface Person {
 }
 
 const columns = [
-  { key: 'id', label: 'ID' },
-  { key: 'name', label: 'Name', sortable: true },
-  { key: 'student_id', label: 'Student ID', },
-  { key: 'hostel_name', label: 'Hostel Name', sortable: true },
-  { key: 'level_number', label: 'Level No',},
-  { key: 'room_number', label: 'Room No',},
-  { key: 'bed_number', label: 'Bed No',},
-  { key: 'gender', label: 'Gender', sortable: true },
-  { key: 'status', label: 'Status', sortable: true },
-  { key: 'extend', label: 'View', sortable: false }
+  {key: 'id', label: 'ID'},
+  {key: 'name', label: 'Name', sortable: true},
+  {key: 'student_id', label: 'Student ID',},
+  {key: 'hostel_name', label: 'Hostel Name', sortable: true},
+  {key: 'level_number', label: 'Level No',},
+  {key: 'room_number', label: 'Room No',},
+  {key: 'bed_number', label: 'Bed No',},
+  {key: 'gender', label: 'Gender', sortable: true},
+  {key: 'status', label: 'Status', sortable: true},
+  {key: 'extend', label: 'View', sortable: false}
 ];
 
 
@@ -74,32 +74,32 @@ const navigationButtons = [
     name: "Student",
     icon: "ph-student",
     links: [
-      { text: "Register Student", url: "/student-registration-form" },
-      { text: "Manage Student", url: "/student-registration-dashboard" },
+      {text: "Register Student", url: "/student-registration-form"},
+      {text: "Manage Student", url: "/student-registration-dashboard"},
     ],
   },
   {
     name: "Maintenance",
     icon: "wpf-maintenance",
     links: [
-      { text: "Maintenance Form", url: "/maintenance-room-form" },
-      { text: "Manage Maintenance", url: "/maintenance-room-dashboard" },
+      {text: "Maintenance Form", url: "/maintenance-room-form"},
+      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
     ],
   },
   {
     name: "Change Room",
     icon: "bx-building",
     links: [
-      { text: "Change Room Form", url: "/change-room-form" },
-      { text: "Manage Room Changes", url: "/change-room-dashboard" },
+      {text: "Change Room Form", url: "/change-room-form"},
+      {text: "Manage Room Changes", url: "/change-room-dashboard"},
     ],
   },
   {
     name: "Hostels",
     icon: "bx-building",
     links: [
-      { text: "Add new Building", url: "/new-hostel-form" },
-      { text: "Manage Rooms", url: "/room-dashboard" },
+      {text: "Add new Building", url: "/new-hostel-form"},
+      {text: "Manage Rooms", url: "/room-dashboard"},
     ],
   },
 ];
@@ -148,9 +148,9 @@ onMounted(fetchData)
 const selectedFilter = ref('active');
 
 const filterOptions = [
-  { value: 'graduated', label: 'Graduated Students' },
-  { value: 'active', label: 'Active Students' },
-  { value: 'inactive', label: 'Non-Active Students' },
+  {value: 'graduated', label: 'Graduated Students'},
+  {value: 'active', label: 'Active Students'},
+  {value: 'inactive', label: 'Non-Active Students'},
 ];
 
 const filteredRows = computed(() => {
@@ -168,52 +168,50 @@ const filteredRows = computed(() => {
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <div class="container">
-      <aside class="sidebar">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <aside class="navigation-panel">
         <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="btn-container">
+          <div class="navigation-button-wrapper">
             <button
                 @click="toggleLinkVisibility(index)"
                 :aria-expanded="visibleButtonIndex === index"
-                class="sidebar-button"
+                class="navigation-button"
             >
-              <UIcon :name="button.icon" />
+              <UIcon :name="button.icon"/>
               {{ button.name }}
             </button>
           </div>
-          <ul v-if="visibleButtonIndex === index">
+          <ul v-if="visibleButtonIndex === index" class="navigation-links">
             <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url)" style="cursor: pointer">{{ link.text }}</a>
+              <a @click.prevent="navigateToPage(link.url)" class="navigation-link">{{ link.text }}</a>
             </li>
           </ul>
         </div>
       </aside>
 
-      <Loader v-if="isLoading" />
+      <Loader v-if="isLoading"/>
 
-      <main class="dashboard-content" v-else>
-        <div class="sub-container">
-          <div class="content">
-            <div class="header">
-
-              <div class="search-container">
-                <UInput v-model="q" placeholder="Filter students..." />
+      <main class="content-area" v-else>
+        <div class="content-wrapper">
+          <div class="content-body">
+            <div class="header-section">
+              <div class="filter-wrapper">
+                <UInput v-model="q" placeholder="Filter students..."/>
               </div>
 
-              <div class="select-container">
+              <div class="filter-dropdown">
                 <USelect
                     v-model="selectedFilter"
                     :options="filterOptions"
                     placeholder="Filter students..."
                 />
               </div>
-
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">View</a>
+                <a @click="openPopup(row)" class="view-button">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
@@ -222,17 +220,17 @@ const filteredRows = computed(() => {
               </template>
             </UTable>
 
-            <div class="pagination">
-              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">
-                <UIcon name="mdi-arrow-left" />
+            <div class="pagination-controls">
+              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)"
+                      class="pagination-button">
+                <UIcon name="mdi-arrow-left"/>
               </button>
-              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">
-                <UIcon name="mdi-arrow-right" />
+              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                      @click="handlePageChange(currentPage + 1)" class="pagination-button">
+                <UIcon name="mdi-arrow-right"/>
               </button>
             </div>
-
-            <hr class="divider" />
           </div>
         </div>
       </main>
@@ -241,12 +239,11 @@ const filteredRows = computed(() => {
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-wrapper {
   display: block;
-  background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -256,7 +253,7 @@ const filteredRows = computed(() => {
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-panel {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -265,30 +262,30 @@ const filteredRows = computed(() => {
   min-height: 100vh;
 }
 
-.dashboard-content {
+.content-area {
   flex: 6;
 }
 
 @media (max-width: 1200px) {
-  .admin-dashboard {
+  .dashboard-wrapper {
     display: block;
   }
 
-  .sidebar {
+  .navigation-panel {
     min-height: 30vh;
   }
 }
 
-.btn-container {
+.navigation-button-wrapper {
   padding: .5rem;
   background-color: transparent;
 }
 
-.btn-container:hover {
+.navigation-button-wrapper:hover {
   background-color: var(--primary-hover-color);
 }
 
-.sidebar-button {
+.navigation-button {
   font-size: 1rem;
   color: var(--text-light-color);
   margin-bottom: 0.5rem;
@@ -297,11 +294,11 @@ const filteredRows = computed(() => {
   transition: 0.3s ease-in-out;
 }
 
-.sidebar-button:hover {
+.navigation-button:hover {
   color: var(--text-hover-color);
 }
 
-.sidebar ul li {
+.navigation-links li {
   list-style: none;
   margin: 0.5rem;
   padding: 0.5rem;
@@ -313,37 +310,39 @@ const filteredRows = computed(() => {
   background-color: transparent;
 }
 
-.sidebar li:hover {
+.navigation-links li:hover {
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
   transition: .3s ease-in-out;
 }
 
-.dashboard-content {
+.content-wrapper {
   flex: 10;
   background-color: #eeeeee;
+  padding: 50px 0;
+  min-height: 90vh;
 }
 
-.dashboard-info-content div {
-  margin: 1rem;
+.filter-wrapper,
+.filter-dropdown {
+  padding: 1rem 1rem 0 1rem;
 }
 
-.select-container{
-  padding: 1rem;
-}
-
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.dashboard-content .header {
+.header-section {
   display: inline-flex;
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
 }
 
-.extend-btn {
+@media (max-width: 1200px) {
+  .header-section {
+    display: block;
+  }
+}
+
+
+.view-button {
   padding: .5rem;
   border-radius: .5rem 0;
   color: var(--text-hover-color);
@@ -351,38 +350,25 @@ const filteredRows = computed(() => {
   cursor: pointer;
 }
 
-.extend-btn:hover {
+.view-button:hover {
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
-.header h2,
-.footer h2 {
-  font-size: 1.5rem;
-  color: var(--primary-hover-color);
-  text-align: center;
-  margin: 1rem auto;
-}
-
-.divider {
-  border-bottom: 2px solid var(--primary-hover-color);
-  margin: 1rem 0;
-}
-
-.pagination {
+.pagination-controls {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
 }
 
-.pagination span {
+.pagination-info {
   padding: .5rem 1rem;
   border-radius: .5rem;
   transition: 0.3s ease-in-out;
 }
 
-.pagination button {
+.pagination-button {
   padding: .5rem;
   border-radius: .5rem;
   color: var(--text-light-color);
@@ -391,20 +377,19 @@ const filteredRows = computed(() => {
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .dashboard-container {
     display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .sidebar {
+  .navigation-panel {
     flex-basis: 100%;
   }
 
-  .dashboard-content {
+  .content-area {
     padding: 1rem;
   }
 }
-
-
 </style>
+
