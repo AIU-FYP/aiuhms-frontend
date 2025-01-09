@@ -130,7 +130,6 @@ const handleSubmit = async () => {
   </div>
 </template>
 
-
 <style scoped>
 .settings-page {
   display: flex;

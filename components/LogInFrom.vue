@@ -1,7 +1,7 @@
 <script setup>
-import { reactive, ref } from 'vue';
-import { z } from 'zod';
-import { navigateTo, useNuxtApp } from '#app';
+import {reactive, ref} from 'vue';
+import {z} from 'zod';
+import {navigateTo, useNuxtApp} from '#app';
 
 const previousQuestions = [
   {
@@ -23,7 +23,7 @@ const previousQuestions = [
 const formSchema = z.object({
   "username":
       z.string()
-          .min( "Username must start with 'AIU' followed by 8 digits")
+          .min("Username must start with 'AIU' followed by 8 digits")
           .nonempty("Username is required"),
   "password":
       z.string()
@@ -48,7 +48,7 @@ const errors = reactive({
 const isLoading = ref(false);
 const errorMessage = ref('');
 
-const { $axios } = useNuxtApp();
+const {$axios} = useNuxtApp();
 const api = $axios();
 
 function validateField(field) {
@@ -105,7 +105,7 @@ async function handleSubmit() {
       </div>
       <div class="log-in-form">
         <span class="user-icon">
-          <UIcon name="mdi-user-outline" />
+          <UIcon name="mdi-user-outline"/>
         </span>
         <h2 class="form-title">AIU Hostel Management System</h2>
         <div class="form-container">
@@ -121,12 +121,12 @@ async function handleSubmit() {
                 />
                 <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
               </div>
+              <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
             </div>
             <button class="login-submit" type="submit" :disabled="isLoading">Log In</button>
           </form>
-
-          <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
         </div>
+        <router-link to="/home" class="home-btn">Home Page</router-link>
       </div>
     </div>
   </div>
@@ -231,7 +231,7 @@ async function handleSubmit() {
   font-size: 1rem;
 }
 
-.login-submit {
+.login-submit{
   display: block;
   width: 90%;
   padding: .5rem;
@@ -242,9 +242,18 @@ async function handleSubmit() {
   border-radius: 1rem;
 }
 
+.home-btn{
+  display: block;
+  width: 90%;
+  margin: .5rem auto;
+  color: var(--text-light-color);
+  text-align: center;
+}
+
 .login-submit:hover {
   background-color: var(--primary-hover-color);
   color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
+
 </style>

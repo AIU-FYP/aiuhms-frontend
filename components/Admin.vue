@@ -84,7 +84,6 @@ interface HostelStats {
   }
 }
 
-
 const stats = ref<HostelStats | null>(null)
 
 const dashboardItems = computed(() => [
@@ -157,6 +156,7 @@ onMounted(() => {
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-container">
+
       <aside class="dashboard-sidebar">
         <div v-for="(button, index) in navigationButtons" :key="index">
           <div class="button-wrapper">
