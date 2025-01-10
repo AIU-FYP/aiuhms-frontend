@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
 definePageMeta({
   middleware: 'auth',
@@ -9,13 +10,16 @@ const isLoading = ref(false);
 
 const router = useRouter();
 
-async function navigateToPage(url: string) {
+async function navigateToPage(url: string, target: string) {
   isLoading.value = true;
   try {
-    setTimeout(async () => {
+    if (target === '_blank') {
+      window.open(url, '_blank');
+      isLoading.value = false;
+    } else {
       await router.push(url);
       isLoading.value = false;
-    }, 2000);
+    }
   } catch (error) {
     console.error('Navigation error:', error);
     isLoading.value = false;
@@ -29,32 +33,32 @@ const navigationButtons = [
     name: "Student",
     icon: "ph-student",
     links: [
-      {text: "Register Student", url: "/student-registration-form"},
-      {text: "Manage Student", url: "/student-registration-dashboard"},
+      {text: "Register Student", url: "/student-registration-form", target: "_self"},
+      {text: "Manage Student", url: "/student-registration-dashboard", target: "_self"},
     ],
   },
   {
     name: "Maintenance",
     icon: "wpf-maintenance",
     links: [
-      {text: "Maintenance Form", url: "/maintenance-room-form"},
-      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
+      {text: "Maintenance Form", url: "/maintenance-room-form", target: "_blank"},
+      {text: "Manage Maintenance", url: "/maintenance-room-dashboard", target: "_self"},
     ],
   },
   {
     name: "Change Room",
     icon: "bx-building",
     links: [
-      {text: "Change Room Form", url: "/change-room-form"},
-      {text: "Manage Room Changes", url: "/change-room-dashboard"},
+      {text: "Change Room Form", url: "/change-room-form", target: "_blank"},
+      {text: "Manage Room Changes", url: "/change-room-dashboard", target: "_self"},
     ],
   },
   {
     name: "Hostels",
     icon: "bx-building",
     links: [
-      {text: "Add new Hostel", url: "/new-hostel-form"},
-      {text: "Manage Rooms", url: "/room-dashboard"},
+      {text: "Add new Hostel", url: "/new-hostel-form", target: "_self"},
+      {text: "Manage Rooms", url: "/room-dashboard", target: "_self"},
     ],
   },
 ];
@@ -62,7 +66,6 @@ const navigationButtons = [
 function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
-
 </script>
 
 <template>
@@ -83,7 +86,12 @@ function toggleLinkVisibility(index: number) {
         </div>
         <ul v-if="visibleButtonIndex === index" class="navigation-links">
           <li v-for="(link, linkIndex) in button.links" :key="linkIndex" class="navigation-link-item">
-            <a @click.prevent="navigateToPage(link.url)" class="navigation-link">{{ link.text }}</a>
+            <a
+                @click.prevent="navigateToPage(link.url,link.target)"
+                class="navigation-link"
+                target={{link.target}}
+                style="cursor: pointer"
+            >{{ link.text }}</a>
           </li>
         </ul>
       </div>
