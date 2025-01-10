@@ -13,6 +13,7 @@ interface Person {
   gender: string
   extend?: boolean | string
 }
+
 ref<Person[]>([]);
 </script>
 
@@ -40,7 +41,8 @@ ref<Person[]>([]);
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
-  border: 3px solid var(--primary-color);
+  border-top: 3px solid var(--text-hover-color);
+  border-bottom: 3px solid var(--text-hover-color);
   width: 100%;
   margin: 0 auto;
 }
