@@ -97,14 +97,5 @@ export const roomMaintenanceIssues = [
 export const religions = [
     {value: "christianity", label: "Christianity"},
     {value: "islam", label: "Islam"},
-    {value: "secular", label: "Secular/Non-religious/Atheism"},
-    {value: "hinduism", label: "Hinduism"},
-    {value: "buddhism", label: "Buddhism"},
-    {value: "traditional-folk-religions", label: "Traditional Folk Religions"},
-    {value: "sikhism", label: "Sikhism"},
-    {value: "judaism", label: "Judaism"},
-    {value: "jainism", label: "Jainism"},
-    {value: "bahai", label: "Bahá'í Faith"},
-    {value: "shinto", label: "Shinto"},
-    {value: "zoroastrianism", label: "Zoroastrianism"},
+    {value: "non_muslim", label: "Non Muslim"},
 ];

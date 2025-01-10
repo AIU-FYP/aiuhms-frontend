@@ -11,13 +11,16 @@ interface Person {
   date: string
   name: string
   studentIdNumber: string
-  roomNumber: string
   whatsappNumber: string
   emailAddress: string
   gender: string
   status: string
   extend?: boolean | string
   bedId: number;
+  hostelName: string;
+  levelNumber: string;
+  roomNumber: string;
+  bedNumber: string;
 }
 
 const columns = [
@@ -35,8 +38,7 @@ const columns = [
 
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(10);
-const totalItems = ref(0);
+const pageSize = ref(8);
 const q = ref('');
 const isLoading = ref(true);
 
@@ -69,17 +71,6 @@ const openPopup = (row: Person) => {
   isPopupVisible.value = true;
 };
 
-
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return filteredRows.value.slice(start, end);
-});
-
-const handlePageChange = (newPage: number) => {
-  currentPage.value = newPage;
-};
-
 onMounted(fetchData)
 
 const selectedFilter = ref('active');
@@ -87,6 +78,7 @@ const selectedFilter = ref('active');
 const filterOptions = [
   {value: 'graduated', label: 'Graduated Students'},
   {value: 'active', label: 'Active Students'},
+  {value: 'terminated', label: 'Terminated'},
   {value: 'inactive', label: 'Non-Active Students'},
 ];
 
@@ -100,6 +92,21 @@ const filteredRows = computed(() => {
   }
   return people.value;
 });
+
+const totalItems = computed(() => filteredRows.value.length);
+
+const paginatedRows = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
+  return filteredRows.value.slice(start, end);
+});
+
+const handlePageChange = (newPage: number) => {
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
+  }
+};
 
 
 </script>
