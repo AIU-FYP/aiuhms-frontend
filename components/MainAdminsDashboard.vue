@@ -31,7 +31,7 @@ const columns = [
 
 const admins = ref<User[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(10);
+const pageSize = ref(5);
 const totalItems = ref(0);
 const q = ref('');
 

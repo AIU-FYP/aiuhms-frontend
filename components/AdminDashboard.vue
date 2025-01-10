@@ -1,3 +1,14 @@
+<script setup>
+import MainAdminsDashboard from "~/components/MainAdminsDashboard.vue";
+
+function handleLogout() {
+  useCookie('token').value = null;
+  navigateTo('/login');
+}
+
+</script>
+
+
 <template>
   <div class="settings-page">
     <div class="container">
@@ -22,9 +33,9 @@
               <UIcon name="eos-icons-admin" class="icon"/>
               <router-link to="admin">Admin</router-link>
             </li>
-            <li>
+            <li class="nav-item" @click="handleLogout">
               <UIcon name="uiw-logout" class="icon"/>
-              <router-link to="login">Log Out</router-link>
+              Logout
             </li>
           </ul>
         </nav>
@@ -32,22 +43,12 @@
 
       <main class="content">
         <h2>Admin Dashboard</h2>
-        <AdminsDashboard/>
+        <MainAdminsDashboard/>
       </main>
 
     </div>
   </div>
 </template>
-
-<script setup>
-
-import AdminsDashboard from "~/components/AdminsDashboard.vue";
-
-definePageMeta({
-  middleware: 'auth',
-})
-
-</script>
 
 <style scoped>
 .settings-page {

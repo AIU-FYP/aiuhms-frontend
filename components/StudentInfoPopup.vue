@@ -31,7 +31,7 @@ onMounted(async () => {
     const {$axios} = useNuxtApp();
     const {data} = await $axios().get('/hostels/');
     allHostels.value = data;
-    console.log('Hostels loaded:', data);
+    // console.log('Hostels loaded:', data);
   } catch (error) {
     console.error('Error fetching hostels:', error);
   } finally {
@@ -70,8 +70,10 @@ const handleDeleteStudent = async () => {
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
-    <div class="popup-container" @click.stop>
-      <!-- Header -->
+
+    <loader v-if="isLoading" class="loading-container"/>
+
+    <div class="popup-container" @click.stop v-else>
       <div class="popup-header">
         <span class="text-xl">Welcome to {{ props.student.name }}</span>
         <UIcon name="fontisto-close" @click="closePopup" class="close-btn"/>
@@ -79,9 +81,7 @@ const handleDeleteStudent = async () => {
 
       <hr class="divider">
 
-      <!-- Content -->
-      <div v-if="isLoading" class="loading-container">Loading..</div>
-      <div v-else class="popup-content">
+      <div class="popup-content">
         <div v-for="field in fields" :key="field.key" class="box">
           <span class="student-label-info">
             <UIcon name="ph-student" class="text-primary"/>
@@ -117,7 +117,6 @@ const handleDeleteStudent = async () => {
         </div>
       </div>
 
-      <!-- Footer -->
       <hr class="divider">
       <div class="popup-footer">
         <div class="popup-bts">
