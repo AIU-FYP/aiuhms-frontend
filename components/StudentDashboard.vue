@@ -2,8 +2,9 @@
 import {computed, onMounted, ref} from 'vue';
 import Popup from '~/components/StudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
-
-let {$axios} = useNuxtApp()
+import AdminSidebar from "~/components/AdminSidebar.vue";
+import Loader from "~/components/Loader.vue";
+const {$axios} = useNuxtApp()
 const api = $axios()
 
 interface Person {
@@ -32,10 +33,9 @@ const columns = [
   {key: 'room_number', label: 'Room No',},
   {key: 'bed_number', label: 'Bed No',},
   {key: 'gender', label: 'Gender', sortable: true},
-  {key: 'status', label: 'Status', sortable: true},
+  {key: 'status', label: 'Status', sortable: false},
   {key: 'extend', label: 'View', sortable: false}
 ];
-
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(8);
@@ -125,7 +125,7 @@ const handlePageChange = (newPage: number) => {
           <div class="content-body">
             <div class="header-section">
               <div class="filter-wrapper">
-                <UInput v-model="q" placeholder="Filter students..."/>
+                <UInput type="text" v-model="q" placeholder="Filter students..."/>
               </div>
 
               <div class="filter-dropdown">
@@ -225,7 +225,6 @@ const handlePageChange = (newPage: number) => {
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  padding: 50px 0;
   min-height: 90vh;
 }
 

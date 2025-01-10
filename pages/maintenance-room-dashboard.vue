@@ -1,5 +1,9 @@
 <script setup lang="ts">
 
+import MaintenanceDashboard from "~/components/MaintenanceDashboard.vue";
+import AdminHeader from "~/components/AdminHeader.vue";
+import AdminFooter from "~/components/AdminFooter.vue";
+
 definePageMeta({
   middleware: 'auth'
 })

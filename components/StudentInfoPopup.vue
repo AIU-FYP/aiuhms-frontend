@@ -84,7 +84,7 @@ const handleDeleteStudent = async () => {
       <div class="popup-content">
         <div v-for="field in fields" :key="field.key" class="box">
           <span class="student-label-info">
-            <UIcon name="ph-student" class="text-primary"/>
+            <UIcon name="ph-student" class="student-icon"/>
             {{ field.label }}:
           </span>
 
