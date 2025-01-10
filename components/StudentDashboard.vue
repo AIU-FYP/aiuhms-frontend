@@ -2,7 +2,6 @@
 import {computed, onMounted, ref} from 'vue';
 import Popup from '~/components/StudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
-import {useRouter} from 'vue-router'
 
 let {$axios} = useNuxtApp()
 const api = $axios()
@@ -60,61 +59,6 @@ const currentStudent = ref({});
 onMounted(() => {
   fetchData();
 });
-const visibleButtonIndex = ref<number | null>(null);
-
-const navigationButtons = [
-  {
-    name: "Student",
-    icon: "ph-student",
-    links: [
-      {text: "Register Student", url: "/student-registration-form"},
-      {text: "Manage Student", url: "/student-registration-dashboard"},
-    ],
-  },
-  {
-    name: "Maintenance",
-    icon: "wpf-maintenance",
-    links: [
-      {text: "Maintenance Form", url: "/maintenance-room-form"},
-      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
-    ],
-  },
-  {
-    name: "Change Room",
-    icon: "bx-building",
-    links: [
-      {text: "Change Room Form", url: "/change-room-form"},
-      {text: "Manage Room Changes", url: "/change-room-dashboard"},
-    ],
-  },
-  {
-    name: "Hostels",
-    icon: "bx-building",
-    links: [
-      {text: "Add new Building", url: "/new-hostel-form"},
-      {text: "Manage Rooms", url: "/room-dashboard"},
-    ],
-  },
-];
-
-function toggleLinkVisibility(index: number) {
-  visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
-}
-
-const router = useRouter();
-
-async function navigateToPage(url: string) {
-  isLoading.value = true;
-  try {
-    setTimeout(async () => {
-      await router.push(url);
-      isLoading.value = false;
-    }, 2000);
-  } catch (error) {
-    console.error('Navigation error:', error);
-    isLoading.value = false;
-  }
-}
 
 definePageMeta({
   middleware: 'auth',
@@ -164,23 +108,7 @@ const filteredRows = computed(() => {
   <div class="dashboard-wrapper">
     <div class="dashboard-container">
       <aside class="navigation-panel">
-        <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="navigation-button-wrapper">
-            <button
-                @click="toggleLinkVisibility(index)"
-                :aria-expanded="visibleButtonIndex === index"
-                class="navigation-button"
-            >
-              <UIcon :name="button.icon"/>
-              {{ button.name }}
-            </button>
-          </div>
-          <ul v-if="visibleButtonIndex === index" class="navigation-links">
-            <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url)" class="navigation-link">{{ link.text }}</a>
-            </li>
-          </ul>
-        </div>
+        <AdminSidebar/>
       </aside>
 
       <Loader v-if="isLoading"/>
@@ -267,28 +195,6 @@ const filteredRows = computed(() => {
   .navigation-panel {
     min-height: 30vh;
   }
-}
-
-.navigation-button-wrapper {
-  padding: .5rem;
-  background-color: transparent;
-}
-
-.navigation-button-wrapper:hover {
-  background-color: var(--primary-hover-color);
-}
-
-.navigation-button {
-  font-size: 1rem;
-  color: var(--text-light-color);
-  margin-bottom: 0.5rem;
-  text-align: start;
-  border-radius: .5rem;
-  transition: 0.3s ease-in-out;
-}
-
-.navigation-button:hover {
-  color: var(--text-hover-color);
 }
 
 .navigation-links li {
