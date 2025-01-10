@@ -31,8 +31,18 @@ const isLoading = ref(false);
 const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
-const totalItems = computed(() => filteredRows.value.length);
 const q = ref('');
+const currentStudent = ref({});
+
+onMounted(() => {
+  fetchData();
+});
+
+definePageMeta({
+  middleware: 'auth',
+});
+
+const totalItems = computed(() => filteredRows.value.length);
 
 const api = $axios()
 
@@ -94,80 +104,63 @@ const handlePageChange = (newPage: number) => {
 
 onMounted(fetchData)
 
-// hg
-
-
 
 
 </script>
 
 <template>
-  <div class="admin-dashboard">
-    <div class="container">
-
-      <aside class="sidebar">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <aside class="navigation-panel">
         <AdminSidebar/>
       </aside>
 
-      <loader v-if="isLoading"/>
+      <Loader v-if="isLoading"/>
 
-      <main class="dashboard-content" v-else>
-        <div class="sub-container">
-
-          <div class="content">
-            <div class="header">
-
-              <div class="search-container">
+      <main class="content-area" v-else>
+        <div class="content-wrapper">
+          <div class="content-body">
+            <div class="header-section">
+              <div class="filter-wrapper">
                 <UInput v-model="q" placeholder="Filter students..."/>
               </div>
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="extend-btn">View</a>
+                <a @click="openPopup(row)" class="view-button">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
-                    :request="currentRequest"
+                    :student="currentStudent"
                 />
               </template>
             </UTable>
 
-            <div class="pagination">
-              <button
-                  :disabled="currentPage === 1"
-                  @click="handlePageChange(currentPage - 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-left"
-                />
+            <div class="pagination-controls">
+              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)"
+                      class="pagination-button">
+                <UIcon name="mdi-arrow-left"/>
               </button>
-              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button
-                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)"
-              >
-                <UIcon
-                    name="mdi-arrow-right"
-                />
+              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                      @click="handlePageChange(currentPage + 1)" class="pagination-button">
+                <UIcon name="mdi-arrow-right"/>
               </button>
             </div>
-            <hr class="divider"/>
           </div>
         </div>
       </main>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-.admin-dashboard {
+.dashboard-wrapper {
   display: block;
-  background-color: var(--primary-color);
 }
 
-.container {
+.dashboard-container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -177,7 +170,7 @@ onMounted(fetchData)
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-panel {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -186,41 +179,64 @@ onMounted(fetchData)
   min-height: 100vh;
 }
 
-.dashboard-content {
+.content-area {
   flex: 6;
 }
 
 @media (max-width: 1200px) {
-  .admin-dashboard {
+  .dashboard-wrapper {
     display: block;
   }
 
-  .sidebar {
+  .navigation-panel {
     min-height: 30vh;
   }
 }
 
-.dashboard-content {
+.navigation-links li {
+  list-style: none;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: start;
+  text-transform: capitalize;
+  font-weight: normal;
+  color: var(--text-hover-color);
+  background-color: transparent;
+}
+
+.navigation-links li:hover {
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
+  transition: .3s ease-in-out;
+}
+
+.content-wrapper {
   flex: 10;
   background-color: #eeeeee;
+  padding: 50px 0;
+  min-height: 90vh;
 }
 
-.dashboard-info-content div {
-  margin: 1rem;
+.filter-wrapper{
+  padding: 1rem 1rem 0 1rem;
 }
 
-.dashboard-info-content div {
-  margin: 1rem;
-}
-
-.dashboard-content .header {
+.header-section {
   display: inline-flex;
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
 }
 
-.extend-btn {
+@media (max-width: 1200px) {
+  .header-section {
+    display: block;
+  }
+}
+
+
+.view-button {
   padding: .5rem;
   border-radius: .5rem 0;
   color: var(--text-hover-color);
@@ -228,38 +244,25 @@ onMounted(fetchData)
   cursor: pointer;
 }
 
-.extend-btn:hover {
+.view-button:hover {
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
-.header h2,
-.footer h2 {
-  font-size: 1.5rem;
-  color: var(--primary-hover-color);
-  text-align: center;
-  margin: 1rem auto;
-}
-
-.divider {
-  border-bottom: 2px solid var(--primary-hover-color);
-  margin: 1rem 0;
-}
-
-.pagination {
+.pagination-controls {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
 }
 
-.pagination span {
+.pagination-info {
   padding: .5rem 1rem;
   border-radius: .5rem;
   transition: 0.3s ease-in-out;
 }
 
-.pagination button {
+.pagination-button {
   padding: .5rem;
   border-radius: .5rem;
   color: var(--text-light-color);
@@ -268,20 +271,19 @@ onMounted(fetchData)
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .dashboard-container {
     display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .sidebar {
+  .navigation-panel {
     flex-basis: 100%;
   }
 
-  .dashboard-content {
+  .content-area {
     padding: 1rem;
   }
 }
-
-
 </style>
+
