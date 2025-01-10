@@ -82,6 +82,7 @@ async function handleSubmit() {
       console.log('Token from response:', response.data.access);
 
       useCookie('token').value = response.data.access;
+      useCookie('refresh_token').value = response.data.refresh;
 
       navigateTo('/admin');
       console.log('Navigated to /admin');

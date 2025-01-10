@@ -31,7 +31,7 @@ function constructApi(baseUrl: string): AxiosInstance {
     });
 
     api.interceptors.request.use((config) => {
-        const accessToken = useCookie('access_token').value;
+        const accessToken = useCookie('token').value
         if (accessToken) {
             config.headers = config.headers || {};
             config.headers['Authorization'] = `Bearer ${accessToken}`;

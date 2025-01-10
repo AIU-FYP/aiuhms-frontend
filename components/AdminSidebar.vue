@@ -1,12 +1,31 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
+import {useNuxtApp} from "#app";
+import {react} from "@babel/types";
 
 definePageMeta({
   middleware: 'auth',
 });
 
-const isLoading = ref(false);
+const isLoading = ref(true);
+
+const userDetails = ref();
+const isAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'admin')
+const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'super_admin')
+
+onMounted(async () => {
+  try {
+    const {$axios} = useNuxtApp();
+    const {data} = await $axios().get('/users/me/');
+    userDetails.value = data;
+    console.log('User Details:', data);
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 
 const router = useRouter();
 
@@ -30,6 +49,8 @@ const visibleButtonIndex = ref<number | null>(null);
 
 const navigationButtons = [
   {
+    forAdmin: false,
+    forSuperAdmin: true,
     name: "Student",
     icon: "ph-student",
     links: [
@@ -38,6 +59,8 @@ const navigationButtons = [
     ],
   },
   {
+    forAdmin: true,
+    forSuperAdmin: true,
     name: "Maintenance",
     icon: "wpf-maintenance",
     links: [
@@ -46,6 +69,8 @@ const navigationButtons = [
     ],
   },
   {
+    forAdmin: false,
+    forSuperAdmin: true,
     name: "Change Room",
     icon: "bx-building",
     links: [
@@ -54,6 +79,8 @@ const navigationButtons = [
     ],
   },
   {
+    forAdmin: false,
+    forSuperAdmin: true,
     name: "Hostels",
     icon: "bx-building",
     links: [
@@ -63,6 +90,21 @@ const navigationButtons = [
   },
 ];
 
+const visibleButtons = computed(() =>
+    navigationButtons.filter(button => {
+      if (button.forAdmin && button.forSuperAdmin) {
+        return isAdmin.value || isSuperAdmin.value;
+      }
+      if (button.forAdmin) {
+        return isAdmin.value;
+      }
+      if (button.forSuperAdmin) {
+        return isSuperAdmin.value;
+      }
+      return false;
+    })
+);
+
 function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
@@ -71,27 +113,31 @@ function toggleLinkVisibility(index: number) {
 <template>
   <div class="sidebar-section">
     <aside class="navigation-panel">
-      <div v-for="(button, index) in navigationButtons" :key="index">
+      <div v-for="(button, index) in visibleButtons" :key="index">
         <div class="navigation-button-wrapper">
           <button
               @click="toggleLinkVisibility(index)"
               :aria-expanded="visibleButtonIndex === index"
               class="navigation-button"
           >
-            <UIcon
-                :name="button.icon"
-            />
+            <UIcon :name="button.icon"/>
             {{ button.name }}
           </button>
         </div>
         <ul v-if="visibleButtonIndex === index" class="navigation-links">
-          <li v-for="(link, linkIndex) in button.links" :key="linkIndex" class="navigation-link-item">
-            <a
-                @click.prevent="navigateToPage(link.url,link.target)"
-                class="navigation-link"
-                target={{link.target}}
-                style="cursor: pointer"
-            >{{ link.text }}</a>
+          <li
+              v-for="(link, linkIndex) in button.links"
+              :key="linkIndex"
+              class="navigation-link-item"
+          >
+
+            <a @click.prevent="navigateToPage(link.url, link.target)"
+               class="navigation-link"
+               :target="link.target"
+               style="cursor: pointer"
+            >
+              {{ link.text }}
+            </a>
           </li>
         </ul>
       </div>
