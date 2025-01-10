@@ -189,31 +189,7 @@ async function handleSubmit() {
   <div class="account-settings-page">
     <div class="layout-container">
       <aside class="navigation-sidebar">
-        <h1 class="sidebar-title">Account Settings</h1>
-        <nav>
-          <ul class="navigation-menu">
-            <li class="menu-item">
-              <UIcon name="mdi-password" class="menu-icon"/>
-              <router-link to="change-admin-password">Change Password</router-link>
-            </li>
-            <li class="menu-item">
-              <UIcon name="subway-admin-1" class="menu-icon"/>
-              <router-link to="new-admin">Add New Admin</router-link>
-            </li>
-            <li class="menu-item">
-              <UIcon name="grommet-icons-user-admin" class="menu-icon"/>
-              <router-link to="admin-dashboard">Admin Dashboard</router-link>
-            </li>
-            <li class="menu-item">
-              <UIcon name="eos-icons-admin" class="menu-icon"/>
-              <router-link to="admin">Admin</router-link>
-            </li>
-            <li class="menu-item">
-              <UIcon name="uiw-logout" class="menu-icon"/>
-              <router-link to="login">Log Out</router-link>
-            </li>
-          </ul>
-        </nav>
+        <SettingSidebar/>
       </aside>
 
       <main class="form-content-area">
@@ -272,35 +248,6 @@ async function handleSubmit() {
   color: var(--text-light-color);
   border-radius: 1rem;
   min-height: 81vh;
-}
-
-.sidebar-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.navigation-menu {
-  list-style: none;
-  padding: 0;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: .5rem;
-  margin-bottom: 15px;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.menu-item:hover {
-  background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
-}
-
-.menu-icon {
-  margin-right: 10px;
 }
 
 .menu-item a {
