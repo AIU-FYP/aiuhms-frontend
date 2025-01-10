@@ -1,17 +1,37 @@
 <script setup lang="ts">
 
 
+import {onMounted, ref} from "vue";
+import {useNuxtApp} from "#app";
+
 function handleLogout() {
   useCookie('token').value = null;
   navigateTo('/login');
 }
 
+const isLoading = ref(true);
+const userDetails = ref();
+const isAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'admin')
+const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'super_admin')
+
+onMounted(async () => {
+  try {
+    const {$axios} = useNuxtApp();
+    const {data} = await $axios().get('/users/me/');
+    userDetails.value = data;
+    console.log('User Details:', data);
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 
 
 </script>
 
 <template>
-  <div class="setting-sidebar">
+  <div class="setting-sidebar" v-if="!isLoading">
     <h1>Account Settings</h1>
     <nav>
       <ul class="menu">
@@ -19,15 +39,15 @@ function handleLogout() {
           <UIcon name="mdi-password" class="icon"/>
           <router-link to="change-admin-password">Change Password</router-link>
         </li>
-        <li>
+        <li v-if="isSuperAdmin">
           <UIcon name="subway-admin-1" class="icon"/>
           <router-link to="new-admin">Add New Admin</router-link>
         </li>
-        <li>
+        <li v-if="isSuperAdmin">
           <UIcon name="grommet-icons-user-admin" class="icon"/>
           <router-link to="admin-dashboard">Admin dashboard</router-link>
         </li>
-        <li>
+        <li v-if="isSuperAdmin">
           <UIcon name="eos-icons-admin" class="icon"/>
           <router-link to="admin">Admin</router-link>
         </li>
