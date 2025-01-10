@@ -1,65 +1,16 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
-import {useNuxtApp} from '#app'
+import {computed, onMounted, ref} from 'vue';
+import {useNuxtApp} from "#app";
+import AdminSidebar from "~/components/AdminSidebar.vue";
+
+definePageMeta({
+  middleware: 'auth',
+});
+
 let {$axios} = useNuxtApp()
+
 const api = $axios()
-
 const isLoading = ref(false);
-const router = useRouter();
-
-async function navigateToPage(url: string) {
-  isLoading.value = true;
-  try {
-    setTimeout(async () => {
-      await router.push(url);
-      isLoading.value = false;
-    }, 2000);
-  } catch (error) {
-    console.error('Navigation error:', error);
-    isLoading.value = false;
-  }
-}
-
-const visibleButtonIndex = ref<number | null>(null);
-
-const navigationButtons = [
-  {
-    name: "Student",
-    icon: "ph-student",
-    links: [
-      {text: "Register Student", url: "/student-registration-form"},
-      {text: "Manage Student", url: "/student-registration-dashboard"},
-    ],
-  },
-  {
-    name: "Maintenance",
-    icon: "wpf-maintenance",
-    links: [
-      {text: "Maintenance Form", url: "/maintenance-room-form"},
-      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
-    ],
-  },
-  {
-    name: "Change Room",
-    icon: "bx-building",
-    links: [
-      {text: "Change Room Form", url: "/change-room-form"},
-      {text: "Manage Room Changes", url: "/change-room-dashboard"},
-    ],
-  },
-  {
-    name: "Hostels",
-    icon: "bx-building",
-    links: [
-      {text: "Add new Hostel", url: "/new-hostel-form"},
-      {text: "Manage Rooms", url: "/room-dashboard"},
-    ],
-  },
-];
-
-function toggleLinkVisibility(index: number) {
-  visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
-}
 
 interface HostelStats {
   student_statistics: {
@@ -150,90 +101,71 @@ onMounted(() => {
   fetchStats();
 })
 
-
 </script>
 
 <template>
-  <div class="dashboard-wrapper">
+  <div class="dashboard-layout">
     <div class="dashboard-container">
 
-      <aside class="dashboard-sidebar">
-        <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="button-wrapper">
-            <button
-                @click="toggleLinkVisibility(index)"
-                :aria-expanded="visibleButtonIndex === index"
-                class="sidebar-btn"
-            >
-              <UIcon
-                  :name="button.icon"
-              />
-              {{ button.name }}
-            </button>
-          </div>
-          <ul v-if="visibleButtonIndex === index">
-            <li v-for="(link, linkIndex) in button.links" :key="linkIndex">
-              <a @click.prevent="navigateToPage(link.url)" style="cursor: pointer">{{ link.text }}</a>
-            </li>
-          </ul>
-        </div>
+      <aside class="navigation-panel">
+        <AdminSidebar/>
       </aside>
 
-      <main class="content-area">
+      <loader v-if="isLoading"/>
 
-        <section class="info-content">
-          <div class="welcome-wrapper">
-            <h2>Welcome back </h2>
-          </div>
-          <div class="image-wrapper">
-            <img src="/images/login.webp" alt="welcome-image">
-          </div>
-        </section>
+      <main class="content-area" v-else>
 
-        <div v-if="isFetching" class="loading-indicator">
-          <Loader/>
-        </div>
-        <section
-            v-else
-            v-for="item in dashboardItems"
-            :key="item.title"
-            class="analysis-wrapper"
-        >
-          <div class="stat-wrapper">
-            <div
-                v-for="(stat, index) in item.maintenanceStats"
-                :key="index"
-                class="stat-item"
-            >
-              <div class="stat-box">
-                <h4>{{ stat.subTitle }}</h4>
-                <span class="stat-icon">
+          <section class="info-content">
+            <div class="welcome-wrapper">
+              <h2>Welcome back </h2>
+            </div>
+            <div class="image-wrapper">
+              <img src="/images/login.webp" alt="welcome-image">
+            </div>
+          </section>
+
+          <div v-if="isFetching" class="loading-indicator">
+            <Loader/>
+          </div>
+          <section
+              v-else
+              v-for="item in dashboardItems"
+              :key="item.title"
+              class="analysis-wrapper"
+          >
+            <div class="stat-wrapper">
+              <div
+                  v-for="(stat, index) in item.maintenanceStats"
+                  :key="index"
+                  class="stat-item"
+              >
+                <div class="stat-box">
+                  <h4>{{ stat.subTitle }}</h4>
+                  <span class="stat-icon">
               <UIcon :name="stat.icon" />
             </span>
-              </div>
-              <div class="stat-number">
-                <span>{{ stat.totalNum }}</span>
+                </div>
+                <div class="stat-number">
+                  <span>{{ stat.totalNum }}</span>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-      </main>
+        </main>
 
     </div>
   </div>
 </template>
 
 <style scoped>
-.dashboard-wrapper {
+.dashboard-layout {
   display: block;
-  background-color: var(--primary-color);
 }
 
 .dashboard-container {
   display: flex;
   flex-wrap: nowrap;
-  flex-direction: row;
   padding: 0;
   border-top: 3px solid var(--text-hover-color);
   border-bottom: 3px solid var(--text-hover-color);
@@ -241,7 +173,7 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-.dashboard-sidebar {
+.navigation-panel {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -250,69 +182,19 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-.content-area{
+.content-area {
   flex: 6;
+  margin: 1rem;
 }
 
 @media (max-width: 1200px) {
-  .dashboard-wrapper {
+  .dashboard-layout {
     display: block;
   }
 
-  .dashboard-container{
-    flex-direction: column;
-  }
-
-  .dashboard-sidebar {
+  .navigation-panel {
     min-height: 30vh;
   }
-}
-
-
-.button-wrapper {
-  padding: .5rem;
-  background-color: transparent;
-}
-
-.button-wrapper:hover {
-  background-color: var(--primary-hover-color);
-}
-
-.sidebar-btn {
-  font-size: 1rem;
-  color: var(--text-light-color);
-  margin-bottom: 0.5rem;
-  text-align: start;
-  border-radius: .5rem;
-  transition: 0.3s ease-in-out;
-}
-
-.sidebar-btn:hover {
-  color: var(--text-hover-color);
-}
-
-.dashboard-sidebar ul li {
-  list-style: none;
-  margin: 0.5rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  text-align: start;
-  text-transform: capitalize;
-  font-weight: normal;
-  color: var(--text-hover-color);
-  background-color: transparent;
-}
-
-.dashboard-sidebar li:hover {
-  color: var(--text-hover-color);
-  background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
-}
-
-.content-area {
-  flex: 10;
-  padding: 2rem;
-  background-color: #eeeeee;
 }
 
 .info-content {
@@ -377,6 +259,7 @@ onMounted(() => {
   background-color: var(--primary-color);
 }
 
+
 .stat-item .stat-number > span {
   display: flex;
   margin: 2rem 0;
@@ -398,16 +281,29 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .dashboard-sidebar {
-    flex-basis: 100%;
-  }
-
   .content-area {
     padding: 1rem;
   }
 
   .stat-wrapper {
     flex-direction: column;
+  }
+}
+
+
+@media (max-width: 1200px) {
+  .dashboard-container {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation-panel {
+    flex-basis: 100%;
+  }
+
+  .content-area {
+    padding: 1rem;
   }
 }
 </style>
