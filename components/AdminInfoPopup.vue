@@ -1,27 +1,33 @@
 <template>
   <div v-if="show" class="modal-overlay" @click="closePopup">
     <div class="modal-container" @click.stop>
-
+      <!-- Modal Header -->
       <div class="modal-header">
-        <span style="font-size: 1.5rem">Welcome to {{ props.admins.name }}</span>
+        <span v-if="admins?.name" style="font-size: 1.5rem">
+          Welcome to {{ admins.name }}
+        </span>
         <span @click="closePopup" class="modal-close-btn">
-          <UIcon name="fontisto-close"/>
+          <UIcon name="fontisto-close" />
         </span>
       </div>
 
+      <!-- Modal Content -->
       <div class="modal-content">
         <div class="field-container" v-for="field in studentFields" :key="field.key">
           <span class="field-label">
-            <UIcon style="color: var(--primary-color)" name="ph-student"/>
+            <UIcon style="color: var(--primary-color)" name="ph-student" />
             {{ field.label }}:
           </span>
-          <span class="field-input">{{ admins[field.key] }}</span>
+          <span class="field-input">{{ admins?.[field.key] || 'N/A' }}</span>
         </div>
       </div>
 
+      <!-- Modal Footer -->
       <div class="modal-footer">
         <div class="action-buttons">
-          <button @click="deleteAdmin" class="delete-button" id="deleteAdmin">Delete Admin</button>
+          <button @click="deleteAdmin" class="delete-button" id="deleteAdmin">
+            Delete Admin
+          </button>
         </div>
       </div>
     </div>
@@ -29,8 +35,8 @@
 </template>
 
 <script setup>
-import {defineEmits, defineProps} from "vue";
-import {useNuxtApp} from "#app";
+import { defineProps, defineEmits } from "vue";
+import { useNuxtApp } from "#app";
 
 const props = defineProps({
   show: Boolean,
@@ -40,37 +46,29 @@ const props = defineProps({
 const emit = defineEmits(["update:show"]);
 
 const studentFields = [
-  {label: "ID", key: "id"},
-  {label: "Name", key: "name"},
-  {key: "username", label: "Username"},
-  {key: "staff_ID", label: "Staff ID"},
-  {key: "staff_type", label: "Admin Type"},
-  {label: "WhatsApp No", key: "phone"},
-  {label: "Password", key: "password"},
-  {label: "Email Address", key: "email"},
+  { label: "ID", key: "id" },
+  { label: "Name", key: "name" },
+  { label: "Username", key: "username" },
+  { label: "Staff ID", key: "staff_ID" },
+  { label: "Admin Type", key: "staff_type" },
+  { label: "WhatsApp No", key: "phone" },
+  { label: "Password", key: "password" },
+  { label: "Email Address", key: "email" },
 ];
 
 const closePopup = () => {
   emit("update:show", false);
 };
 
-let {$axios} = useNuxtApp();
-const api = $axios();
-
-const updateAdminInfo = async () => {
-  try {
-    const response = await api.patch(`/users/${props.admins.id}/`, {
-      ...props.admins,
-    });
-    console.log("Admin updated successfully:", response.data);
-    alert("Admin info updated successfully.");
-    emit("update:show", false);
-  } catch (error) {
-    console.error("Error updating admin:", error.response?.data || error.message);
-  }
-};
+let {$axios} = useNuxtApp()
+const api = $axios()
 
 const deleteAdmin = async () => {
+  if (!props.admins?.id) {
+    alert("Invalid admin data. Unable to delete.");
+    return;
+  }
+
   try {
     const response = await api.delete(`/users/${props.admins.id}/`);
     console.log("Admin deleted successfully:", response.data);
@@ -78,6 +76,7 @@ const deleteAdmin = async () => {
     emit("update:show", false);
   } catch (error) {
     console.error("Error deleting admin:", error.response?.data || error.message);
+    alert("Failed to delete admin. Please try again.");
   }
 };
 </script>
