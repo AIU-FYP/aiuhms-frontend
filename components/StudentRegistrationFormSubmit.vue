@@ -1,25 +1,11 @@
 <script setup lang="ts">
 
-import {ref} from 'vue'
-
-interface Person {
-  id: number
-  date: string
-  name: string
-  studentIdNumber: string
-  roomNumber: string
-  whatsappNumber: string
-  emailAddress: string
-  gender: string
-  extend?: boolean | string
-}
-
-ref<Person[]>([]);
 </script>
 
 <template>
   <div class="dashboard-layout">
     <div class="dashboard-container">
+
       <aside class="navigation-sidebar">
         <AdminSidebar/>
       </aside>
@@ -27,6 +13,7 @@ ref<Person[]>([]);
       <main class="content-section">
         <StudentRegistrationForm/>
       </main>
+
     </div>
   </div>
 </template>

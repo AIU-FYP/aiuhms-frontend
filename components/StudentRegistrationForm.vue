@@ -17,7 +17,6 @@ const filteredNationalities = computed(() => {
       n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
   );
 });
-
 const userReligionsInput = ref('');
 const filteredReligions = computed(() => {
   if (!userReligionsInput.value) {
@@ -27,31 +26,9 @@ const filteredReligions = computed(() => {
       n.toLowerCase().startsWith(userReligionsInput.value.toLowerCase())
   );
 });
-
 const isPopupVisible = ref(false);
-
-const formSchema = z.object({
-  "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
-  "passport": z.string()
-      .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format")
-      .nonempty("Passport Number is required"),
-  "arrival_date": z.string().nonempty("Date of Birth is required"),
-  "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format").nonempty("WhatsApp number is required"),
-  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'").nonempty("Email address is required"),
-  "gender": z.string().nonempty("Gender is required"),
-  "religion": z.string().optional(),
-  "nationality": z.string().optional(),
-  "major": z.string().min(3, "Name must be at least 3 characters long").nonempty("Major is required"),
-  "block_name": z.string().nonempty("Block Name is required"),
-  "level_number": z.string().nonempty("Level Number is required"),
-  "room": z.string().nonempty("Room is required"),
-  "bed": z.number().optional(),
-});
-
 let {$axios} = useNuxtApp()
 const api = $axios()
-
 const selectedHostelIndex = ref(0)
 const allHostels = ref([])
 const selectedHostel = computed(() => allHostels[selectedHostelIndex])
@@ -164,6 +141,24 @@ const questions = computed(() => {
     }
   ]
 });
+const formSchema = z.object({
+  "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
+  "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
+  "passport": z.string()
+      .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format")
+      .nonempty("Passport Number is required"),
+  "arrival_date": z.string().nonempty("Date of Birth is required"),
+  "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format").nonempty("WhatsApp number is required"),
+  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'").nonempty("Email address is required"),
+  "gender": z.string().nonempty("Gender is required"),
+  "religion": z.string().optional(),
+  "nationality": z.string().optional(),
+  "major": z.string().min(3, "Name must be at least 3 characters long").nonempty("Major is required"),
+  "block_name": z.string().nonempty("Block Name is required"),
+  "level_number": z.string().nonempty("Level Number is required"),
+  "room": z.string().nonempty("Room is required"),
+  "bed": z.number().optional(),
+});
 
 questions.value.forEach((question) => {
   form[question.id] = "";
@@ -188,7 +183,7 @@ const isLoading = ref(true)
 onMounted(async () => {
   try {
     const {data} = await api.get('/hostels/')
-    console.log(data)
+    // console.log(data)
     allHostels.value = data
     selectedHostel.value = data[0]
   } catch (e) {
@@ -197,7 +192,6 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
-
 
 async function handleSubmit() {
   const api = useApi();
@@ -274,15 +268,8 @@ async function handleSubmit() {
                   }}
                 </option>
               </select>
-              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 
-              <textarea
-                  v-if="question.type === 'textarea'"
-                  :id="question.id"
-                  :name="question.label"
-                  :placeholder="question.placeholder"
-                  v-model="form[question.id]"
-              />
+              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 
             </div>
           </div>
