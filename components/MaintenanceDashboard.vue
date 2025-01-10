@@ -31,7 +31,7 @@ const isLoading = ref(false);
 const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
-const totalItems = ref(0);
+const totalItems = computed(() => filteredRows.value.length);
 const q = ref('');
 
 const api = $axios()
@@ -45,7 +45,6 @@ const fetchData = async () => {
       ...request,
       date: new Date().toLocaleDateString(),
     }));
-    totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -58,60 +57,6 @@ const isPopupVisible = ref(false);
 const currentRequest = ref({});
 
 onMounted(fetchData)
-
-const visibleButtonIndex = ref<number | null>(null);
-
-const navigationButtons = [
-  {
-    name: "Student",
-    icon: "ph-student",
-    links: [
-      {text: "Register Student", url: "/student-registration-form"},
-      {text: "Manage Student", url: "/student-registration-dashboard"},
-    ],
-  },
-  {
-    name: "Maintenance",
-    icon: "wpf-maintenance",
-    links: [
-      {text: "Maintenance Form", url: "/maintenance-room-form"},
-      {text: "Manage Maintenance", url: "/maintenance-room-dashboard"},
-    ],
-  },
-  {
-    name: "Change Room",
-    icon: "bx-building",
-    links: [
-      {text: "Change Room Form", url: "/change-room-form"},
-      {text: "Manage Room Changes", url: "/change-room-dashboard"},
-    ],
-  },
-  {
-    name: "Hostels",
-    icon: "bx-building",
-    links: [
-      {text: "Add new Building", url: "/new-hostel-form"},
-      {text: "Manage Rooms", url: "/room-dashboard"},
-    ],
-  },
-];
-
-function toggleLinkVisibility(index: number) {
-  visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
-}
-
-const router = useRouter();
-
-async function navigateToPage(url: string) {
-  isLoading.value = false;
-  try {
-    setTimeout(async () => {
-      await router.push(url);
-    });
-  } catch (error) {
-    console.error('Navigation error:', error);
-  }
-}
 
 definePageMeta({
   middleware: 'auth',
@@ -137,59 +82,49 @@ const filteredRows = computed(() => {
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
+  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
   return filteredRows.value.slice(start, end);
 });
 
 const handlePageChange = (newPage: number) => {
-  currentPage.value = newPage;
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
+  }
 };
 
 onMounted(fetchData)
 
+// hg
+
+
+
+
 </script>
 
 <template>
-  <div class="dashboard-layout">
-    <div class="dashboard-container">
+  <div class="admin-dashboard">
+    <div class="container">
 
-      <aside class="navigation-panel">
-        <div v-for="(button, index) in navigationButtons" :key="index">
-          <div class="navigation-button-wrapper">
-            <button
-                @click="toggleLinkVisibility(index)"
-                :aria-expanded="visibleButtonIndex === index"
-                class="navigation-button"
-            >
-              <UIcon
-                  :name="button.icon"
-              />
-              {{ button.name }}
-            </button>
-          </div>
-          <ul v-if="visibleButtonIndex === index" class="navigation-links">
-            <li v-for="(link, linkIndex) in button.links" :key="linkIndex" class="navigation-link-item">
-              <a @click.prevent="navigateToPage(link.url)" class="navigation-link">{{ link.text }}</a>
-            </li>
-          </ul>
-        </div>
+      <aside class="sidebar">
+        <AdminSidebar/>
       </aside>
 
-      <loader v-if="isLoading" />
+      <loader v-if="isLoading"/>
 
-      <main class="content-area" v-else>
-        <div class="content-wrapper">
+      <main class="dashboard-content" v-else>
+        <div class="sub-container">
 
-          <div class="content-body">
-            <div class="header-section">
+          <div class="content">
+            <div class="header">
 
-              <div class="search-wrapper">
-                <UInput v-model="q" placeholder="Filter students..." />
+              <div class="search-container">
+                <UInput v-model="q" placeholder="Filter students..."/>
               </div>
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="view-button">View</a>
+                <a @click="openPopup(row)" class="extend-btn">View</a>
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
@@ -198,23 +133,26 @@ onMounted(fetchData)
               </template>
             </UTable>
 
-            <div class="pagination-controls">
+            <div class="pagination">
               <button
                   :disabled="currentPage === 1"
                   @click="handlePageChange(currentPage - 1)"
-                  class="pagination-button"
               >
-                <UIcon name="mdi-arrow-left" />
+                <UIcon
+                    name="mdi-arrow-left"
+                />
               </button>
-              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+              <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
               <button
                   :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
                   @click="handlePageChange(currentPage + 1)"
-                  class="pagination-button"
               >
-                <UIcon name="mdi-arrow-right" />
+                <UIcon
+                    name="mdi-arrow-right"
+                />
               </button>
             </div>
+            <hr class="divider"/>
           </div>
         </div>
       </main>
@@ -224,11 +162,12 @@ onMounted(fetchData)
 </template>
 
 <style scoped>
-.dashboard-layout {
+.admin-dashboard {
   display: block;
+  background-color: var(--primary-color);
 }
 
-.dashboard-container {
+.container {
   display: flex;
   flex-wrap: nowrap;
   padding: 0;
@@ -238,7 +177,7 @@ onMounted(fetchData)
   margin: 0 auto;
 }
 
-.navigation-panel {
+.sidebar {
   flex: 2;
   background-color: var(--primary-color);
   padding: 2rem 1rem;
@@ -247,88 +186,41 @@ onMounted(fetchData)
   min-height: 100vh;
 }
 
-.content-area {
+.dashboard-content {
   flex: 6;
 }
 
 @media (max-width: 1200px) {
-  .dashboard-layout {
+  .admin-dashboard {
     display: block;
   }
 
-  .navigation-panel {
+  .sidebar {
     min-height: 30vh;
   }
 }
 
-.navigation-button-wrapper {
-  padding: .5rem;
-  background-color: transparent;
-}
-
-.navigation-button-wrapper:hover {
-  background-color: var(--primary-hover-color);
-}
-
-.navigation-button {
-  font-size: 1rem;
-  color: var(--text-light-color);
-  margin-bottom: 0.5rem;
-  text-align: start;
-  border-radius: .5rem;
-  transition: 0.3s ease-in-out;
-}
-
-.navigation-button:hover {
-  color: var(--text-hover-color);
-}
-
-.navigation-links {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.navigation-link-item {
-  margin: 0.5rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-  text-align: start;
-  text-transform: capitalize;
-  font-weight: normal;
-  color: var(--text-hover-color);
-  background-color: transparent;
-}
-
-.navigation-link-item:hover {
-  color: var(--text-hover-color);
-  background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
-}
-
-.navigation-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.content-wrapper {
+.dashboard-content {
   flex: 10;
   background-color: #eeeeee;
-  padding: 50px 0;
 }
 
-.header-section {
+.dashboard-info-content div {
+  margin: 1rem;
+}
+
+.dashboard-info-content div {
+  margin: 1rem;
+}
+
+.dashboard-content .header {
   display: inline-flex;
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
 }
 
-.search-wrapper {
-  padding: 1rem;
-}
-
-.view-button {
+.extend-btn {
   padding: .5rem;
   border-radius: .5rem 0;
   color: var(--text-hover-color);
@@ -336,25 +228,38 @@ onMounted(fetchData)
   cursor: pointer;
 }
 
-.view-button:hover {
+.extend-btn:hover {
   color: var(--text-light-color);
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
-.pagination-controls {
+.header h2,
+.footer h2 {
+  font-size: 1.5rem;
+  color: var(--primary-hover-color);
+  text-align: center;
+  margin: 1rem auto;
+}
+
+.divider {
+  border-bottom: 2px solid var(--primary-hover-color);
+  margin: 1rem 0;
+}
+
+.pagination {
   display: flex;
   justify-content: center;
   margin: 1rem 0;
 }
 
-.pagination-info {
+.pagination span {
   padding: .5rem 1rem;
   border-radius: .5rem;
   transition: 0.3s ease-in-out;
 }
 
-.pagination-button {
+.pagination button {
   padding: .5rem;
   border-radius: .5rem;
   color: var(--text-light-color);
@@ -362,21 +267,21 @@ onMounted(fetchData)
   transition: 0.3s ease-in-out;
 }
 
-
 @media (max-width: 1200px) {
-  .dashboard-container {
+  .container {
     display: block;
   }
 }
 
 @media (max-width: 768px) {
-  .navigation-panel {
+  .sidebar {
     flex-basis: 100%;
   }
 
-  .content-area {
+  .dashboard-content {
     padding: 1rem;
   }
 }
-</style>
 
+
+</style>
