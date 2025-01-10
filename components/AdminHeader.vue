@@ -12,7 +12,7 @@ const isLoading = ref(false);
 const handleSettingsNavigation = () => {
   isLoading.value = true;
   try {
-    navigateTo("/setting");
+    navigateTo("/change-admin-password");
   } finally {
     isLoading.value = false;
   }

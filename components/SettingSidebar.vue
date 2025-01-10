@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 import {onMounted, ref} from "vue";
 import {useNuxtApp} from "#app";
 
@@ -35,9 +33,13 @@ onMounted(async () => {
     <h1>Account Settings</h1>
     <nav>
       <ul class="menu">
-        <li>
+        <li v-if="isAdmin">
           <UIcon name="mdi-password" class="icon"/>
           <router-link to="change-admin-password">Change Password</router-link>
+        </li>
+        <li v-if="isSuperAdmin">
+          <UIcon name="subway-admin-1" class="icon"/>
+          <router-link to="setting">Setting</router-link>
         </li>
         <li v-if="isSuperAdmin">
           <UIcon name="subway-admin-1" class="icon"/>

@@ -2,66 +2,63 @@
 import MainAdminsDashboard from "~/components/MainAdminsDashboard.vue";
 </script>
 
-
 <template>
-  <div class="settings-page">
-    <div class="container">
-
-      <aside class="sidebar">
+  <div class="account-settings-page">
+    <div class="layout-container">
+      <aside class="navigation-sidebar">
         <SettingSidebar/>
       </aside>
 
-      <main class="content">
-        <h2>Admin Dashboard</h2>
+      <main class="form-content-area">
         <MainAdminsDashboard/>
       </main>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-.settings-page {
+.account-settings-page {
   display: flex;
   padding: 20px;
 }
 
-.container {
+.layout-container {
   display: flex;
   gap: 20px;
   width: 100%;
   margin: 0 auto;
 }
 
-.sidebar {
+.navigation-sidebar {
   flex: 1;
   background-color: var(--primary-color);
   padding: 20px;
   color: var(--text-light-color);
-  border-radius: 10px;
+  border-radius: 1rem;
   min-height: 81vh;
 }
 
-.content {
+.form-content-area {
   flex: 3;
   background-color: #ecf0f1;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
-.content h2 {
+h2 {
   font-size: 1.5rem;
   margin-bottom: 20px;
   color: var(--primary-hover-color);
 }
 
 @media (max-width: 768px) {
-  .container {
+  .layout-container {
     flex-direction: column;
   }
 
-  .sidebar {
+  .navigation-sidebar {
     margin-bottom: 20px;
   }
 }
 </style>
+

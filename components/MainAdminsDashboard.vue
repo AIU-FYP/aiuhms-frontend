@@ -97,63 +97,51 @@ onMounted(fetchData)
 
 <template>
   <div class="dashboard-wrapper">
-    <div class="dashboard-container">
-      <main class="content-wrapper">
+    <main class="content-wrapper">
 
-        <div class="content-body">
+      <div class="content-body">
 
-          <div class="content-header">
-            <div class="search-box">
-              <UInput v-model="q" placeholder="Filter admins..."/>
-            </div>
-          </div>
-
-          <UTable :columns="columns" :rows="paginatedRows">
-            <template #extend-data="{ row }">
-              <a @click="openPopup(row)" class="view-button">View</a>
-              <Popup
-                  :show="isPopupVisible"
-                  @update:show="isPopupVisible = $event"
-                  :admins="currentStudent"
-              />
-            </template>
-          </UTable>
-
-          <div class="pagination-controls">
-            <button
-                :disabled="currentPage === 1"
-                @click="handlePageChange(currentPage - 1)"
-            >
-              <UIcon name="mdi-arrow-left"/>
-            </button>
-            <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-            <button
-                :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                @click="handlePageChange(currentPage + 1)"
-            >
-              <UIcon name="mdi-arrow-right"/>
-            </button>
+        <div class="content-header">
+          <div class="search-box">
+            <UInput v-model="q" placeholder="Filter admins..."/>
           </div>
         </div>
 
-      </main>
-    </div>
+        <UTable :columns="columns" :rows="paginatedRows">
+          <template #extend-data="{ row }">
+            <a @click="openPopup(row)" class="view-button">View</a>
+            <Popup
+                :show="isPopupVisible"
+                @update:show="isPopupVisible = $event"
+                :admins="currentStudent"
+            />
+          </template>
+        </UTable>
+
+        <div class="pagination-controls">
+          <button
+              :disabled="currentPage === 1"
+              @click="handlePageChange(currentPage - 1)"
+          >
+            <UIcon name="mdi-arrow-left"/>
+          </button>
+          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+          <button
+              :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+              @click="handlePageChange(currentPage + 1)"
+          >
+            <UIcon name="mdi-arrow-right"/>
+          </button>
+        </div>
+      </div>
+
+    </main>
   </div>
 </template>
 
 <style scoped>
 .dashboard-wrapper {
   display: block;
-}
-
-.dashboard-container {
-  display: flex;
-  flex-wrap: nowrap;
-  padding: 0;
-  border-top: 3px solid var(--text-hover-color);
-  border-bottom: 3px solid var(--text-hover-color);
-  width: 100%;
-  margin: 0 auto;
 }
 
 .content-wrapper {
@@ -209,11 +197,6 @@ onMounted(fetchData)
   transition: 0.3s ease-in-out;
 }
 
-@media (max-width: 1200px) {
-  .dashboard-container {
-    display: block;
-  }
-}
 
 @media (max-width: 768px) {
   .content-wrapper {
