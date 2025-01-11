@@ -32,7 +32,6 @@ const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const q = ref('');
-const currentStudent = ref({});
 
 onMounted(() => {
   fetchData();
@@ -214,7 +213,7 @@ onMounted(fetchData)
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  padding: 50px 0;
+  padding:0;
   min-height: 90vh;
 }
 

@@ -101,12 +101,11 @@ onMounted(fetchData)
         <AdminSidebar/>
       </aside>
 
-      <main class="content-section" v-if="isLoading">
-        <Loader />
-      </main>
+      <main class="content-section" >
 
-      <main class="content-section" v-else>
-        <div class="content-wrapper">
+        <Loader  v-if="isLoading"/>
+
+        <div class="content-wrapper" v-else>
 
           <div class="content-body">
 
