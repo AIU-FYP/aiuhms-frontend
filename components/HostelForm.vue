@@ -109,12 +109,13 @@ async function handleSubmit() {
         })
       }
 
-      console.log(payload)
+      // console.log(payload)
 
       const response = await api.post("/hostels/", payload);
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
+      location.reload()
     } catch (error) {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);

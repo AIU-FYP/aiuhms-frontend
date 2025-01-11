@@ -164,6 +164,7 @@ async function handleSubmit() {
       });
 
       alert("Form submitted successfully!");
+      location.reload()
     } catch (error) {
       console.error("Error occurred:", error);
       if (error.response) {
