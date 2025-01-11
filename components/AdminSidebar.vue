@@ -2,7 +2,6 @@
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import {useNuxtApp} from "#app";
-import {react} from "@babel/types";
 
 definePageMeta({
   middleware: 'auth',
@@ -86,6 +85,15 @@ const navigationButtons = [
     links: [
       {text: "Add new Hostel", url: "/new-hostel-form", target: "_self"},
       {text: "Manage Rooms", url: "/room-dashboard", target: "_self"},
+    ],
+  },
+  {
+    forAdmin: false,
+    forSuperAdmin: true,
+    name: "Admin",
+    icon: "mdi-user",
+    links: [
+      {text: "Admin", url: "/admin", target: "_self"},
     ],
   },
 ];
