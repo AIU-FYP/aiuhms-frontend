@@ -14,7 +14,7 @@ const filteredNationalities = computed(() => {
   );
 });
 
-const previousQuestions = [
+const RequestedChangeRoomQuestions = [
   {
     label: "Name",
     type: "text",
@@ -115,7 +115,7 @@ const formSchema = z.object({
 const form = reactive({});
 const errors = reactive({});
 
-previousQuestions.forEach((question) => {
+RequestedChangeRoomQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -129,7 +129,7 @@ function validateField(field) {
   }
 }
 
-previousQuestions.forEach((question) => {
+RequestedChangeRoomQuestions.forEach((question) => {
   watch(() => form[question.id], (newValue) => validateField(question.id, newValue));
 });
 
@@ -172,6 +172,7 @@ async function handleSubmit() {
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
+      location.reload()
     } catch (error) {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);
@@ -215,7 +216,7 @@ async function handleSubmit() {
         <h2>Please fill this Form</h2>
         <form @submit.prevent.once="handleSubmit">
           <div class="maintenance-form">
-            <div class="info" v-for="(question, index) in previousQuestions" :key="index">
+            <div class="info" v-for="(question, index) in RequestedChangeRoomQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
