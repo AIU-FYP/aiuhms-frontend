@@ -202,7 +202,6 @@ onMounted(fetchData)
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  padding: 50px 0;
 }
 
 .header-section {

@@ -4,6 +4,7 @@ import Popup from '~/components/StudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
 import AdminSidebar from "~/components/AdminSidebar.vue";
 import Loader from "~/components/Loader.vue";
+
 const {$axios} = useNuxtApp()
 const api = $axios()
 
@@ -83,22 +84,34 @@ const filterOptions = [
 ];
 
 const filteredRows = computed(() => {
-  if (selectedFilter.value === 'graduated') {
-    return people.value;
-  } else if (selectedFilter.value === 'active') {
-    return people.value.filter(person => person.status === 'active');
+  let result = people.value;
+
+  if (selectedFilter.value === 'active') {
+    result = result.filter(person => person.status === 'active');
+  } else if (selectedFilter.value === 'graduated') {
+    result = result.filter(person => person.status === 'graduated');
   } else if (selectedFilter.value === 'inactive') {
-    return people.value.filter(person => person.status === 'inactive');
+    result = result.filter(person => person.status === 'inactive');
+  } else if (selectedFilter.value === 'terminated') {
+    result = result.filter(person => person.status === 'terminated');
   }
-  return people.value;
+
+  if (q.value) {
+    result = result.filter(person => {
+      return Object.values(person).some(value =>
+          String(value).toLowerCase().includes(q.value.toLowerCase())
+      );
+    });
+  }
+
+  return result;
 });
 
-const totalItems = computed(() => filteredRows.value.length);
 
+const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
   return filteredRows.value.slice(start, end);
 });
 
@@ -125,7 +138,7 @@ const handlePageChange = (newPage: number) => {
           <div class="content-body">
             <div class="header-section">
               <div class="filter-wrapper">
-                <UInput type="text" v-model="q" placeholder="Filter students..."/>
+                <input type="text" v-model="q" placeholder="Filter students..." class="filter-box">
               </div>
 
               <div class="filter-dropdown">
@@ -231,6 +244,13 @@ const handlePageChange = (newPage: number) => {
 .filter-wrapper,
 .filter-dropdown {
   padding: 1rem 1rem 0 1rem;
+}
+
+.filter-box {
+  padding: 2px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid #EEEEEE;
 }
 
 .header-section {
