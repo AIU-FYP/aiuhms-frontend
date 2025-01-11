@@ -122,7 +122,7 @@ onMounted(fetchData)
             <div class="header-section">
 
               <div class="search-wrapper">
-                <UInput v-model="q" placeholder="Filter requests..." />
+                <input v-model="q" placeholder="Filter requests..." class="filter-box" />
               </div>
             </div>
 
@@ -209,6 +209,13 @@ onMounted(fetchData)
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
+}
+
+.filter-box {
+  padding: 2px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid #EEEEEE;
 }
 
 .search-wrapper {

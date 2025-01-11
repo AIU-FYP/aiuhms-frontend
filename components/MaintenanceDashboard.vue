@@ -121,7 +121,7 @@ onMounted(fetchData)
           <div class="content-body">
             <div class="header-section">
               <div class="filter-wrapper">
-                <UInput v-model="q" placeholder="Filter students..."/>
+                <input v-model="q" placeholder="Filter students..." class="filter-box"/>
               </div>
             </div>
 
@@ -219,6 +219,13 @@ onMounted(fetchData)
 
 .filter-wrapper{
   padding: 1rem 1rem 0 1rem;
+}
+
+.filter-box {
+  padding: 2px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid #EEEEEE;
 }
 
 .header-section {

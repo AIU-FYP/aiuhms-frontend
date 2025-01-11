@@ -107,7 +107,6 @@ const filteredRows = computed(() => {
   return result;
 });
 
-
 const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;

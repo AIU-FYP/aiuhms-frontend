@@ -62,15 +62,17 @@ const openPopup = (row: Hostel) => {
 };
 
 const filteredRows = computed(() => {
-  if (!q.value) {
-    return hostels.value;
+  let result = hostels.value;
+
+  if (q.value) {
+    result = result.filter(person => {
+      return Object.values(person).some(value =>
+          String(value).toLowerCase().includes(q.value.toLowerCase())
+      );
+    });
   }
 
-  return hostels.value.filter((hostel) => {
-    return Object.values(hostel).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase());
-    });
-  });
+  return result;
 });
 
 const totalItems = computed(() => filteredRows.value.length);
@@ -110,8 +112,8 @@ onMounted(fetchData)
           <div class="content-body">
 
             <div class="header-section">
-              <div class="search-bar">
-                <UInput v-model="q" placeholder="Filter hostels..." />
+              <div class="search-bar" >
+                <input v-model="q" placeholder="Filter hostels..." class="filter-box"/>
               </div>
             </div>
 
@@ -196,6 +198,13 @@ onMounted(fetchData)
 
 .search-bar {
   padding: 1rem;
+}
+
+.filter-box {
+  padding: 2px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid #EEEEEE;
 }
 
 .view-button {
