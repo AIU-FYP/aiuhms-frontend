@@ -29,7 +29,7 @@ const filteredLocationsSpecificIssues = computed(() => {
   );
 });
 
-const previousQuestions = [
+const maintenanceQuestions = [
   {
     label: "Name",
     type: "text",
@@ -154,7 +154,7 @@ const formSchema = z.object({
 const form = reactive({});
 const errors = reactive({});
 
-previousQuestions.forEach((question) => {
+maintenanceQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -169,7 +169,7 @@ function validateField(field) {
   }
 }
 
-previousQuestions.forEach((question) => {
+maintenanceQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
@@ -254,7 +254,7 @@ async function handleSubmit() {
         <h2>Please fill this Form</h2>
         <form @submit.prevent="handleSubmit">
           <div class="maintenance-form">
-            <div class="info" v-for="(question, index) in previousQuestions" :key="index">
+            <div class="info" v-for="(question, index) in maintenanceQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
