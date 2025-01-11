@@ -132,7 +132,7 @@ onMounted(fetchData)
                 <Popup
                     :show="isPopupVisible"
                     @update:show="isPopupVisible = $event"
-                    :student="currentStudent"
+                    :request="currentRequest"
                 />
               </template>
             </UTable>

@@ -23,8 +23,7 @@ const columns = [
 
 const hostels = ref<Hostel[]>([]);
 const currentPage = ref(1);
-const pageSize = ref(10);
-const totalItems = ref(0);
+const pageSize = ref(7);
 const q = ref('');
 
 const api = $axios()
@@ -39,7 +38,6 @@ const fetchData = async () => {
       ...hostel,
       date: new Date().toLocaleDateString(),
     }));
-    totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
@@ -75,15 +73,21 @@ const filteredRows = computed(() => {
   });
 });
 
+const totalItems = computed(() => filteredRows.value.length);
+
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
+  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
   return filteredRows.value.slice(start, end);
 });
 
 const handlePageChange = (newPage: number) => {
-  currentPage.value = newPage;
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
+  }
 };
+
 
 onMounted(fetchData)
 
@@ -123,24 +127,19 @@ onMounted(fetchData)
               </template>
             </UTable>
             <hr class="section-divider" />
-            <div class="pagination-controls">
-              <button
-                  :disabled="currentPage === 1"
-                  @click="handlePageChange(currentPage - 1)"
-                  class="pagination-button"
-              >
-                <UIcon name="mdi-arrow-left" />
-              </button>
-              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button
-                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)"
-                  class="pagination-button"
-              >
-                <UIcon name="mdi-arrow-right" />
-              </button>
-            </div>
           </div>
+          <div class="pagination-controls">
+            <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)"
+                    class="pagination-button">
+              <UIcon name="mdi-arrow-left"/>
+            </button>
+            <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+            <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                    @click="handlePageChange(currentPage + 1)" class="pagination-button">
+              <UIcon name="mdi-arrow-right"/>
+            </button>
+          </div>
+
         </div>
       </main>
 
@@ -175,7 +174,7 @@ onMounted(fetchData)
 
 .content-section {
   flex: 6;
-  padding: 50px;
+  padding: 0 50px ;
   background-color: #eeeeee;
 }
 

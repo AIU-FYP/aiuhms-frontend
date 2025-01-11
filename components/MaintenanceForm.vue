@@ -68,7 +68,7 @@ const previousQuestions = [
   {
     label: "Gender",
     type: "select",
-    options: [{value : "male", label : "Male" },{value : "female", label : "Female" }],
+    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
     required: true,
     id: "gender",
     placeholder: "Enter your gender",
@@ -92,12 +92,12 @@ const previousQuestions = [
     label: "How frequent the damages occur?",
     type: "select",
     options: [
-        {value : "1 time", label : "1 Time" },
-      {value : "2 time", label : "2 Time" },
-      {value : "3 time", label : "3 Time" },
-      {value : "4 time", label : "4 Time" },
-      {value : "5 time", label : "5 Time" },
-      {value : "More than 5 times", label : "More than 5 times" }
+      {value: "1 time", label: "1 Time"},
+      {value: "2 time", label: "2 Time"},
+      {value: "3 time", label: "3 Time"},
+      {value: "4 time", label: "4 Time"},
+      {value: "5 time", label: "5 Time"},
+      {value: "More than 5 times", label: "More than 5 times"}
     ],
     required: true,
     id: "occurrence",
@@ -210,6 +210,9 @@ async function handleSubmit() {
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
+      setTimeout(() => {
+        router.replace({ path: router.currentRoute.value.fullPath });
+      }, 1000);
     } catch (error) {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);
@@ -275,7 +278,10 @@ async function handleSubmit() {
                   @change="validateField(question.id)"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                <option v-for="option in question.options" :key="option.value" :value="option.value">{{
+                    option.label
+                  }}
+                </option>
               </select>
               <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 
