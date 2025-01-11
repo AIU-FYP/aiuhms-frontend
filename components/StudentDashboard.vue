@@ -23,6 +23,7 @@ interface Person {
   levelNumber: string;
   roomNumber: string;
   bedNumber: string;
+  filteredRows: string;
 }
 
 const columns = [
@@ -141,11 +142,12 @@ const handlePageChange = (newPage: number) => {
               </div>
 
               <div class="filter-dropdown">
-                <USelect
-                    v-model="selectedFilter"
-                    :options="filterOptions"
-                    placeholder="Filter students..."
-                />
+                <select class="filter-box" v-model="selectedFilter" @click="filteredRows">
+                  <option value="" disabled selected>Filter students...</option>
+                  <option v-for="option in filterOptions" :key="option.value" :value="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
               </div>
             </div>
 
@@ -245,11 +247,13 @@ const handlePageChange = (newPage: number) => {
   padding: 1rem 1rem 0 1rem;
 }
 
-.filter-box {
-  padding: 2px;
+.filter-dropdown .filter-box,
+.filter-wrapper .filter-box {
+  padding: 5px;
   border-radius: 5px;
   outline: none;
-  border: 2px solid #EEEEEE;
+  border: none;
+  color: var(--primary-hover-color);
 }
 
 .header-section {
