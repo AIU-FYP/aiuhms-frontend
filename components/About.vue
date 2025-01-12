@@ -14,11 +14,11 @@ const information = [
 
 const images = [
   {
-    url: "/images/WB-5core-values.jpg",
+    url: "./images/WB-5core-values.jpg",
     alt: "WB-5core-values"
   },
   {
-    url: "/images/WB-8hrs-rules.jpg",
+    url: "./images/WB-8hrs-rules.jpg",
     alt: "WB-8hrs-rules"
   }
 ];
