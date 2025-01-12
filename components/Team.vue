@@ -115,8 +115,13 @@ const goToPrevious = () => {
             >
               <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
               <div class="staff-info">
-                <h3 class="staff-name">{{ member.name }}</h3>
-                <h3 class="staff-position">{{ member.position }}</h3>
+                <h3 class="staff-name">
+                  {{ member.name.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") }}
+                </h3>
+                <h3 class="staff-position">
+                  {{ member.position.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") }}
+
+                </h3>
               </div>
             </div>
           </div>
