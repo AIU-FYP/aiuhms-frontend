@@ -11,73 +11,73 @@ const members = ref([
   {
     name: "Nurul Huda Bt Hassan Bakri",
     position: "Deputy Director of Student Affairs",
-    photoURL: "/images/Nurul-Huda-Hassan-01-200x200.jpg",
+    photoURL: "./images/Nurul-Huda-Hassan-01-200x200.jpg",
     alt: "Nurul Huda Bt Hassan Bakri"
   },
   {
     name: "Fazlia Binti Azhari",
     position: "Counsellor",
-    photoURL: "/images/fazlia-200x200.jpg",
+    photoURL: "./images/fazlia-200x200.jpg",
     alt: "Fazlia Binti Azhari"
   },
   {
     name: "Mohammad Hafis Shafiq Bin Mohammad Sopian",
     position: "Counsellor",
-    photoURL: "/images/hafis-shafiq-200x200.png",
+    photoURL: "./images/hafis-shafiq-200x200.png",
     alt: "Mohammad Hafis Shafiq Bin Mohammad Sopian"
   },
   {
     name: "Ahmad Muaz Azizan",
     position: "Executive cum Warden",
-    photoURL: "/images/Muaz-240x300-1-200x200.png",
+    photoURL: "./images/Muaz-240x300-1-200x200.png",
     alt: "Ahmad Muaz Azizan"
   },
   {
     name: "Nurul Elina Afiqah Binti Badrulhisham",
     position: "Executive cum Warden",
-    photoURL: "/images/Elina-200x200.jpg",
+    photoURL: "./images/Elina-200x200.jpg",
     alt: "Nurul Elina Afiqah Binti Badrulhisham"
   },
   {
     name: "Hazween Eyzwann Bin Sharif",
     position: "Executive cum Warden",
-    photoURL: "/images/Hazween-200x200.jpg",
+    photoURL: "./images/Hazween-200x200.jpg",
     alt: "Hazween Eyzwann Bin Sharif"
   },
   {
     name: "Nurul Izzati Binti Ramli",
     position: "Executive cum Warden",
-    photoURL: "/images/izzati-200x200.jpg",
+    photoURL: "./images/izzati-200x200.jpg",
     alt: "Nurul Izzati Binti Ramli"
   },
   {
     name: "Ainun Nadiah Binti Samsudin",
     position: "Executive (Career & Alumni)",
-    photoURL: "/images/ainun-200x200.jpg",
+    photoURL: "./images/ainun-200x200.jpg",
     alt: "Ainun Nadiah Binti Samsudin"
   },
   {
     name: "Muhammad Zhafran Bin Jasmi",
     position: "Sport Officer",
-    photoURL: "/images/zhafran.jasmi@aiu.edu_.my_-200x200.jpg",
+    photoURL: "./images/zhafran.jasmi@aiu.edu_.my_-200x200.jpg",
     alt: "Muhammad Zhafran Bin Jasmi"
   },
   {
     name: "Mohamad Nor Hisyam Bin Musa",
     position: "Warden",
-    photoURL: "/images/Hisyam-Musa-1-200x200.jpg",
+    photoURL: "./images/Hisyam-Musa-1-200x200.jpg",
     alt: "Mohamad Nor Hisyam Bin Musa"
   },
   {
     name: "Farah Nadiah Binti Abdul Kudus",
     position: "Warden",
-    photoURL: "/images/Fatin-Nadiah.jpg",
+    photoURL: ".images/Fatin-Nadiah.jpg",
     alt: "Farah Nadiah Binti Abdul Kudus"
   },
   {
     name: "Nadia Affiqa Abdul Nasir",
     position: "Warden",
-    photoURL: "/images/nadia-200x200.jpg",
+    photoURL: "./images/nadia-200x200.jpg",
     alt: "Nadia Affiqa Abdul Nasir"
   }
 ]);
