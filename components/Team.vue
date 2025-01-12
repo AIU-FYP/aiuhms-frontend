@@ -113,8 +113,6 @@ const goToPrevious = () => {
                 :key="index"
                 class="staff-member"
             >
-              <img :src="require(`@/assets/images/${member.photoURL}`)" :alt="member.alt">
-
               <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
               <div class="staff-info">
                 <h3 class="staff-name">
