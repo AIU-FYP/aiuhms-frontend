@@ -20,63 +20,63 @@ const RequestedChangeRoomQuestions = [
     type: "text",
     placeholder: "Enter your name",
     required: true,
-    id:'student'
+    id: 'student'
   },
   {
     label: "Student ID",
     type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)",
     required: true,
-    id :'student_id'
+    id: 'student_id'
   },
   {
     label: "Room No",
     type: "text",
     placeholder: "Enter your room No (e.g., 25i-3-10)",
     required: true,
-    id :"room_number"
+    id: "room_number"
   },
   {
     label: "Phone No (Local No Only)",
     type: "text",
     placeholder: "Enter your phone No",
     required: true,
-    id :'phone'
+    id: 'phone'
   },
   {
     label: "Email Address (Student Email Only)",
     type: "text",
     placeholder: "Enter your email address",
     required: true,
-    id :'email'
+    id: 'email'
   },
   {
     label: "Gender",
     type: "select",
-    options: [{value : "male", label : "Male" }, {value : "female", label : "Female" }],
+    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
     required: true,
     placeholder: "Enter your gender",
-    id :"gender"
+    id: "gender"
   },
   {
     label: "Enter your Nationality",
     type: "select",
     options: filteredNationalities.value,
     placeholder: "Select nationality",
-    id :"nationality"
+    id: "nationality"
   },
   {
     label: "Other supporting docs",
     type: "file",
     required: true,
     placeholder: "Other supporting docs",
-    id :"supporting_doc"
+    id: "supporting_doc"
   },
   {
     label: "Explain your reason for room change?",
     type: "textarea",
     required: true,
     placeholder: "Explain in detail the reason for room change?",
-    id :"reason"
+    id: "reason"
   }
 ];
 
@@ -236,7 +236,10 @@ async function handleSubmit() {
                   @change="validateField(question.id)"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                <option v-for="option in question.options" :key="option.value" :value="option.value">{{
+                    option.label
+                  }}
+                </option>
               </select>
               <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 
@@ -253,9 +256,9 @@ async function handleSubmit() {
             </div>
           </div>
 
-          <button @click.once="isPopupVisible = true" class="maintenance-submit" type="submit">Submit</button>
-          <popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
-          </popup>
+          <button @click.once="isPopupVisible = true" class="btn-submit" type="submit">Submit</button>
+          <popup v-if="isPopupVisible" @close="isPopupVisible = false"/>
+
         </form>
       </div>
     </div>
@@ -389,7 +392,7 @@ async function handleSubmit() {
   }
 }
 
-.maintenance-submit {
+.btn-submit {
   margin-top: 1rem;
   padding: .5rem;
   display: flex;
@@ -399,7 +402,7 @@ async function handleSubmit() {
   color: var(--text-light-color);
 }
 
-.maintenance-submit:hover {
+.btn-submit:hover {
   background-color: var(--text-hover-color);
   transition: .2s;
 }

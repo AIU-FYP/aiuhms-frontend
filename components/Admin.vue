@@ -148,9 +148,9 @@ onMounted(() => {
           </div>
         </section>
 
-        <div v-if="isFetching" class="loading-indicator">
+        <section v-if="isFetching" class="loading-indicator">
           <Loader/>
-        </div>
+        </section>
 
         <section
             v-else
@@ -170,7 +170,6 @@ onMounted(() => {
                   {{ stat.subTitle }}
                 </h3>
                 <h3 class="analysis-num"> {{ stat.totalNum }}
-                <span>+</span>
                 </h3>
               </div>
               <div class=""></div>
@@ -280,12 +279,10 @@ onMounted(() => {
 
 .stat-item .analysis-num {
   flex: 1;
-  background: var(--primary-hover-color);
-  color: var(--text-hover-color);
+  font-size: 1.5rem;
+  color: var(--primary-color);
   padding: 0;
   border-radius: 0;
-  width: 100%;
-  height: 60%;
   align-items: center;
   margin: .5rem auto;
 }
@@ -305,7 +302,7 @@ onMounted(() => {
   margin: 0;
   padding: 0;
   text-transform: capitalize;
-  text-align: start;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
