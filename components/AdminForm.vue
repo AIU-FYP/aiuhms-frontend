@@ -1,6 +1,7 @@
 <script setup>
 import {reactive, watch} from 'vue';
 import {z} from 'zod';
+import Popup from "~/components/AdminSubmitPopup.vue";
 
 const previousQuestions = [
   {
@@ -23,9 +24,9 @@ const previousQuestions = [
     placeholder: "Position",
     required: true,
     options: [
-        {value: "student_affairs", label: "Student Affairs"},
-        {value: "ppk", label: "PPK"},
-        {value: "assistance", label: "Assistance"},
+      {value: "student_affairs", label: "Student Affairs"},
+      {value: "ppk", label: "PPK"},
+      {value: "assistance", label: "Assistance"},
     ],
     id: "position"
   },
@@ -103,7 +104,7 @@ const formSchema = z.object({
 
 const form = reactive({});
 const errors = reactive({});
-
+const isPopupVisible = ref(false);
 previousQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
@@ -163,6 +164,7 @@ async function handleSubmit() {
       });
 
       alert("Form submitted successfully!");
+      isPopupVisible.value = true
       location.reload()
     } catch (error) {
       console.error("Error occurred:", error);
@@ -180,6 +182,7 @@ async function handleSubmit() {
   } else {
     console.log("Validation Errors:", validationResults.error.errors);
     alert("Please correct the errors in the form.");
+    isPopupVisible.value = false;
   }
 }
 
@@ -215,13 +218,18 @@ async function handleSubmit() {
                   class="select-field"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option" :value="option.value">{{ option.label }}</option>
+                <option v-for="option in question.options" :key="option" :value="option.value">{{
+                    option.label
+                  }}
+                </option>
               </select>
 
               <span v-if="errors[question.id]" class="error-message">{{ errors[question.id] }}</span>
             </div>
           </div>
           <button type="submit" class="submit-button">Save Changes</button>
+          <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
+          </Popup>
         </form>
       </main>
     </div>

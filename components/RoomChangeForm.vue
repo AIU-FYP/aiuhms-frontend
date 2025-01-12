@@ -172,6 +172,7 @@ async function handleSubmit() {
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
+      isPopupVisible.value = true;
       location.reload()
     } catch (error) {
       isPopupVisible.value = false;
@@ -255,10 +256,9 @@ async function handleSubmit() {
 
             </div>
           </div>
-
           <button @click.once="isPopupVisible = true" class="btn-submit" type="submit">Submit</button>
-          <popup v-if="isPopupVisible" @close="isPopupVisible = false"/>
-
+          <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
+          </Popup>
         </form>
       </div>
     </div>
