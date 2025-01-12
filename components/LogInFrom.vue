@@ -26,11 +26,6 @@ const formSchema = z.object({
           .min("Username must start with 'AIU' followed by 8 digits"),
   "password":
       z.string()
-          .min(12, "Password must be at least 12 characters long")
-          .max(20, "Password must not exceed 15 characters")
-          .regex(/[a-zA-Z]/, "Password must include at least one letter")
-          .regex(/\d/, "Password must include at least one number")
-          .regex(/[@$!%*?&]/, "Password must include at least one special character (@$!%*?&)")
 });
 
 const form = reactive({
@@ -230,7 +225,7 @@ async function handleSubmit() {
   font-size: 1rem;
 }
 
-.login-submit{
+.login-submit {
   display: block;
   width: 90%;
   padding: .5rem;
@@ -241,7 +236,7 @@ async function handleSubmit() {
   border-radius: 1rem;
 }
 
-.home-btn{
+.home-btn {
   display: block;
   width: 90%;
   margin: .5rem auto;
