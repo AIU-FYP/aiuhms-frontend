@@ -46,7 +46,7 @@ const currentYear = new Date().getFullYear();
               </router-link>
             </li>
             <li>
-              <router-link to="/maintenance-room">
+              <router-link to="/maintenance-room-form">
               <span>
                 <UIcon name="ph-student-bold"
                 />
@@ -54,7 +54,7 @@ const currentYear = new Date().getFullYear();
               </router-link>
             </li>
             <li>
-              <router-link to="request-to-change-room">
+              <router-link to="/change-room-form">
               <span>
                 <UIcon name="ph-student-bold"
                 />
