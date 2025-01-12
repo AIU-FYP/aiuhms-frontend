@@ -172,6 +172,21 @@ const goToPrevious = () => {
   border-radius: 0 50%;
 }
 
+@media (max-width: 1200px) {
+  .carousel-control {
+    flex: 5%;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    background: white;
+    padding: 5px;
+    border-radius: 0;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+
 .carousel-box {
   margin: 10px;;
   background-color: transparent;
