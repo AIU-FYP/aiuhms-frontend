@@ -169,7 +169,9 @@ onMounted(() => {
                   <UIcon :name="stat.icon" class="stat-icon"/>
                   {{ stat.subTitle }}
                 </h3>
-                <h3 class="analysis-num"> {{ stat.totalNum }}+</h3>
+                <h3 class="analysis-num"> {{ stat.totalNum }}
+                <span>+</span>
+                </h3>
               </div>
               <div class=""></div>
             </div>
