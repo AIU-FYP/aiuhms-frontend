@@ -17,10 +17,10 @@ interface HostelStats {
     male_students: number;
     female_students: number;
     total_students: number;
-    'total_active' : number,
-    'total_inactive' : number,
-    'total_graduated' : number,
-    'total_terminated' : number
+    'total_active': number,
+    'total_inactive': number,
+    'total_graduated': number,
+    'total_terminated': number
   };
   occupancy_statistics: {
     total_capacity: number;
@@ -62,37 +62,37 @@ const dashboardItems = computed(() => [
       },
       {
         subTitle: "Occupied Beds",
-        icon: "fa-bed",
+        icon: "mdi-bed",
         totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
       },
       {
         subTitle: "Male Students",
-        icon: "fa-male",
+        icon: "mdi-account-check",
         totalNum: stats.value?.student_statistics.male_students ?? 0
       },
       {
         subTitle: "Active Students ",
-        icon: "fa-male",
+        icon: "mdi-account-check",
         totalNum: stats.value?.student_statistics.total_active ?? 0
       },
       {
         subTitle: "Inactive Students ",
-        icon: "fa-male",
+        icon: "mdi-account-off",
         totalNum: stats.value?.student_statistics.total_inactive ?? 0
       },
       {
         subTitle: "Graduated Students ",
-        icon: "fa-male",
+        icon: "mdi-school",
         totalNum: stats.value?.student_statistics.total_graduated ?? 0
       },
       {
         subTitle: "Terminated Students ",
-        icon: "fa-male",
+        icon: "mdi-account-remove",
         totalNum: stats.value?.student_statistics.total_terminated ?? 0
       },
       {
         subTitle: "Female Students",
-        icon: "fa-female",
+        icon: "mdi-gender-female",
         totalNum: stats.value?.student_statistics.female_students ?? 0
       },
       {
@@ -113,7 +113,7 @@ const isFetching = ref(true);
 
 const fetchStats = async () => {
   try {
-    const { data } = await api.get('/hostels/stats/')
+    const {data} = await api.get('/hostels/stats/')
     stats.value = data
     isFetching.value = false
   } catch (e) {
@@ -139,44 +139,44 @@ onMounted(() => {
 
       <main class="content-area" v-else>
 
-          <section class="info-content">
-            <div class="welcome-wrapper">
-              <h2>Welcome back </h2>
-            </div>
-            <div class="image-wrapper">
-              <img src="/images/login.webp" alt="welcome-image">
-            </div>
-          </section>
-
-          <div v-if="isFetching" class="loading-indicator">
-            <Loader/>
+        <section class="info-content">
+          <div class="welcome-wrapper">
+            <h2>Welcome back </h2>
           </div>
-          <section
-              v-else
-              v-for="item in dashboardItems"
-              :key="item.title"
-              class="analysis-wrapper"
-          >
-            <div class="stat-wrapper">
-              <div
-                  v-for="(stat, index) in item.maintenanceStats"
-                  :key="index"
-                  class="stat-item"
-              >
-                <div class="stat-box">
-                  <h4>{{ stat.subTitle }}</h4>
-                  <span class="stat-icon">
-              <UIcon :name="stat.icon" />
-            </span>
-                </div>
-                <div class="stat-number">
-                  <span>{{ stat.totalNum }}</span>
-                </div>
-              </div>
-            </div>
-          </section>
+          <div class="image-wrapper">
+            <img src="../public/images/login.webp" alt="welcome-image">
+          </div>
+        </section>
 
-        </main>
+        <div v-if="isFetching" class="loading-indicator">
+          <Loader/>
+        </div>
+
+        <section
+            v-else
+            v-for="item in dashboardItems"
+            :key="item.title"
+            class="analysis-wrapper"
+        >
+          <div class="stat-wrapper">
+            <div
+                v-for="(stat, index) in item.maintenanceStats"
+                :key="index"
+                class="stat-item"
+            >
+              <div class="stat-box">
+                <h3 class="analysis-title">
+                  <UIcon :name="stat.icon" class="stat-icon"/>
+                  {{ stat.subTitle }}
+                </h3>
+                <h3 class="analysis-num"> {{ stat.totalNum }}+</h3>
+              </div>
+              <div class=""></div>
+            </div>
+          </div>
+        </section>
+
+      </main>
 
     </div>
   </div>
@@ -276,32 +276,34 @@ onMounted(() => {
   padding: 1rem 0.5rem;
 }
 
-.stat-item .stat-number {
-  padding: 1rem 0.5rem;
-  flex: 2;
-  border-radius: 0 1rem 1rem 0;
-  background-color: var(--primary-color);
+.stat-item .analysis-num {
+  flex: 1;
+  background: var(--primary-hover-color);
+  color: var(--text-hover-color);
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  height: 60%;
+  align-items: center;
+  margin: .5rem auto;
 }
-
 
 .stat-item .stat-number > span {
   display: flex;
-  margin: 2rem 0;
+  margin: 0;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--text-light-color);
 }
 
-.stat-item h4 {
-  font-size: 1.1rem;
+.analysis-title {
+  font-size: 1rem;
   color: var(--primary-color);
-}
-
-.stat-icon {
-  font-size: 2rem;
-  color: var(--primary-color);
-  margin: 0.5rem 0;
+  margin: 0;
+  padding: 0;
+  text-transform: capitalize;
+  text-align: start;
 }
 
 @media (max-width: 768px) {
