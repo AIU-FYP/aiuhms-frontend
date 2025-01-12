@@ -53,7 +53,7 @@ const deleteAdmin = async () => {
           Welcome to {{ admins.name }}
         </span>
         <span @click="closePopup" class="modal-close-btn">
-          <UIcon name="fontisto-close" />
+          <UIcon name="fontina-close" />
         </span>
       </div>
 
