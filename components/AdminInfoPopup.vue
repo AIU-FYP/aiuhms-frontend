@@ -1,41 +1,5 @@
-<template>
-  <div v-if="show" class="modal-overlay" @click="closePopup">
-    <div class="modal-container" @click.stop>
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <span v-if="admins?.name" style="font-size: 1.5rem">
-          Welcome to {{ admins.name }}
-        </span>
-        <span @click="closePopup" class="modal-close-btn">
-          <UIcon name="fontisto-close" />
-        </span>
-      </div>
-
-      <!-- Modal Content -->
-      <div class="modal-content">
-        <div class="field-container" v-for="field in studentFields" :key="field.key">
-          <span class="field-label">
-            <UIcon style="color: var(--primary-color)" name="ph-student" />
-            {{ field.label }}:
-          </span>
-          <span class="field-input">{{ admins?.[field.key] || 'N/A' }}</span>
-        </div>
-      </div>
-
-      <!-- Modal Footer -->
-      <div class="modal-footer">
-        <div class="action-buttons">
-          <button @click="deleteAdmin" class="delete-button" id="deleteAdmin">
-            Delete Admin
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits} from "vue";
 import { useNuxtApp } from "#app";
 
 const props = defineProps({
@@ -45,7 +9,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:show"]);
 
-const studentFields = [
+const adminsFields = [
   { label: "ID", key: "id" },
   { label: "Name", key: "name" },
   { label: "Username", key: "username" },
@@ -80,6 +44,39 @@ const deleteAdmin = async () => {
   }
 };
 </script>
+
+<template>
+  <div v-if="show" class="modal-overlay" @click="closePopup">
+    <div class="modal-container" @click.stop>
+      <div class="modal-header">
+        <span v-if="admins?.name" style="font-size: 1.5rem">
+          Welcome to {{ admins.name }}
+        </span>
+        <span @click="closePopup" class="modal-close-btn">
+          <UIcon name="fontisto-close" />
+        </span>
+      </div>
+
+      <div class="modal-content">
+        <div class="field-container" v-for="field in adminsFields" :key="field.key">
+          <span class="field-label">
+            <UIcon style="color: var(--primary-color)" name="ph-student" />
+            {{ field.label }}:
+          </span>
+          <span class="field-input">{{ admins?.[field.key] || 'N/A' }}</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="action-buttons">
+          <button @click="deleteAdmin" class="delete-button" id="deleteAdmin">
+            Delete Admin
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .modal-overlay {

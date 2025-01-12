@@ -3,9 +3,6 @@ import {computed, reactive, ref, watch} from 'vue';
 import Popup from '~/components/StudentSubmitPopup.vue'
 import {z} from 'zod';
 import {nationalities, roomMaintenanceIssues} from "~/utils/dropdownOptions.js";
-import {useNuxtApp} from "#app";
-
-let {$axios} = useNuxtApp()
 
 const userNationalityInput = ref('');
 const filteredNationalities = computed(() => {
@@ -122,33 +119,28 @@ const maintenanceQuestions = [
 const formSchema = z.object({
   student: z
       .string()
-      .min(8, 'Name must be at least 8 characters long')
-      .nonempty('Name is required'),
+      .min(8, 'Name must be at least 8 characters long'),
   student_id: z
       .string()
-      .regex(/^AIU\d{8}$/, 'Invalid Student ID format')
-      .nonempty('Student ID is required'),
+      .regex(/^AIU\d{8}$/, 'Invalid Student ID format'),
   room_number: z
       .string()
-      .regex(/^\d+[A-Za-z]*-\d-\d+$/, 'Invalid Room Number format')
-      .nonempty('Room Number is required'),
+      .regex(/^\d+[A-Za-z]*-\d-\d+$/, 'Invalid Room Number format'),
   phone: z
       .string()
-      .regex(/^\d{8,15}$/, 'Invalid phone number')
-      .nonempty('Phone Number is required'),
+      .regex(/^\d{8,15}$/, 'Invalid phone number'),
   email: z
       .string()
       .email('Invalid email format')
       .regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
-  gender: z.string().nonempty('Gender is required'),
-  issue: z.string().nonempty('Location-specific Issue is required'),
+  gender: z.string(),
+  issue: z.string().optional(),
   nationality: z.string().optional(),
-  occurrence: z.string().nonempty('Frequency of damages is required'),
+  occurrence: z.string().optional(),
   evidence_photo: z.any().optional(),
   explanation: z
       .string()
       .min(20, 'Detail must be at least 20 characters long')
-      .nonempty('Detail is required'),
 });
 
 const form = reactive({});
@@ -217,7 +209,7 @@ async function handleSubmit() {
       if (error.response) {
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        console.log("Response Data:", response.data.value);
+        // console.log("Response Data:", response.data.value);
       } else if (error.request) {
         console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");

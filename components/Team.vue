@@ -116,10 +116,14 @@ const goToPrevious = () => {
               <img :src="member.photoURL" :alt="member.alt" class="staff-photo">
               <div class="staff-info">
                 <h3 class="staff-name">
-                  {{ member.name.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") }}
+                  {{
+                    member.name.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ")
+                  }}
                 </h3>
                 <h3 class="staff-position">
-                  {{ member.position.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") }}
+                  {{
+                    member.position.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ")
+                  }}
 
                 </h3>
               </div>
@@ -238,9 +242,10 @@ const goToPrevious = () => {
 
 .staff-position {
   font-size: .8rem;
-  color: var(--primary-color);
-  max-width: 200px;
+  color: var(--primary-hover-color);
+  width: 200px;
   margin: auto;
+  border-radius: 5px;
 }
 
 .carousel-button {

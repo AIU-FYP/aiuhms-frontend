@@ -23,16 +23,14 @@ const previousQuestions = [
 const formSchema = z.object({
   "username":
       z.string()
-          .min("Username must start with 'AIU' followed by 8 digits")
-          .nonempty("Username is required"),
+          .min("Username must start with 'AIU' followed by 8 digits"),
   "password":
       z.string()
-          // .min(12, "Password must be at least 12 characters long")
-          // .max(20, "Password must not exceed 15 characters")
-          // .regex(/[a-zA-Z]/, "Password must include at least one letter")
-          // .regex(/\d/, "Password must include at least one number")
-          // .regex(/[@$!%*?&]/, "Password must include at least one special character (@$!%*?&)")
-          // .nonempty("Password is required"),
+          .min(12, "Password must be at least 12 characters long")
+          .max(20, "Password must not exceed 15 characters")
+          .regex(/[a-zA-Z]/, "Password must include at least one letter")
+          .regex(/\d/, "Password must include at least one number")
+          .regex(/[@$!%*?&]/, "Password must include at least one special character (@$!%*?&)")
 });
 
 const form = reactive({

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const items = [
+import {ref} from "vue";
+
+const policies = [
   {
     label: 'Cooking in Rooms',
     defaultOpen: true,
@@ -52,11 +54,11 @@ const items = [
   }
 ];
 
-const activeIndex = ref(null)
+const activeIndex = ref<number | null>(null);
 
-const toggleFaq = (index) => {
-  activeIndex.value = activeIndex.value === index ? null : index
-}
+const toggleFaq = (index: number) => {
+  activeIndex.value = activeIndex.value === index ? null : index;
+};
 </script>
 
 <template>
@@ -66,27 +68,43 @@ const toggleFaq = (index) => {
       <div class="faq-container">
         <h2>Student Accommodation Guidelines</h2>
         <div
-            class="faq-item"
-            v-for="(item, index) in items"
+            v-for="(policy, index) in policies"
             :key="index"
+            class="policies"
             @click="toggleFaq(index)"
+            :aria-expanded="activeIndex === index"
+            role="button"
+            tabindex="0"
+            @keydown.enter="toggleFaq(index)"
+            @keydown.space.prevent="toggleFaq(index)"
         >
           <div class="info">
             <h3 class="title">
               <span>
-                <UIcon
-                    name="i-heroicons-square-3-stack-3d"
-                />
+                <UIcon name="i-heroicons-square-3-stack-3d"/>
               </span>
-              {{ item.label }}
+              {{ policy.label }}
             </h3>
             <h3>
-              <UIcon v-if="activeIndex === index" name="ep-arrow-up-bold" />
-              <UIcon v-else name="ep-arrow-down-bold" />
+              <UIcon
+                  v-if="activeIndex === index"
+                  name="ep-arrow-up-bold"
+              />
+              <UIcon
+                  v-else
+                  name="ep-arrow-down-bold"
+              />
             </h3>
           </div>
-          <p class="description" v-if="activeIndex === index">{{ item.content }}</p>
+          <p
+              v-show="activeIndex === index"
+              class="description"
+              :class="{ 'fade-in': activeIndex === index }"
+          >
+            {{ policy.content }}
+          </p>
         </div>
+
       </div>
       <div></div>
     </div>
@@ -97,63 +115,80 @@ const toggleFaq = (index) => {
 
 .faq-section {
   padding: 1rem 0;
-  margin: 0 10rem ;
+  margin: 0 10rem;
   align-items: center;
 }
 
-.faq-section h2 {
-  text-align: center;
+.faq-container h2 {
   font-size: 2rem;
-  font-weight: normal;
-  color: var(--primary-color);
-  padding: 2rem;
-  margin: 2rem 0;
+  color: var(--primary-hover-color);
+  padding: 50px 0;
 }
 
-@media (max-width: 820px) {
-  .faq-section h2 {
-    text-align: center;
-    font-size: 1.5rem;
-  }
-  .faq-item {
-    padding: 1em;
-    margin: 0 1rem ;
-  }
-}
-
-.faq-item {
+.policies {
   background-color: #f5f5f5;
-  color: var(--primary-color);
   margin-bottom: 1.5rem;
+  color: var(--primary-hover-color);
   border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.policies:focus,
+.policies:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .info {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: .5rem 1rem;
-  cursor: pointer;
+  align-items: center;
+  padding: 1rem;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .description {
-  padding: .5rem 1rem;
+  padding: 0 1rem 1rem;
   font-size: 1rem;
-  font-weight: normal;
-  color: var(--text-light-color);
-  text-align: justify;
+  color: #333;
+  line-height: 1.5;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1200px) {
+  .faq-section {
+    margin: 0;
+  }
+
+  .faq-container h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .policies {
+    width: 90%;
+    margin: 1rem auto;
+  }
   .title {
     font-size: 1rem;
   }
-  .description{
+  .description {
     font-size: .8rem;
   }
 }
+
+.description.fade-in {
+  opacity: 1;
+  max-height: 300px;
+}
+
 </style>

@@ -75,17 +75,16 @@ const previousQuestions = [
 ];
 
 const formSchema = z.object({
-  "username": z.string().min(4, "Name must be at least 4 characters long").nonempty("Name is required"),
-  "name": z.string().min(4, "Name must be at least 4 characters long").nonempty("Name is required"),
+  "username": z.string().min(4, "Name must be at least 4 characters long"),
+  "name": z.string().min(4, "Name must be at least 4 characters long"),
   "position": z.string().optional(),
-  "staff_ID": z.string().regex(/^AIU\d{8}$/, "Invalid Staff ID format").nonempty("Staff ID is required"),
-  "phone": z.string().regex(/^\d{8,15}$/, "Invalid phone number").nonempty("Phone Number is required"),
+  "staff_ID": z.string().regex(/^AIU\d{8}$/, "Invalid Staff ID format"),
+  "phone": z.string().regex(/^\d{8,15}$/, "Invalid phone number"),
   "email": z
       .string()
       .email("Invalid email format")
       .regex(/@(aiu\.edu\.my|ppksb\.com\.my)$/, "Email must belong to 'aiu.edu.my' or 'ppksb.com.my'"),
-
-  "staff_type": z.string().nonempty("Admin type is required"),
+  "staff_type": z.string(),
   "password": z
       .string()
       .min(12, "Password must be at least 12 characters long")
