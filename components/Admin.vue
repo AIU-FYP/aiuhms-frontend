@@ -284,7 +284,6 @@ onMounted(() => {
   padding: 0;
   border-radius: 0;
   align-items: center;
-  margin: .5rem auto;
 }
 
 .stat-item .stat-number > span {

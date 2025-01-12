@@ -5,7 +5,7 @@ const members = ref([
   {
     name: "Nidhoil Mohamed Ibrahim",
     position: "DIRECTOR OF STUDENT AFFAIRS",
-    photoURL: "/images/Nidhoil-200x200.jpg",
+    photoURL: "./images/Nidhoil-200x200.jpg",
     alt: "Nidhoil Mohamed Ibrahim"
   },
   {
