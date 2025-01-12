@@ -39,7 +39,7 @@ const fetchData = async () => {
   try {
     const response = await api.get("/users/");
     admins.value = response.data.map((admin: any, index: number) => ({
-      id: index + 1,
+      id: admin.id,
       username: admin.username || '',
       password: admin.password || '',
       name: admin.profile?.name || '',
