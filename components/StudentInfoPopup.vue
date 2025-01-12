@@ -51,7 +51,7 @@ const handleUpdateStudent = async () => {
       closePopup();
     }
   } else {
-    alert(`Update failed: ${result.result}`);
+    alert(`Update failed: ${result.error}`);
   }
 };
 
@@ -76,7 +76,7 @@ const handleDeleteStudent = async () => {
     <div class="popup-container" @click.stop v-else>
       <div class="popup-header">
         <span class="text-xl">Welcome to {{ props.student.name }}</span>
-        <UIcon name="fontina-close" @click="closePopup" class="close-btn"/>
+        <UIcon name="fontisto-close" @click="closePopup" class="close-btn"/>
       </div>
 
       <hr class="divider">
@@ -105,7 +105,7 @@ const handleDeleteStudent = async () => {
               >
                 <option value="">Select {{ field.label }}</option>
                 <option
-                    v-for="option in options[field.option]"
+                    v-for="option in options[field.optionsKey]"
                     :key="option.value"
                     :value="option.value"
                 >

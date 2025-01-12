@@ -17,6 +17,10 @@ interface HostelStats {
     male_students: number;
     female_students: number;
     total_students: number;
+    'total_active' : number,
+    'total_inactive' : number,
+    'total_graduated' : number,
+    'total_terminated' : number
   };
   occupancy_statistics: {
     total_capacity: number;
@@ -65,6 +69,26 @@ const dashboardItems = computed(() => [
         subTitle: "Male Students",
         icon: "fa-male",
         totalNum: stats.value?.student_statistics.male_students ?? 0
+      },
+      {
+        subTitle: "Active Students ",
+        icon: "fa-male",
+        totalNum: stats.value?.student_statistics.total_active ?? 0
+      },
+      {
+        subTitle: "Inactive Students ",
+        icon: "fa-male",
+        totalNum: stats.value?.student_statistics.total_inactive ?? 0
+      },
+      {
+        subTitle: "Graduated Students ",
+        icon: "fa-male",
+        totalNum: stats.value?.student_statistics.total_graduated ?? 0
+      },
+      {
+        subTitle: "Terminated Students ",
+        icon: "fa-male",
+        totalNum: stats.value?.student_statistics.total_terminated ?? 0
       },
       {
         subTitle: "Female Students",
