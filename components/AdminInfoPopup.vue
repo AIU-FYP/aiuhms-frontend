@@ -1,6 +1,6 @@
 <script setup>
-import { defineProps, defineEmits} from "vue";
-import { useNuxtApp } from "#app";
+import {defineProps, defineEmits} from "vue";
+import {useNuxtApp} from "#app";
 
 const props = defineProps({
   show: Boolean,
@@ -10,14 +10,14 @@ const props = defineProps({
 const emit = defineEmits(["update:show"]);
 
 const adminsFields = [
-  { label: "ID", key: "id" },
-  { label: "Name", key: "name" },
-  { label: "Username", key: "username" },
-  { label: "Staff ID", key: "staff_ID" },
-  { label: "Admin Type", key: "staff_type" },
-  { label: "WhatsApp No", key: "phone" },
-  { label: "Password", key: "password" },
-  { label: "Email Address", key: "email" },
+  {label: "ID", key: "id"},
+  {label: "Name", key: "name"},
+  {label: "Username", key: "username"},
+  {label: "Staff ID", key: "staff_ID"},
+  {label: "Admin Type", key: "staff_type"},
+  {label: "WhatsApp No", key: "phone"},
+  {label: "Password", key: "password"},
+  {label: "Email Address", key: "email"},
 ];
 
 const closePopup = () => {
@@ -53,14 +53,14 @@ const deleteAdmin = async () => {
           Welcome to {{ admins.name }}
         </span>
         <span @click="closePopup" class="modal-close-btn">
-          <UIcon name="fontina-close" />
+          <UIcon name="fontina-close"/>
         </span>
       </div>
 
       <div class="modal-content">
         <div class="field-container" v-for="field in adminsFields" :key="field.key">
           <span class="field-label">
-            <UIcon style="color: var(--primary-color)" name="ph-student" />
+            <UIcon style="color: var(--primary-color)" name="ph-student"/>
             {{ field.label }}:
           </span>
           <span class="field-input">{{ admins?.[field.key] || 'N/A' }}</span>
@@ -146,7 +146,7 @@ const deleteAdmin = async () => {
 .action-buttons {
   display: flex;
   justify-content: space-around;
-  margin: 10px ;
+  margin: 10px;
 }
 
 .delete-button {
@@ -159,4 +159,24 @@ const deleteAdmin = async () => {
   background: red;
   color: var(--text-hover-color);
 }
+
+@media (max-width: 1200px ) {
+  .modal-container {
+    width: 90%;
+    max-width: 90%;
+    max-height: 90vh;
+  }
+
+  .field-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .field-label,
+  .field-input {
+    font-size: 1.2rem;
+    width: 100%;
+  }
+}
+
 </style>
