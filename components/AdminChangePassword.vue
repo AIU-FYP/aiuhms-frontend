@@ -66,6 +66,7 @@ const handleSubmit = async () => {
 
     console.log('Success:', response.data);
     alert("Password changed successfully");
+    location.reload()
   } catch (error) {
     if (error.response) {
       console.error('Error response:', error.response.data);

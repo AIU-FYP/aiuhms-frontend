@@ -56,6 +56,16 @@ const dashboardItems = computed(() => [
         totalNum: stats.value?.hostel_statistics.total_rooms ?? 0
       },
       {
+        subTitle: "Maintenance Requests",
+        icon: "mdi-tools",
+        totalNum: stats.value?.request_statistics.maintenance_requests ?? 0
+      },
+      {
+        subTitle: "Change Room Requests",
+        icon: "mdi-swap-horizontal",
+        totalNum: stats.value?.request_statistics.change_room_requests ?? 0
+      },
+      {
         subTitle: "Available Beds",
         icon: "mdi-bed-outline",
         totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
@@ -69,6 +79,11 @@ const dashboardItems = computed(() => [
         subTitle: "Male Students",
         icon: "mdi-account-check",
         totalNum: stats.value?.student_statistics.male_students ?? 0
+      },
+      {
+        subTitle: "Female Students",
+        icon: "mdi-gender-female",
+        totalNum: stats.value?.student_statistics.female_students ?? 0
       },
       {
         subTitle: "Active Students ",
@@ -89,21 +104,6 @@ const dashboardItems = computed(() => [
         subTitle: "Terminated Students ",
         icon: "mdi-account-remove",
         totalNum: stats.value?.student_statistics.total_terminated ?? 0
-      },
-      {
-        subTitle: "Female Students",
-        icon: "mdi-gender-female",
-        totalNum: stats.value?.student_statistics.female_students ?? 0
-      },
-      {
-        subTitle: "Maintenance Requests",
-        icon: "mdi-tools",
-        totalNum: stats.value?.request_statistics.maintenance_requests ?? 0
-      },
-      {
-        subTitle: "Change Room Requests",
-        icon: "mdi-swap-horizontal",
-        totalNum: stats.value?.request_statistics.change_room_requests ?? 0
       },
     ],
   },
