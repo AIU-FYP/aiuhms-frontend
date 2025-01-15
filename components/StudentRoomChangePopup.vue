@@ -186,7 +186,6 @@ span {
 .student-label-info,
 .student-key-info {
   text-align: start;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1rem;
   width: 50%;
