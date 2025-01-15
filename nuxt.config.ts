@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+    ssr: false,
     compatibilityDate: '2024-11-01',
     devtools: {enabled: true},
     modules: ['@nuxt/ui'],
@@ -6,7 +7,7 @@ export default defineNuxtConfig({
         preference: 'light'
     },
     app: {
-        baseURL: '/fyp-frontend2/',
+        baseURL: process.env.NODE_ENV === 'development' ? '' : '/fyp-frontend2/',
     },
     nitro: {
         preset: 'github_pages'
