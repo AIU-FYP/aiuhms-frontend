@@ -28,10 +28,11 @@ watch(() => props.student, (newStudent) => {
 
 onMounted(async () => {
   try {
+    console.log('fetching hostels...')
     const {$axios} = useNuxtApp();
     const {data} = await $axios().get('/hostels/');
     allHostels.value = data;
-    // console.log('Hostels loaded:', data);
+    console.log('Hostels loaded:', data);
   } catch (error) {
     console.error('Error fetching hostels:', error);
   } finally {
