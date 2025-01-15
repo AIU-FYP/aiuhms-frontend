@@ -126,6 +126,11 @@ const handlePageChange = (newPage: number) => {
 
 <template>
   <div class="dashboard-wrapper">
+    <Popup
+        :show="isPopupVisible"
+        @update:show="isPopupVisible = $event"
+        :student="currentStudent"
+    />
     <div class="dashboard-container">
       <aside class="navigation-panel">
         <AdminSidebar/>
@@ -154,11 +159,6 @@ const handlePageChange = (newPage: number) => {
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
                 <a @click="openPopup(row)" class="view-button">View</a>
-                <Popup
-                    :show="isPopupVisible"
-                    @update:show="isPopupVisible = $event"
-                    :student="currentStudent"
-                />
               </template>
             </UTable>
 

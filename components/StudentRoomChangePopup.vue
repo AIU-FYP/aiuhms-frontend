@@ -1,6 +1,7 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue'
 import axios from "axios";
+import {useNuxtApp} from "#app";
 
 const requestFields = [
   {label: 'ID ', key: 'id'},
@@ -27,11 +28,14 @@ const closePopup = () => {
   emit('update:show', false)
 }
 
+let {$axios} = useNuxtApp()
+const api = $axios()
+
 const updateStatus = async (newStatus) => {
   try {
-    const response = await axios.patch(
-        `http://127.0.0.1:8000/api/change-room-requests/${props.request.id}/`,
-        { status: newStatus },
+    const response = await api.patch(
+        `/change-room-requests/${props.request.id}/`,
+        {status: newStatus},
     );
     console.log('Success:', response.data);
     alert("Success updated")
@@ -81,7 +85,7 @@ const updateStatus = async (newStatus) => {
               >Supporting Document</a>
             </span>
             <span v-else-if="field.key === 'reason' " class="truncate-single">
-              {{request[field.key]}}
+              {{ request[field.key] }}
             </span>
             <span v-else>{{ request[field.key] }}</span>
           </span>
