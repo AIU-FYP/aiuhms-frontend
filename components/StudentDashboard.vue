@@ -44,10 +44,14 @@ const pageSize = ref(8);
 const q = ref('');
 const isLoading = ref(true);
 
+const allHostels = ref([])
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/students/");
+    const {data} = await api.get('/hostels/');
+    allHostels.value = data;
     people.value = response.data
     console.log('Fetched students:', response.data);
   } catch (error) {
@@ -130,6 +134,7 @@ const handlePageChange = (newPage: number) => {
         :show="isPopupVisible"
         @update:show="isPopupVisible = $event"
         :student="currentStudent"
+        :all-hostels="allHostels"
     />
     <div class="dashboard-container">
       <aside class="navigation-panel">

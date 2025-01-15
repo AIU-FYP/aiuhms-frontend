@@ -8,16 +8,16 @@ import {religions} from "~/utils/dropdownOptions.js";
 const props = defineProps({
   show: Boolean,
   student: Object,
+  allHostels: Array,
 });
 
-
 const emit = defineEmits(['update:show']);
-const allHostels = ref([]);
-const isLoading = ref(true);
 
 const studentRef = toRef(props, 'student');
+const allHostelsRef = toRef(props, 'allHostels');
 
-const { fields, options } = useStudentFields(allHostels, studentRef, religions);
+
+const {fields, options} = useStudentFields(allHostelsRef, studentRef, religions);
 const {updateStudent, deleteStudent, initializeTracking} = useStudentOperations();
 
 watch(() => props.student, (newStudent) => {
@@ -25,20 +25,6 @@ watch(() => props.student, (newStudent) => {
     initializeTracking(newStudent);
   }
 }, {immediate: true});
-
-onMounted(async () => {
-  try {
-    console.log('fetching hostels...')
-    const {$axios} = useNuxtApp();
-    const {data} = await $axios().get('/hostels/');
-    allHostels.value = data;
-    console.log('Hostels loaded:', data);
-  } catch (error) {
-    console.error('Error fetching hostels:', error);
-  } finally {
-    isLoading.value = false;
-  }
-});
 
 const closePopup = () => emit('update:show', false);
 
@@ -71,10 +57,7 @@ const handleDeleteStudent = async () => {
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
-
-    <loader v-if="isLoading" class="loading-container"/>
-
-    <div class="popup-container" @click.stop v-else>
+    <div class="popup-container" @click.stop>
       <div class="popup-header">
         <span class="text-xl">Welcome to {{ props.student.name }}</span>
         <UIcon name="fontisto-close" @click="closePopup" class="close-btn"/>
