@@ -76,7 +76,8 @@ onMounted(async () => {
 
 .sidebar h1 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin: 2rem auto;
+  text-align:center ;
 }
 
 .menu {

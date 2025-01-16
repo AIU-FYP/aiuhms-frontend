@@ -1,6 +1,5 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue'
-import axios from "axios";
 import {useNuxtApp} from "#app";
 
 const requestFields = [
@@ -202,6 +201,7 @@ span {
   word-wrap: break-word;
   line-height: 1.5rem;
   padding: 0;
+  margin: 0;
 }
 
 @media (max-width: 800px) {

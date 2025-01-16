@@ -10,7 +10,7 @@ const requestFields = [
   {label: 'phone No ', key: 'phone'},
   {label: 'Email Address ', key: 'email'},
   {label: 'Gender ', key: 'gender'},
-  {label: 'Frequent damages occur', key: 'occurrence'},
+  {label: 'Occurrence', key: 'occurrence'},
   {label: 'Student Nationality ', key: 'nationality'},
   {label: 'Photo evidence damages ', key: 'evidence_photo'},
   {label: 'Reason for room change', key: 'explanation'},
@@ -192,7 +192,6 @@ span {
 .student-label-info,
 .student-key-info {
   text-align: start;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1rem;
   width: 50%;

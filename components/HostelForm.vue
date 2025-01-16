@@ -120,13 +120,16 @@ async function handleSubmit() {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);
       if (error.response) {
+        isPopupVisible.value = false;
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
         console.log("Response Data:", response.data.value);
       } else if (error.request) {
+        isPopupVisible.value = false;
         console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
       } else {
+        isPopupVisible.value = false;
         console.error("Request Setup Error:", error.message);
         alert("An error occurred while submitting the form. Please try again.");
       }
