@@ -31,21 +31,20 @@ const filteredReligions = computed(() => {
 const isPopupVisible = ref(false);
 
 const formSchema = z.object({
-  "name": z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
-  "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
+  "name": z.string().min(8, "Name must be at least 8 characters long"),
+  "student_id": z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format"),
   "passport": z.string()
-      .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format")
-      .nonempty("Passport Number is required"),
-  "arrival_date": z.string().nonempty("Date of Birth is required"),
-  "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format").nonempty("WhatsApp number is required"),
-  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'").nonempty("Email address is required"),
-  "gender": z.string().nonempty("Gender is required"),
+      .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format"),
+  "arrival_date": z.string(),
+  "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format"),
+  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
+  "gender": z.string().optional(),
   "religion": z.string().optional(),
   "nationality": z.string().optional(),
-  "major": z.string().min(3, "Major must be at least 3 characters long").nonempty("Major is required"),
-  "block_name": z.string().nonempty("Block Name is required"),
-  "level_number": z.string().nonempty("Level Number is required"),
-  "room": z.string().nonempty("Room is required"),
+  "major": z.string().min(3, "Major must be at least 3 characters long"),
+  "block_name": z.string().optional(),
+  "level_number": z.string().optional(),
+  "room": z.string().optional(),
   "bed": z.number().optional(),
 });
 
