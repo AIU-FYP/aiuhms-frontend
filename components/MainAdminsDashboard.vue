@@ -24,7 +24,6 @@ const columns = [
   {key: 'name', label: 'Name'},
   {key: 'position', label: 'Position', sortable: true},
   {key: 'staff_ID', label: 'ID'},
-  {key: 'phone', label: 'Phone'},
   {key: 'staff_type', label: 'Type', sortable: true},
   {key: 'extend', label: 'View',},
 ];

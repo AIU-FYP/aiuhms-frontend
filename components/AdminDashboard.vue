@@ -31,10 +31,11 @@ import MainAdminsDashboard from "~/components/MainAdminsDashboard.vue";
 
 .navigation-sidebar {
   flex: 1;
+  background-color: var(--primary-color);
   padding: 20px;
   color: var(--text-light-color);
   border-radius: 1rem;
-  height: auto;
+  min-height: 81vh;
 }
 
 .form-content-area {
