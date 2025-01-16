@@ -108,9 +108,6 @@ const handleDeleteStudent = async () => {
             Change Student Info
           </button>
         </div>
-        <div>
-          <h2>Thank you</h2>
-        </div>
       </div>
     </div>
   </div>
