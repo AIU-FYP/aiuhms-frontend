@@ -1,6 +1,5 @@
 <script setup>
-import {defineEmits, defineProps, ref, onMounted} from 'vue';
-import {useNuxtApp} from "#app";
+import {defineEmits, defineProps,} from 'vue';
 import {useStudentFields} from "@/composables/useStudentFields.ts";
 import {useStudentOperations} from "@/composables/useStudentOperations.ts";
 import {religions} from "~/utils/dropdownOptions.js";
@@ -125,7 +124,7 @@ const handleDeleteStudent = async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,6 +164,7 @@ const handleDeleteStudent = async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: var(--primary-color);
 }
 
 span {
@@ -203,7 +203,6 @@ span {
 .student-label-info,
 .student-key-info {
   text-align: start;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1.2rem;
   width: 50%;
@@ -275,6 +274,7 @@ span {
 .popup-bts .change-student-info {
   border-radius: 0 1rem;
   border: 2px solid var(--primary-color);
+  color: var(--primary-color);
 }
 
 .popup-bts .change-student-info:hover {
@@ -286,6 +286,7 @@ span {
 .popup-bts .delete-student {
   border-radius: 0 1rem;
   border: 2px solid red;
+  color: red;
 }
 
 .popup-bts .delete-student:hover {
