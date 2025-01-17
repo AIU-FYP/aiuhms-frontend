@@ -38,13 +38,13 @@ const columns = [
   {key: 'status', label: 'Status', sortable: false},
   {key: 'extend', label: 'View', sortable: false}
 ];
+
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(8);
 const q = ref('');
 const isLoading = ref(true);
-
-const allHostels = ref([])
+const allHostels = ref([]);
 
 const fetchData = async () => {
   isLoading.value = true;
@@ -63,24 +63,12 @@ const fetchData = async () => {
 
 const isPopupVisible = ref(false);
 const currentStudent = ref({});
-
-onMounted(() => {
-  fetchData();
-});
-
-definePageMeta({
-  middleware: 'auth',
-});
-
 const openPopup = (row: Person) => {
   currentStudent.value = row;
   isPopupVisible.value = true;
 };
 
-onMounted(fetchData)
-
 const selectedFilter = ref('active');
-
 const filterOptions = [
   {value: 'graduated', label: 'Graduated Students'},
   {value: 'active', label: 'Active Students'},
@@ -119,7 +107,13 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
+onMounted(() => {
+  fetchData();
+});
 
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
 
 <template>
