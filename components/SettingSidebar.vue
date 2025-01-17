@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import {useNuxtApp} from "#app";
+
+const isLoading = ref(true);
+const userDetails = ref();
+const isAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'admin');
+const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'super_admin');
 
 function handleLogout() {
   useCookie('token').value = null;
   navigateTo('/login');
 }
-
-const isLoading = ref(true);
-const userDetails = ref();
-const isAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'admin')
-const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'super_admin')
 
 onMounted(async () => {
   try {
@@ -25,8 +25,11 @@ onMounted(async () => {
   }
 });
 
-
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
+
 
 <template>
   <div class="setting-sidebar" v-if="!isLoading">
