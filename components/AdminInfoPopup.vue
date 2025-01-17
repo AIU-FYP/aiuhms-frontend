@@ -140,7 +140,6 @@ definePageMeta({
 .field-label,
 .field-input {
   text-align: start;
-  text-transform: capitalize;
   color: var(--primary-color);
   font-size: 1.2rem;
   width: 50%;
