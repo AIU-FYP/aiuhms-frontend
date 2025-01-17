@@ -1,9 +1,9 @@
 <script setup>
-import {computed, reactive, ref, watch} from 'vue';
-import Popup from '~/components/AdminSubmitPopup.vue'
-import {z} from 'zod';
-import {religions, nationalities,} from "~/utils/dropdownOptions.js";
-import {useNuxtApp} from "#app";
+import { computed, reactive, ref, watch } from 'vue';
+import Popup from '~/components/AdminSubmitPopup.vue';
+import { z } from 'zod';
+import { religions, nationalities } from "~/utils/dropdownOptions.js";
+import { useNuxtApp } from "#app";
 
 const form = reactive({});
 const errors = reactive({});
@@ -37,7 +37,8 @@ const formSchema = z.object({
       .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format"),
   "arrival_date": z.string(),
   "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format"),
-  "email": z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
+  "email": z.string().email("Invalid email format")
+      .regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
   "gender": z.string().optional(),
   "religion": z.string().optional(),
   "nationality": z.string().optional(),
@@ -48,120 +49,30 @@ const formSchema = z.object({
   "bed": z.number().optional(),
 });
 
-let {$axios} = useNuxtApp()
-const api = $axios()
+let { $axios } = useNuxtApp();
+const api = $axios();
 
-const selectedHostelIndex = ref(0)
-const allHostels = ref([])
-const selectedHostel = computed(() => allHostels[selectedHostelIndex])
+const selectedHostelIndex = ref(0);
+const allHostels = ref([]);
+const selectedHostel = computed(() => allHostels[selectedHostelIndex]);
 
 const questions = computed(() => {
   return [
-    {
-      label: "Name",
-      type: "text",
-      placeholder: "Enter your name",
-      id: "name",
-    },
-    {
-      label: "Student ID",
-      type: "text",
-      placeholder: "Enter your student ID (e.g., AIU21011234)",
-      id: "student_id",
-    },
-    {
-      label: "Passport No",
-      type: "text",
-      placeholder: "Enter your passport No",
-      id: "passport",
-    },
-    {
-      label: "Date of Arrive",
-      type: "date",
-      placeholder: "Select your date of birth",
-      id: "arrival_date",
-    },
-    {
-      label: "WhatsApp No",
-      type: "text",
-      placeholder: "Enter your WhatsApp No",
-      id: "phone",
-    },
-    {
-      label: "Email Address (Student Email Only)",
-      type: "text",
-      placeholder: "Enter your email address",
-      id: "email",
-    },
-    {
-      label: "Gender",
-      type: "select",
-      options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
-      placeholder: "Select your gender",
-      model: ref(""),
-      id: "gender",
-    },
-    {
-      label: "Religion",
-      type: "select",
-      options: filteredReligions.value,
-      placeholder: "Select Your religion",
-      id: "religion",
-    },
-    {
-      label: "Nationality",
-      type: "select",
-      options: filteredNationalities.value,
-      placeholder: "Select Your nationality",
-      id: "nationality",
-    },
-    {
-      label: "Program/Major",
-      type: "text",
-      placeholder: "Enter your program or major",
-      id: "major",
-    },
-    {
-      label: "Block Name",
-      type: "select",
-      placeholder: "Select Block Name (e.g., 25i)",
-      model: ref(""),
-      id: "block_name",
-      options: allHostels.value.filter(h => h.gender === form['gender']).map(h => ({value: h.name, label: h.name})),
-    },
-    {
-      label: "Level No",
-      type: "select",
-      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.map(l => ({
-        value: l.number.toString(),
-        label: `Level ${l.number}`
-      })) || [],
-      placeholder: "Select Level No",
-      model: ref(""),
-      id: "level_number"
-    },
-    {
-      label: "Room No",
-      type: "select",
-      placeholder: "Select Room No (e.g., 02)",
-      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number === Number(form['level_number']))?.room_details.map(r => ({
-        value: r.number,
-        label: `Room ${r.number}`
-      })) || [],
-      model: ref(""),
-      id: "room"
-    },
-    {
-      label: "Which Zone",
-      type: "select",
-      placeholder: "Which Zone?",
-      options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number.toString() === form['level_number'])?.room_details.find(r => r.number.toString() === form['room'])?.beds.map(b => ({
-        value: b.id,
-        label: `Zone ${b.bed_number} (${b.status})`
-      })) || [],
-      id: "bed",
-    }
-  ]
+    { label: "Name", type: "text", placeholder: "Enter your name", id: "name" },
+    { label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", id: "student_id" },
+    { label: "Passport No", type: "text", placeholder: "Enter your passport No", id: "passport" },
+    { label: "Date of Arrive", type: "date", placeholder: "Select your date of birth", id: "arrival_date" },
+    { label: "WhatsApp No", type: "text", placeholder: "Enter your WhatsApp No", id: "phone" },
+    { label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", id: "email" },
+    { label: "Gender", type: "select", options: [{ value: "male", label: "Male" }, { value: "female", label: "Female" }], placeholder: "Select your gender", model: ref(""), id: "gender" },
+    { label: "Religion", type: "select", options: filteredReligions.value, placeholder: "Select Your religion", id: "religion" },
+    { label: "Nationality", type: "select", options: filteredNationalities.value, placeholder: "Select Your nationality", id: "nationality" },
+    { label: "Program/Major", type: "text", placeholder: "Enter your program or major", id: "major" },
+    { label: "Block Name", type: "select", placeholder: "Select Block Name (e.g., 25i)", model: ref(""), id: "block_name", options: allHostels.value.filter(h => h.gender === form['gender']).map(h => ({ value: h.name, label: h.name })) },
+    { label: "Level No", type: "select", options: allHostels.value.find(h => h.name === form['block_name'])?.levels.map(l => ({ value: l.number.toString(), label: `Level ${l.number}` })) || [], placeholder: "Select Level No", model: ref(""), id: "level_number" },
+    { label: "Room No", type: "select", placeholder: "Select Room No (e.g., 02)", options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number === Number(form['level_number']))?.room_details.map(r => ({ value: r.number, label: `Room ${r.number}` })) || [], model: ref(""), id: "room" },
+    { label: "Which Zone", type: "select", placeholder: "Which Zone?", options: allHostels.value.find(h => h.name === form['block_name'])?.levels.find(l => l.number.toString() === form['level_number'])?.room_details.find(r => r.number.toString() === form['room'])?.beds.map(b => ({ value: b.id, label: `Zone ${b.bed_number} (${b.status})` })) || [], id: "bed" }
+  ];
 });
 
 questions.value.forEach((question) => {
@@ -182,21 +93,20 @@ questions.value.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const isLoading = ref(true)
+const isLoading = ref(true);
 
 onMounted(async () => {
   try {
-    const {data} = await api.get('/hostels/')
-    console.log(data)
-    allHostels.value = data
-    selectedHostel.value = data[0]
+    const { data } = await api.get('/hostels/');
+    console.log(data);
+    allHostels.value = data;
+    selectedHostel.value = data[0];
   } catch (e) {
-    console.log('error fetching hostels')
+    console.log('error fetching hostels');
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-})
-
+});
 
 async function handleSubmit() {
   const api = useApi();
@@ -210,11 +120,11 @@ async function handleSubmit() {
     }
     try {
       console.log("Sending API Request...");
-      const response = await api.post("/students/", {...form});
+      const response = await api.post("/students/", { ...form });
       console.log("Response Data:", response.data);
       isPopupVisible.value = true;
       Object.keys(form).forEach((key) => (form[key] = ""));
-      location.reload()
+      location.reload();
     } catch (error) {
       isPopupVisible.value = false;
       console.error("Error occurred:", error);
@@ -223,7 +133,6 @@ async function handleSubmit() {
         console.log(form);
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        console.log("Response Data:", response.data.value);
       } else if (error.request) {
         isPopupVisible.value = false;
         console.error("No response from the server:", error.request);
@@ -241,6 +150,9 @@ async function handleSubmit() {
   }
 }
 
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
 
 <template>
