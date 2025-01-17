@@ -25,13 +25,13 @@ const hostels = ref<Hostel[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(7);
 const q = ref('');
-
 const api = $axios()
+const isLoading = ref(false);
+const isPopupVisible = ref(false);
+const currentHostel = ref({});
 
 const fetchData = async () => {
-
   isLoading.value = true
-
   try {
     const response = await api.get("/hostels/");
     hostels.value = response.data.map((hostel: Hostel) => ({
@@ -45,17 +45,6 @@ const fetchData = async () => {
   }
 }
 
-const isPopupVisible = ref(false);
-const currentHostel = ref({});
-
-onMounted(fetchData)
-
-const isLoading = ref(false);
-
-definePageMeta({
-  middleware: 'auth',
-});
-
 const openPopup = (row: Hostel) => {
   currentHostel.value = row;
   isPopupVisible.value = true;
@@ -63,7 +52,6 @@ const openPopup = (row: Hostel) => {
 
 const filteredRows = computed(() => {
   let result = hostels.value;
-
   if (q.value) {
     result = result.filter(person => {
       return Object.values(person).some(value =>
@@ -71,7 +59,6 @@ const filteredRows = computed(() => {
       );
     });
   }
-
   return result;
 });
 
@@ -80,7 +67,6 @@ const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
   return filteredRows.value.slice(start, end);
 });
 
@@ -90,11 +76,12 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
-
 onMounted(fetchData)
 
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
-
 <template>
   <div class="dashboard-wrapper">
     <div class="dashboard-container">
