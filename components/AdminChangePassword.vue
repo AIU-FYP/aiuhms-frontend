@@ -2,7 +2,7 @@
 import {reactive, watch } from 'vue';
 import { z } from 'zod';
 
-const previousQuestions = [
+const AdminPasswordQuestions = [
   {
     label: "Current Password",
     type: "password",
@@ -36,7 +36,7 @@ const formSchema = z.object({
 const form = reactive({});
 const errors = reactive({});
 
-previousQuestions.forEach((question) => {
+AdminPasswordQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -50,7 +50,7 @@ function validateField(field) {
   }
 }
 
-previousQuestions.forEach((question) => {
+AdminPasswordQuestions.forEach((question) => {
   watch(
       () => form[question.id],
       () => validateField(question.id)
@@ -86,7 +86,7 @@ const handleSubmit = async () => {
       <main class="content">
         <h2>Change Admin Password</h2>
         <form @submit.prevent="handleSubmit">
-          <div v-for="(question, index) in previousQuestions" :key="index" class="form-group">
+          <div v-for="(question, index) in  AdminPasswordQuestions" :key="index" class="form-group">
             <div class="form-control">
               <label class="question-title" :for="question.id">{{ question.label }}:</label>
 
