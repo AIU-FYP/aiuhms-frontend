@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineProps,} from 'vue';
+import {defineEmits, defineProps} from 'vue';
 import {useStudentFields} from "@/composables/useStudentFields.ts";
 import {useStudentOperations} from "@/composables/useStudentOperations.ts";
 import {religions} from "~/utils/dropdownOptions.js";
@@ -11,10 +11,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:show']);
-
 const studentRef = toRef(props, 'student');
 const allHostelsRef = toRef(props, 'allHostels');
-
 
 const {fields, options} = useStudentFields(allHostelsRef, studentRef, religions);
 const {updateStudent, deleteStudent, initializeTracking} = useStudentOperations();
@@ -30,12 +28,8 @@ const closePopup = () => emit('update:show', false);
 const handleUpdateStudent = async () => {
   const result = await updateStudent(props.student);
   if (result.success) {
-    if (result.message) {
-      alert(result.message);
-    } else {
-      alert("Student info updated successfully");
-      closePopup();
-    }
+    alert(result.message || "Student info updated successfully");
+    closePopup();
   } else {
     alert(`Update failed: ${result.error}`);
   }
