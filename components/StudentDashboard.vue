@@ -91,14 +91,8 @@ const filterOptions = [
 const filteredRows = computed(() => {
   let result = people.value;
 
-  if (selectedFilter.value === 'active') {
-    result = result.filter(person => person.status === 'active');
-  } else if (selectedFilter.value === 'graduated') {
-    result = result.filter(person => person.status === 'graduated');
-  } else if (selectedFilter.value === 'inactive') {
-    result = result.filter(person => person.status === 'inactive');
-  } else if (selectedFilter.value === 'terminated') {
-    result = result.filter(person => person.status === 'terminated');
+  if (selectedFilter.value) {
+    result = result.filter(request => request.status === selectedFilter.value);
   }
 
   if (q.value) {

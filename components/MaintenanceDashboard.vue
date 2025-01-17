@@ -87,12 +87,8 @@ const filterOptions = [
 const filteredRows = computed(() => {
   let result = requests.value;
 
-  if (selectedFilter.value === 'rejected') {
-    result = result.filter(request => request.status === 'rejected');
-  } else if (selectedFilter.value === 'ppk_done') {
-    result = result.filter(request => request.status === 'ppk_done');
-  } else if (selectedFilter.value === 'Pending') {
-    result = result.filter(request => request.status === 'Pending');
+  if (selectedFilter.value) {
+    result = result.filter(request => request.status === selectedFilter.value);
   }
 
   if (q.value) {
