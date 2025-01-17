@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, computed} from 'vue';
 import {useRouter} from 'vue-router';
 import {useNuxtApp} from "#app";
 
@@ -8,7 +8,6 @@ definePageMeta({
 });
 
 const isLoading = ref(true);
-
 const userDetails = ref();
 const isAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'admin')
 const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 'super_admin')
@@ -117,7 +116,6 @@ function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
 </script>
-
 <template>
   <div class="sidebar-section">
     <aside class="navigation-panel">
