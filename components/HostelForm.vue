@@ -19,7 +19,7 @@ const previousQuestions = [
   {
     label: "Gender",
     type: "select",
-    options: [{value : "male", label: "Male"}, {value : "female", label: "Female"},],
+    options: [{value : "male", label: "Male"}, {value : "female", label: "Female"}],
     placeholder: "Select your gender",
     id : "gender"
   },
@@ -108,8 +108,6 @@ async function handleSubmit() {
           rooms: form.levels[level]
         })
       }
-
-      // console.log(payload)
 
       const response = await api.post("/hostels/", payload);
       console.log("Response Data:", response.data);
