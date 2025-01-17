@@ -26,8 +26,30 @@ const columns = [
   {key: 'extend', label: 'View', sortable: false,}
 ]
 
-const fetchData = async () => {
+let {$axios} = useNuxtApp()
+const api = $axios()
 
+interface StudentRequest {
+  id: number
+  date: string
+  name: string
+  studentIdNumber: string
+  roomNumber: string
+  whatsappNumber: string
+  emailAddress: string
+  gender: string
+  extend?: boolean | string
+}
+
+const requests = ref<RequestFields[]>([]);
+const currentPage = ref(1);
+const pageSize = ref(10);
+const q = ref('');
+const isLoading = ref(false);
+const isPopupVisible = ref(false);
+const currentRequest = ref({});
+
+const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/change-room-requests/");
@@ -46,38 +68,12 @@ definePageMeta({
   middleware: 'auth',
 });
 
-let {$axios} = useNuxtApp()
-
-interface StudentRequest {
-  id: number
-  date: string
-  name: string
-  studentIdNumber: string
-  roomNumber: string
-  whatsappNumber: string
-  emailAddress: string
-  gender: string
-  extend?: boolean | string
-}
-
-const requests = ref<RequestFields[]>([]);
-const currentPage = ref(1);
-const pageSize = ref(10);
-const q = ref('');
-const api = $axios()
-const isLoading = ref(false);
-const isPopupVisible = ref(false);
-const currentRequest = ref({});
-
 onMounted(fetchData)
 
 const openPopup = (row: StudentRequest) => {
   currentRequest.value = row;
   isPopupVisible.value = true;
 };
-
-onMounted(fetchData)
-
 
 const selectedFilter = ref('pending');
 
@@ -118,8 +114,6 @@ const handlePageChange = (newPage: number) => {
     currentPage.value = newPage;
   }
 };
-
-
 </script>
 
 <template>
