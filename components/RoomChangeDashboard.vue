@@ -12,6 +12,7 @@ interface RequestFields {
   whatsappNumber: string
   emailAddress: string
   gender: string
+  status: string
   extend?: boolean | string
 }
 
@@ -27,18 +28,16 @@ const columns = [
 
 const fetchData = async () => {
 
-  isLoading.value= true;
+  isLoading.value = true;
   try {
     const response = await api.get("/change-room-requests/");
     requests.value = response.data.map((request: RequestFields) => ({
       ...request,
       date: new Date().toLocaleDateString(),
     }));
-    totalItems.value = response.data.length;
   } catch (error) {
     console.error('Error fetching data:', error);
-  }
-  finally {
+  } finally {
     isLoading.value = false;
   }
 }
@@ -48,6 +47,7 @@ definePageMeta({
 });
 
 let {$axios} = useNuxtApp()
+
 interface StudentRequest {
   id: number
   date: string
@@ -63,7 +63,6 @@ interface StudentRequest {
 const requests = ref<RequestFields[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
-const totalItems = ref(0);
 const q = ref('');
 const api = $axios()
 const isLoading = ref(false);
@@ -77,18 +76,40 @@ const openPopup = (row: StudentRequest) => {
   isPopupVisible.value = true;
 };
 
+onMounted(fetchData)
+
+
+const selectedFilter = ref('pending');
+
+const filterOptions = [
+  {value: 'pending', label: 'Pending'},
+  {value: 'accepted', label: 'Accepted'},
+  {value: 'rejected', label: 'Rejected'},
+];
+
 const filteredRows = computed(() => {
-  if (!q.value) {
-    return requests.value;
+  let result = requests.value;
+
+  if (selectedFilter.value === 'rejected') {
+    result = result.filter(request => request.status === 'rejected');
+  } else if (selectedFilter.value === 'accepted') {
+    result = result.filter(request => request.status === 'accepted');
+  } else if (selectedFilter.value === 'pending') {
+    result = result.filter(request => request.status === 'pending');
   }
 
-  return requests.value.filter((request) => {
-    return Object.values(request).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase());
+  if (q.value) {
+    result = result.filter(request => {
+      return Object.values(request).some(value =>
+          String(value).toLowerCase().includes(q.value.toLowerCase())
+      );
     });
-  });
+  }
+
+  return result;
 });
 
+const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
@@ -96,10 +117,11 @@ const paginatedRows = computed(() => {
 });
 
 const handlePageChange = (newPage: number) => {
-  currentPage.value = newPage;
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
+  }
 };
 
-onMounted(fetchData)
 
 </script>
 
@@ -111,9 +133,7 @@ onMounted(fetchData)
         <AdminSidebar/>
       </aside>
 
-      <main class="content-area" v-if="isLoading">
-        <loader />
-      </main>
+      <loader v-if="isLoading"/>
 
       <main class="content-area" v-else>
         <div class="content-wrapper">
@@ -122,8 +142,18 @@ onMounted(fetchData)
             <div class="header-section">
 
               <div class="search-wrapper">
-                <input v-model="q" placeholder="Filter requests..." class="filter-box" />
+                <input v-model="q" placeholder="Filter requests..." class="filter-box"/>
               </div>
+
+              <div class="filter-dropdown">
+                <select class="filter-box" v-model="selectedFilter" @click="filteredRows">
+                  <option value="" disabled selected>Filter students...</option>
+                  <option v-for="option in filterOptions" :key="option.value" :value="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
@@ -142,7 +172,7 @@ onMounted(fetchData)
                   @click="handlePageChange(currentPage - 1)"
                   class="pagination-button"
               >
-                <UIcon name="mdi-arrow-left" />
+                <UIcon name="mdi-arrow-left"/>
               </button>
               <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
               <button
@@ -150,7 +180,7 @@ onMounted(fetchData)
                   @click="handlePageChange(currentPage + 1)"
                   class="pagination-button"
               >
-                <UIcon name="mdi-arrow-right" />
+                <UIcon name="mdi-arrow-right"/>
               </button>
             </div>
           </div>
