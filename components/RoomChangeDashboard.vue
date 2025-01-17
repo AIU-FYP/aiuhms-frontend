@@ -90,20 +90,17 @@ const filterOptions = [
 const filteredRows = computed(() => {
   let result = requests.value;
 
-  if (selectedFilter.value === 'rejected') {
-    result = result.filter(request => request.status === 'rejected');
-  } else if (selectedFilter.value === 'accepted') {
-    result = result.filter(request => request.status === 'accepted');
-  } else if (selectedFilter.value === 'pending') {
-    result = result.filter(request => request.status === 'pending');
+  if (selectedFilter.value) {
+    result = result.filter(request => request.status === selectedFilter.value);
   }
 
   if (q.value) {
-    result = result.filter(request => {
-      return Object.values(request).some(value =>
-          String(value).toLowerCase().includes(q.value.toLowerCase())
-      );
-    });
+    const query = q.value.toLowerCase();
+    result = result.filter(request =>
+        Object.values(request).some(value =>
+            String(value).toLowerCase().includes(query)
+        )
+    );
   }
 
   return result;
