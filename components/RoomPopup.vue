@@ -34,7 +34,6 @@ let {$axios} = useNuxtApp();
 const api = $axios();
 
 const toggleBedStatus = async (bed, newStatus) => {
-
   if (bed.status === "occupied") {
     alert("Cannot change the status of an occupied bed.");
     return;
@@ -55,7 +54,9 @@ const toggleBedStatus = async (bed, newStatus) => {
   }
 };
 
-
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
 
 <template>
