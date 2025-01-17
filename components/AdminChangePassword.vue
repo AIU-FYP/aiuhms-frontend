@@ -75,6 +75,10 @@ const handleSubmit = async () => {
     }
   }
 };
+
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
 
 <template>

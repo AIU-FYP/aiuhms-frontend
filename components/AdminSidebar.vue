@@ -115,6 +115,11 @@ const visibleButtons = computed(() =>
 function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
+
+definePageMeta({
+  middleware: 'auth',
+});
+
 </script>
 <template>
   <div class="sidebar-section">

@@ -53,6 +53,10 @@ onMounted(() => {
   fetchStats();
 })
 
+definePageMeta({
+  middleware: 'auth',
+});
+
 </script>
 
 <template>

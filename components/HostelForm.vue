@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import {onMounted, reactive, ref, watch} from 'vue';
 import { z } from 'zod';
 
 const form = reactive({
@@ -138,6 +138,10 @@ async function handleSubmit() {
     alert("Please correct the errors in the form.");
   }
 }
+
+definePageMeta({
+  middleware: 'auth',
+});
 
 </script>
 

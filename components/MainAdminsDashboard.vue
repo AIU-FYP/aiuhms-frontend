@@ -92,6 +92,10 @@ const handlePageChange = (newPage: number) => {
 
 onMounted(fetchData)
 
+definePageMeta({
+  middleware: 'auth',
+});
+
 </script>
 
 <template>

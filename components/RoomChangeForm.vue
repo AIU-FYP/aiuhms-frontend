@@ -1,8 +1,12 @@
 <script setup>
 import {computed, reactive, ref, watch} from 'vue';
 import {z} from 'zod';
-import {nationalities,} from "~/utils/dropdownOptions.js";
+import {nationalities} from "~/utils/dropdownOptions.js";
 import Popup from "~/components/StudentSubmitPopup.vue";
+
+definePageMeta({
+  middleware: 'auth',
+});
 
 const userNationalityInput = ref('');
 const filteredNationalities = computed(() => {
@@ -15,107 +19,32 @@ const filteredNationalities = computed(() => {
 });
 
 const RequestedChangeRoomQuestions = [
-  {
-    label: "Name",
-    type: "text",
-    placeholder: "Enter your name",
-    required: true,
-    id: 'student'
-  },
-  {
-    label: "Student ID",
-    type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)",
-    required: true,
-    id: 'student_id'
-  },
-  {
-    label: "Room No",
-    type: "text",
-    placeholder: "Enter your room No (e.g., 25i-3-10)",
-    required: true,
-    id: "room_number"
-  },
-  {
-    label: "Phone No (Local No Only)",
-    type: "text",
-    placeholder: "Enter your phone No",
-    required: true,
-    id: 'phone'
-  },
-  {
-    label: "Email Address (Student Email Only)",
-    type: "text",
-    placeholder: "Enter your email address",
-    required: true,
-    id: 'email'
-  },
-  {
-    label: "Gender",
-    type: "select",
-    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
-    required: true,
-    placeholder: "Enter your gender",
-    id: "gender"
-  },
-  {
-    label: "Enter your Nationality",
-    type: "select",
-    options: filteredNationalities.value,
-    placeholder: "Select nationality",
-    id: "nationality"
-  },
-  {
-    label: "Other supporting docs",
-    type: "file",
-    required: true,
-    placeholder: "Other supporting docs",
-    id: "supporting_doc"
-  },
-  {
-    label: "Explain your reason for room change?",
-    type: "textarea",
-    required: true,
-    placeholder: "Explain in detail the reason for room change?",
-    id: "reason"
-  }
+  {label: "Name", type: "text", placeholder: "Enter your name", required: true, id: 'student'},
+  {label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", required: true, id: 'student_id'},
+  {label: "Room No", type: "text", placeholder: "Enter your room No (e.g., 25i-3-10)", required: true, id: "room_number"},
+  {label: "Phone No (Local No Only)", type: "text", placeholder: "Enter your phone No", required: true, id: 'phone'},
+  {label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", required: true, id: 'email'},
+  {label: "Gender", type: "select", options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}], required: true, placeholder: "Enter your gender", id: "gender"},
+  {label: "Enter your Nationality", type: "select", options: filteredNationalities.value, placeholder: "Select nationality", id: "nationality"},
+  {label: "Other supporting docs", type: "file", required: true, placeholder: "Other supporting docs", id: "supporting_doc"},
+  {label: "Explain your reason for room change?", type: "textarea", required: true, placeholder: "Explain in detail the reason for room change?", id: "reason"}
 ];
 
 const formSchema = z.object({
-  "student":
-      z.string().min(8, "Name must be at least 8 characters long")
-          .nonempty("Name is required"),
-  "student_id":
-      z.string()
-          .regex(/^AIU\d{8}$/, "Invalid Student ID format")
-          .nonempty("Student ID is required"),
-  "room_number":
-      z.string().regex(/^\d+[A-Za-z]*-\d-\d+$/, "Invalid Room Number format")
-          .nonempty("Room Number is required"),
-  "phone":
-      z.string().regex(/^\d{8,15}$/, "Invalid phone number")
-          .nonempty("Phone Number is required"),
-  "email":
-      z.string()
-          .email("Invalid email format")
-          .regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
-  "gender":
-      z.string()
-          .nonempty("Gender is required"),
-  "nationality":
-      z.string()
-          .optional(),
-  "supporting_doc":
-      z.any()
-          .optional(),
-  "reason":
-      z.string().min(20, "Name must be at least 20 characters long")
-          .nonempty("Name is required"),
+  student: z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
+  student_id: z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
+  room_number: z.string().regex(/^\d+[A-Za-z]*-\d-\d+$/, "Invalid Room Number format").nonempty("Room Number is required"),
+  phone: z.string().regex(/^\d{8,15}$/, "Invalid phone number").nonempty("Phone Number is required"),
+  email: z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
+  gender: z.string().nonempty("Gender is required"),
+  nationality: z.string().optional(),
+  supporting_doc: z.any().optional(),
+  reason: z.string().min(20, "Name must be at least 20 characters long").nonempty("Name is required"),
 });
 
 const form = reactive({});
 const errors = reactive({});
-
-RequestedChangeRoomQuestions.forEach((question) => {
+RequestedChangeRoomQuestions.forEach(question => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -129,20 +58,18 @@ function validateField(field) {
   }
 }
 
-RequestedChangeRoomQuestions.forEach((question) => {
-  watch(() => form[question.id], (newValue) => validateField(question.id, newValue));
+RequestedChangeRoomQuestions.forEach(question => {
+  watch(() => form[question.id], () => validateField(question.id));
 });
 
 const supporting_doc = ref(null);
 
 const handleFileUpload = (event, inputDetails) => {
-  if (inputDetails.type !== 'file') {
-    return;
-  }
+  if (inputDetails.type !== 'file') return;
   supporting_doc.value = event.target.files[0];
 };
 
-const isPopupVisible = ref(false)
+const isPopupVisible = ref(false);
 
 async function handleSubmit() {
   const api = useApi();
@@ -151,52 +78,33 @@ async function handleSubmit() {
   const validationResults = formSchema.safeParse(form);
   if (validationResults.success) {
     try {
-      // console.log("Sending API Request...");
       const formDataObj = new FormData();
       for (const key in form) {
         const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-
-        formDataObj.append(key, value);
+        if (value !== null && value !== undefined) formDataObj.append(key, value);
       }
-
-      formDataObj.delete('supporting_doc')
-
-      if (supporting_doc.value) {
-        formDataObj.append('supporting_doc', supporting_doc.value)
-      }
+      formDataObj.delete('supporting_doc');
+      if (supporting_doc.value) formDataObj.append('supporting_doc', supporting_doc.value);
 
       const response = await api.post("/change-room-requests/", formDataObj);
-      console.log("Response Data:", response.data);
       isPopupVisible.value = true;
-      Object.keys(form).forEach((key) => (form[key] = ""));
+      Object.keys(form).forEach(key => (form[key] = ""));
       isPopupVisible.value = true;
-      location.reload()
+      location.reload();
     } catch (error) {
       isPopupVisible.value = false;
-      console.error("Error occurred:", error);
       if (error.response) {
-        console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        console.log("Response Data:", response.data.value);
       } else if (error.request) {
-        console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
       } else {
-        console.error("Request Setup Error:", error.message);
         alert("An error occurred while submitting the form. Please try again.");
       }
-      isPopupVisible.value = false;
     }
   } else {
-    console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
   }
 }
-
 </script>
 
 <template>
