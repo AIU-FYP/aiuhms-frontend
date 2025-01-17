@@ -3,7 +3,7 @@ import {reactive, watch} from 'vue';
 import {z} from 'zod';
 import Popup from "~/components/AdminSubmitPopup.vue";
 
-const previousQuestions = [
+const AdminFormQuestions = [
   {
     label: "Username",
     type: "text",
@@ -105,7 +105,7 @@ const formSchema = z.object({
 const form = reactive({});
 const errors = reactive({});
 const isPopupVisible = ref(false);
-previousQuestions.forEach((question) => {
+AdminFormQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -119,7 +119,7 @@ function validateField(field) {
   }
 }
 
-previousQuestions.forEach((question) => {
+AdminFormQuestions.forEach((question) => {
   watch(
       () => form[question.id],
       () => validateField(question.id)
@@ -132,7 +132,6 @@ async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  console.log("Form data:", form);
 
   if (validationResults.success) {
     try {
@@ -148,12 +147,8 @@ async function handleSubmit() {
           staff_type: form.staff_type,
         }
       };
-      console.log("payload:", payload)
-
-      console.log("Sending API Request...", payload);
 
       const response = await api.post("/users/", payload);
-      console.log("Response Data:", response.data);
 
       Object.keys(form).forEach((key) => {
         if (typeof form[key] === "object") {
@@ -167,24 +162,23 @@ async function handleSubmit() {
       isPopupVisible.value = true
       location.reload()
     } catch (error) {
-      console.error("Error occurred:", error);
       if (error.response) {
-        console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
       } else if (error.request) {
-        console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
       } else {
-        console.error("Request Setup Error:", error.message);
         alert("An error occurred while submitting the form. Please try again.");
       }
     }
   } else {
-    console.log("Validation Errors:", validationResults.error.errors);
     alert("Please correct the errors in the form.");
     isPopupVisible.value = false;
   }
 }
+
+definePageMeta({
+  middleware: 'auth',
+});
 
 </script>
 
@@ -198,7 +192,7 @@ async function handleSubmit() {
       <main class="form-content-area">
         <h2 class="content-header">Add New Admin</h2>
         <form @submit.prevent="handleSubmit" class="admin-form">
-          <div v-for="(question, index) in previousQuestions" :key="index" class="form-field">
+          <div v-for="(question, index) in AdminFormQuestions" :key="index" class="form-field">
             <div class="input-container">
               <label class="input-label" :for="question.label">{{ question.label }}:</label>
 

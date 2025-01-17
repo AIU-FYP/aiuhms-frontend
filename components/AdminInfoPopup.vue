@@ -43,7 +43,13 @@ const deleteAdmin = async () => {
     alert("Failed to delete admin. Please try again.");
   }
 };
+
+definePageMeta({
+  middleware: 'auth',
+});
+
 </script>
+
 
 <template>
   <div v-if="show" class="modal-overlay" @click="closePopup">
