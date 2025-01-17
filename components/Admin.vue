@@ -126,7 +126,6 @@ onMounted(() => {
 })
 
 </script>
-
 <template>
   <div class="dashboard-layout">
     <div class="dashboard-container">
