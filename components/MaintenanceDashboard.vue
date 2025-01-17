@@ -14,6 +14,8 @@ interface StudentRequest {
   whatsappNumber: string
   emailAddress: string
   gender: string
+  request: string
+  status: string
   extend?: boolean | string
 }
 
@@ -41,10 +43,7 @@ definePageMeta({
   middleware: 'auth',
 });
 
-const totalItems = computed(() => filteredRows.value.length);
-
 const api = $axios()
-
 const fetchData = async () => {
 
   isLoading.value = true;
@@ -61,7 +60,6 @@ const fetchData = async () => {
   }
 
 }
-
 const isPopupVisible = ref(false);
 const currentRequest = ref({});
 
@@ -76,22 +74,42 @@ const openPopup = (row: StudentRequest) => {
   isPopupVisible.value = true;
 };
 
+onMounted(fetchData)
+
+const selectedFilter = ref('Pending');
+
+const filterOptions = [
+  {value: 'Pending', label: 'Pending'},
+  {value: 'ppk_done', label: 'Accepted'},
+  {value: 'rejected', label: 'Rejected'},
+];
+
 const filteredRows = computed(() => {
-  if (!q.value) {
-    return requests.value;
+  let result = requests.value;
+
+  if (selectedFilter.value === 'rejected') {
+    result = result.filter(request => request.status === 'rejected');
+  } else if (selectedFilter.value === 'ppk_done') {
+    result = result.filter(request => request.status === 'ppk_done');
+  } else if (selectedFilter.value === 'Pending') {
+    result = result.filter(request => request.status === 'Pending');
   }
 
-  return requests.value.filter((request) => {
-    return Object.values(request).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase());
+  if (q.value) {
+    result = result.filter(request => {
+      return Object.values(request).some(value =>
+          String(value).toLowerCase().includes(q.value.toLowerCase())
+      );
     });
-  });
+  }
+
+  return result;
 });
 
+const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
-  console.log("Paginated Rows:", filteredRows.value.slice(start, end));
   return filteredRows.value.slice(start, end);
 });
 
@@ -100,9 +118,6 @@ const handlePageChange = (newPage: number) => {
     currentPage.value = newPage;
   }
 };
-
-onMounted(fetchData)
-
 
 
 </script>
@@ -120,9 +135,21 @@ onMounted(fetchData)
         <div class="content-wrapper">
           <div class="content-body">
             <div class="header-section">
+
               <div class="filter-wrapper">
                 <input v-model="q" placeholder="Filter students..." class="filter-box"/>
               </div>
+
+              <div class="filter-dropdown">
+                <select class="filter-box" v-model="selectedFilter" @click="filteredRows">
+                  <option value="" disabled selected>Filter students...</option>
+                  <option v-for="option in filterOptions" :key="option.value" :value="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
@@ -213,19 +240,22 @@ onMounted(fetchData)
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  padding:0;
+  padding: 0;
   min-height: 90vh;
 }
 
-.filter-wrapper{
+.filter-wrapper,
+.filter-dropdown {
   padding: 1rem 1rem 0 1rem;
 }
 
-.filter-box {
-  padding: 2px;
+.filter-dropdown .filter-box,
+.filter-wrapper .filter-box {
+  padding: 5px;
   border-radius: 5px;
   outline: none;
-  border: 2px solid #EEEEEE;
+  border: none;
+  color: var(--primary-hover-color);
 }
 
 .header-section {
