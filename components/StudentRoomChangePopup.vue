@@ -11,7 +11,7 @@ const requestFields = [
   {label: 'Email Address ', key: 'email'},
   {label: 'Gender ', key: 'gender'},
   {label: 'Student Nationality ', key: 'nationality'},
-  {label: 'Other Supporting Docs ', key: 'supporting_doc'},
+  {label: 'Supporting Docs ', key: 'supporting_doc'},
   {label: 'Reason for room change', key: 'reason'},
   {label: 'Status', key: 'status'},
 ];

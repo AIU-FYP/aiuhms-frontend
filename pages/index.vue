@@ -1,10 +1,13 @@
-<script setup lang="ts">
+<script setup>
+import { useRouter } from 'vue-router'
 
-import Test from "~/components/Test.vue";
+const router = useRouter()
+
+router.replace('/home')
 </script>
 
+
 <template>
-  <Test/>
 </template>
 
 <style scoped></style>
