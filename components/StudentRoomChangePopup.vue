@@ -48,6 +48,9 @@ const updateStatus = async (newStatus) => {
   }
 };
 
+definePageMeta({
+  middleware: 'auth',
+});
 </script>
 
 <template>
