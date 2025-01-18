@@ -131,7 +131,7 @@ definePageMeta({
               :aria-expanded="visibleButtonIndex === index"
               class="navigation-button"
           >
-            <UIcon :name="button.icon"/>
+            <UIcon :name="button.icon" />
             {{ button.name }}
           </button>
         </div>
@@ -141,11 +141,11 @@ definePageMeta({
               :key="linkIndex"
               class="navigation-link-item"
           >
-
-            <a @click.prevent="navigateToPage(link.url, link.target)"
-               class="navigation-link"
-               :target="link.target"
-               style="cursor: pointer"
+            <a
+                @click.prevent="navigateToPage(link.url, link.target)"
+                class="navigation-link"
+                :target="link.target"
+                style="cursor: pointer"
             >
               {{ link.text }}
             </a>
@@ -181,7 +181,7 @@ definePageMeta({
 }
 
 .navigation-button-wrapper {
-  padding: .5rem;
+  padding: 0.5rem;
   background-color: transparent;
 }
 
@@ -194,7 +194,7 @@ definePageMeta({
   color: var(--text-light-color);
   margin-bottom: 0.5rem;
   text-align: start;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   transition: 0.3s ease-in-out;
 }
 
@@ -222,7 +222,7 @@ definePageMeta({
 .navigation-link-item:hover {
   color: var(--text-hover-color);
   background-color: var(--primary-hover-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .navigation-link {
@@ -230,11 +230,9 @@ definePageMeta({
   color: inherit;
 }
 
-
 @media (max-width: 768px) {
   .navigation-panel {
     flex-basis: 100%;
   }
 }
 </style>
-
