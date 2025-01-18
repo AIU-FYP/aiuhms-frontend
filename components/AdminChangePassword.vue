@@ -90,10 +90,15 @@ definePageMeta({
       <main class="content">
         <h2>Change Admin Password</h2>
         <form @submit.prevent="handleSubmit">
-          <div v-for="(question, index) in  AdminPasswordQuestions" :key="index" class="form-group">
+          <div
+              v-for="(question, index) in AdminPasswordQuestions"
+              :key="index"
+              class="form-group"
+          >
             <div class="form-control">
-              <label class="question-title" :for="question.id">{{ question.label }}:</label>
-
+              <label class="question-title" :for="question.id">
+                {{ question.label }}:
+              </label>
               <input
                   v-if="question.type === 'text' || question.type === 'password'"
                   :type="question.type"
@@ -101,7 +106,9 @@ definePageMeta({
                   :placeholder="question.placeholder"
                   :id="question.id"
               />
-              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
+              <span v-if="errors[question.id]" class="error">
+                {{ errors[question.id] }}
+              </span>
             </div>
           </div>
           <button type="submit" class="submit-btn">Save Changes</button>
@@ -126,7 +133,6 @@ definePageMeta({
 
 .sidebar {
   flex: 1;
-  background-color: var(--primary-color);
   padding: 20px;
   color: var(--text-light-color);
   border-radius: 1rem;
@@ -156,7 +162,7 @@ definePageMeta({
 }
 
 .form-group input,
-.form-group select{
+.form-group select {
   width: 100%;
   padding: 10px;
   border: 2px solid var(--text-light-color);
@@ -175,14 +181,14 @@ definePageMeta({
   background-color: var(--primary-hover-color);
   color: var(--text-light-color);
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .submit-btn:hover {
   background-color: var(--primary-hover-color);
   color: var(--text-hover-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {
@@ -195,3 +201,4 @@ definePageMeta({
   }
 }
 </style>
+
