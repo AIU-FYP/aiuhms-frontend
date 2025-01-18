@@ -152,10 +152,19 @@ definePageMeta({
         <h2>New Building Form</h2>
       </div>
       <div class="box-form">
-        <form @submit.prevent="handleSubmit" >
+        <form @submit.prevent="handleSubmit">
           <div class="form-container">
-            <div class="info" v-for="(question, index) in previousQuestions" :key="index">
-              <label class="question-title" :for="question.label">{{ question.label }}</label>
+            <div
+                class="info"
+                v-for="(question, index) in previousQuestions"
+                :key="index"
+            >
+              <label
+                  class="question-title"
+                  :for="question.label"
+              >
+                {{ question.label }}
+              </label>
 
               <input
                   v-if="question.type === 'text'"
@@ -172,32 +181,75 @@ definePageMeta({
                   :id="question.id"
                   @change="validateField(question.id)"
               >
-                <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option.label" :value="option.value">{{ option.label }}</option>
+                <option
+                    value=""
+                    disabled
+                >
+                  {{ question.placeholder }}
+                </option>
+                <option
+                    v-for="option in question.options"
+                    :key="option.label"
+                    :value="option.value"
+                >
+                  {{ option.label }}
+                </option>
               </select>
 
               <div v-else-if="question.type === 'multi-select'">
-                <div v-for="level in question.levels" :key="level.key" class="level-input">
-                  <label class="form-label">{{ level.label }}</label>
+                <div
+                    v-for="level in question.levels"
+                    :key="level.key"
+                    class="level-input"
+                >
+                  <label class="form-label">
+                    {{ level.label }}
+                  </label>
                   <select
                       v-model="form.levels[level.key]"
                       :required="question.required"
                       class="form-select"
                       @change="validateField(level.key)"
                   >
-                    <option value="" disabled>{{ question.placeholder }}</option>
-                    <option v-for="i in 30" :key="i" :value="i">{{ i }}</option>
+                    <option
+                        value=""
+                        disabled
+                    >
+                      {{ question.placeholder }}
+                    </option>
+                    <option
+                        v-for="i in 30"
+                        :key="i"
+                        :value="i"
+                    >
+                      {{ i }}
+                    </option>
                   </select>
-                  <span v-if="errors[level.id]" class="error">{{ errors[level.id] }}</span>
+                  <span
+                      v-if="errors[level.id]"
+                      class="error"
+                  >
+                    {{ errors[level.id] }}
+                  </span>
                 </div>
               </div>
 
-              <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
+              <span
+                  v-if="errors[question.id]"
+                  class="error"
+              >
+                {{ errors[question.id] }}
+              </span>
             </div>
           </div>
 
           <div>
-            <button class="submit" type="submit">Submit</button>
+            <button
+                class="submit"
+                type="submit"
+            >
+              Submit
+            </button>
           </div>
         </form>
       </div>
@@ -206,14 +258,12 @@ definePageMeta({
 </template>
 
 <style scoped>
-
 .container {
   display: block;
   margin: 0;
   padding: 0;
   width: 100%;
   max-width: 1300px;
-
 }
 
 @media (max-width: 1200px) {
@@ -227,10 +277,8 @@ definePageMeta({
   width: 100%;
   text-align: center;
   margin: 0;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   background-color: var(--text-hover-color);
-  border: none;
-  outline: none;
   font-size: 1.5rem;
   color: var(--primary-color);
 }
@@ -256,7 +304,6 @@ definePageMeta({
 
 .info {
   flex-basis: calc(100% - 10px);
-  box-sizing: border-box;
   display: block;
 }
 
@@ -268,7 +315,7 @@ definePageMeta({
 .form-container input,
 .form-container select {
   width: 100%;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   border: 2px solid var(--text-light-color);
   border-radius: 5px;
   outline: none;
@@ -281,9 +328,8 @@ definePageMeta({
 
 .submit {
   width: 100%;
-  text-align: center;
   margin-top: 2rem;
-  padding: .5rem 2rem;
+  padding: 0.5rem 2rem;
   font-size: 1.2rem;
   border-radius: 1rem 0;
   background-color: var(--primary-hover-color);
@@ -292,8 +338,6 @@ definePageMeta({
 
 .submit:hover {
   background-color: var(--primary-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
-
-
 </style>
