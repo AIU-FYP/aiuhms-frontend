@@ -59,14 +59,14 @@ definePageMeta({
           Welcome to {{ admins.name }}
         </span>
         <span @click="closePopup" class="modal-close-btn">
-          <UIcon name="fontina-close"/>
+          <UIcon name="fontina-close" />
         </span>
       </div>
 
       <div class="modal-content">
         <div class="field-container" v-for="field in adminsFields" :key="field.key">
           <span class="field-label">
-            <UIcon style="color: var(--primary-color)" name="ph-student"/>
+            <UIcon style="color: var(--primary-color)" name="ph-student" />
             {{ field.label }}:
           </span>
           <span class="field-input">{{ admins?.[field.key] || 'N/A' }}</span>
@@ -165,7 +165,7 @@ definePageMeta({
   color: var(--text-hover-color);
 }
 
-@media (max-width: 1200px ) {
+@media (max-width: 1200px) {
   .modal-container {
     width: 90%;
     max-width: 90%;
@@ -177,11 +177,11 @@ definePageMeta({
     flex-direction: column;
     width: 100%;
   }
+
   .field-label,
   .field-input {
     font-size: 1.2rem;
     width: 100%;
   }
 }
-
 </style>
