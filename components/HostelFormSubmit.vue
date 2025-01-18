@@ -62,17 +62,13 @@ definePageMeta({
 <template>
   <div class="dashboard-layout">
     <div class="dashboard-container">
-
       <aside class="navigation-panel">
-        <AdminSidebar/>
+        <AdminSidebar />
       </aside>
-
-      <loader v-if="isLoading"/>
-
+      <loader v-if="isLoading" />
       <main class="content-area" v-else>
-        <HostelForm/>
+        <HostelForm />
       </main>
-
     </div>
   </div>
 </template>
@@ -116,7 +112,6 @@ definePageMeta({
   }
 }
 
-
 .info-content div {
   margin: 1rem;
 }
@@ -126,14 +121,11 @@ definePageMeta({
   color: var(--primary-color);
 }
 
-
-
 @media (max-width: 768px) {
   .content-area {
     padding: 1rem;
   }
 }
-
 
 @media (max-width: 1200px) {
   .dashboard-container {
@@ -151,4 +143,3 @@ definePageMeta({
   }
 }
 </style>
-
