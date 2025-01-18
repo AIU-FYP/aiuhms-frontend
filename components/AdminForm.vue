@@ -186,13 +186,17 @@ definePageMeta({
   <div class="account-settings-page">
     <div class="layout-container">
       <aside class="navigation-sidebar">
-        <SettingSidebar/>
+        <SettingSidebar />
       </aside>
 
       <main class="form-content-area">
         <h2 class="content-header">Add New Admin</h2>
         <form @submit.prevent="handleSubmit" class="admin-form">
-          <div v-for="(question, index) in AdminFormQuestions" :key="index" class="form-field">
+          <div
+              v-for="(question, index) in AdminFormQuestions"
+              :key="index"
+              class="form-field"
+          >
             <div class="input-container">
               <label class="input-label" :for="question.label">{{ question.label }}:</label>
 
@@ -212,9 +216,12 @@ definePageMeta({
                   class="select-field"
               >
                 <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option" :value="option.value">{{
-                    option.label
-                  }}
+                <option
+                    v-for="option in question.options"
+                    :key="option"
+                    :value="option.value"
+                >
+                  {{ option.label }}
                 </option>
               </select>
 
@@ -222,8 +229,7 @@ definePageMeta({
             </div>
           </div>
           <button type="submit" class="submit-button">Save Changes</button>
-          <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
-          </Popup>
+          <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event"></Popup>
         </form>
       </main>
     </div>
@@ -245,7 +251,6 @@ definePageMeta({
 
 .navigation-sidebar {
   flex: 1;
-  background-color: var(--primary-color);
   padding: 20px;
   color: var(--text-light-color);
   border-radius: 1rem;
@@ -308,14 +313,14 @@ definePageMeta({
   background-color: var(--primary-hover-color);
   color: var(--text-light-color);
   border: none;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .submit-button:hover {
   background-color: var(--primary-color);
   color: var(--text-hover-color);
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {
@@ -328,4 +333,6 @@ definePageMeta({
   }
 }
 </style>
+
+
 
