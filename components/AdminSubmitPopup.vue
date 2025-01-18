@@ -93,8 +93,6 @@ p {
 
 .divider {
   margin: 5% 3%;
-  border: 1px solid var(--text-light-color);;
+  border: 1px solid var(--text-light-color);
 }
-
-
 </style>
