@@ -1,3 +1,22 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const isLinksVisible = ref(false);
+const isMobile = ref(false);
+
+function toggleLinksVisibility() {
+  isLinksVisible.value = !isLinksVisible.value;
+  console.log('Links visibility toggled:', isLinksVisible.value);
+}
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 1200;
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 1200;
+  });
+});
+</script>
+
 <template>
   <div class="header-container">
     <div class="header-wrapper">
@@ -28,25 +47,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from 'vue';
-
-const isLinksVisible = ref(false);
-const isMobile = ref(false);
-
-function toggleLinksVisibility() {
-  isLinksVisible.value = !isLinksVisible.value;
-  console.log('Links visibility toggled:', isLinksVisible.value);
-}
-
-onMounted(() => {
-  isMobile.value = window.innerWidth <= 1200;
-  window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth <= 1200;
-  });
-});
-</script>
 
 <style scoped>
 .header-container {
