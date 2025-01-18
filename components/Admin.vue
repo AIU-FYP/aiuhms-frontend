@@ -126,29 +126,28 @@ onMounted(() => {
 })
 
 </script>
+
 <template>
   <div class="dashboard-layout">
     <div class="dashboard-container">
-
       <aside class="navigation-panel">
-        <AdminSidebar/>
+        <AdminSidebar />
       </aside>
 
-      <loader v-if="isLoading"/>
+      <loader v-if="isLoading" />
 
       <main class="content-area" v-else>
-
         <section class="info-content">
           <div class="welcome-wrapper">
-            <h2>Welcome back </h2>
+            <h2>Welcome back</h2>
           </div>
           <div class="image-wrapper">
-            <img src="../public/images/login.webp" alt="welcome-image">
+            <img src="../public/images/login.webp" alt="welcome-image" />
           </div>
         </section>
 
         <section v-if="isFetching" class="loading-indicator">
-          <Loader/>
+          <Loader />
         </section>
 
         <section
@@ -165,19 +164,16 @@ onMounted(() => {
             >
               <div class="stat-box">
                 <h3 class="analysis-title">
-                  <UIcon :name="stat.icon" class="stat-icon"/>
+                  <UIcon :name="stat.icon" class="stat-icon" />
                   {{ stat.subTitle }}
                 </h3>
-                <h3 class="analysis-num"> {{ stat.totalNum }}
-                </h3>
+                <h3 class="analysis-num">{{ stat.totalNum }}</h3>
               </div>
               <div class=""></div>
             </div>
           </div>
         </section>
-
       </main>
-
     </div>
   </div>
 </template>
@@ -312,7 +308,6 @@ onMounted(() => {
     flex-direction: column;
   }
 }
-
 
 @media (max-width: 1200px) {
   .dashboard-container {
