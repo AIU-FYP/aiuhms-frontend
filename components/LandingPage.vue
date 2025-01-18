@@ -1,3 +1,8 @@
+
+<script setup>
+</script>
+
+
 <template>
   <section class="landing-section">
     <div class="content-container">
@@ -16,11 +21,7 @@
   </section>
 </template>
 
-<script setup>
-</script>
-
 <style scoped>
-
 .landing-section {
   display: flex;
   justify-content: center;
@@ -42,30 +43,6 @@
   border-radius: 1.5rem;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   background: linear-gradient(120deg, #82B4F9, #4B8AE6, #133E87FF);
-}
-
-@media (max-width: 1200px) {
-  .content-container {
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 800px) {
-  .content-container {
-    padding: 1rem;
-    text-align: center;
-  }
-
-  h2, h1 {
-    font-size: 1.5rem;
-  }
 }
 
 .text-content {
@@ -98,22 +75,7 @@ h1 {
   margin-top: 1.5rem;
 }
 
-@media (max-width: 1200px) {
-  .landing-section h2 {
-    font-size: 1.5rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-  .content-container {
-    width: 100%;
-    height: 100vh;
-    padding: 2rem;
-    border-radius: 0;
-  }
-}
-  .btn-action {
+.btn-action {
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 1rem;
@@ -142,6 +104,43 @@ h1 {
   border-radius: 1rem;
   opacity: 0;
   animation: fadeIn 1.5s ease forwards;
+}
+
+@media (max-width: 1200px) {
+  .content-container {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .landing-section h2 {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .content-container {
+    padding: 2rem;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .content-container {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  h2, h1 {
+    font-size: 1.5rem;
+  }
 }
 
 @keyframes fadeIn {
