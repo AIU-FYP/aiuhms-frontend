@@ -77,6 +77,7 @@ definePageMeta({
   flex-wrap: wrap;
   align-items: center;
   padding: 0.5rem;
+
 }
 
 .container-box .image-logo img {
