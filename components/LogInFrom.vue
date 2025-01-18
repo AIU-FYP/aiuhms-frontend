@@ -249,5 +249,4 @@ async function handleSubmit() {
   color: var(--text-hover-color);
   transition: .4s ease-in-out;
 }
-
 </style>

@@ -1,9 +1,3 @@
-<template>
-  <div v-if="isLoading" class="loader">
-    <div class="spinner"></div>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from 'vue';
 
@@ -15,6 +9,13 @@ onMounted(() => {
   }, 1000);
 });
 </script>
+
+
+<template>
+  <div v-if="isLoading" class="loader">
+    <div class="spinner"></div>
+  </div>
+</template>
 
 <style scoped>
 .loader {
