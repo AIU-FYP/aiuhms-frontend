@@ -29,12 +29,14 @@ const images = [
     <div class="aiu-about-container">
       <h1 class="aiu-about-title">About Albukhary International University</h1>
       <hr class="aiu-divider" />
+
       <div class="aiu-information">
         <div v-for="info in information" :key="info.title" class="aiu-info-card">
           <h3 class="aiu-info-title">{{ info.title }}</h3>
           <p class="aiu-info-description">{{ info.description }}</p>
         </div>
       </div>
+
       <div class="aiu-images">
         <div v-for="image in images" :key="image.url" class="aiu-image-wrapper">
           <img :src="image.url" :alt="image.alt" class="aiu-image" />
@@ -129,3 +131,4 @@ const images = [
   border-radius: 8px;
 }
 </style>
+
