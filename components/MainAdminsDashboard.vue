@@ -19,7 +19,6 @@ interface User {
 }
 
 const columns = [
-  {key: 'id', label: 'ID'},
   {key: 'username', label: 'Username'},
   {key: 'name', label: 'Name'},
   {key: 'position', label: 'Position', sortable: true},

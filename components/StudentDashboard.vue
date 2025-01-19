@@ -27,7 +27,6 @@ interface Person {
 }
 
 const columns = [
-  {key: 'id', label: 'ID'},
   {key: 'name', label: 'Name', sortable: true},
   {key: 'student_id', label: 'Student ID',},
   {key: 'hostel_name', label: 'Hostel Name', sortable: true},
