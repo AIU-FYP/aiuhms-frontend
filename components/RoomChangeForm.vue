@@ -94,15 +94,19 @@ async function handleSubmit() {
     } catch (error) {
       isPopupVisible.value = false;
       if (error.response) {
+        isPopupVisible.value = false;
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
       } else if (error.request) {
+        isPopupVisible.value = false;
         alert("Server is not responding. Please try again later.");
       } else {
+        isPopupVisible.value = false;
         alert("An error occurred while submitting the form. Please try again.");
       }
     }
   } else {
     alert("Please correct the errors in the form.");
+    isPopupVisible.value = false;
   }
 }
 </script>
