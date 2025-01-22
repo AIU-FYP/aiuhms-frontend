@@ -93,6 +93,7 @@ const navigationButtons = [
     icon: "mdi-user",
     links: [
       {text: "Admin", url: "/admin", target: "_self"},
+      {text: "Admin", url: "/home", target: "_blank"},
     ],
   },
 ];
