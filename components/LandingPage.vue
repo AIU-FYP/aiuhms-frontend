@@ -10,8 +10,8 @@
         <h2 class="fade-in">Welcome Students</h2>
         <h1 class="slide-up">Albukhary International University</h1>
         <div class="action-buttons">
-          <button class="btn-action">Maintenance Room Form</button>
-          <button class="btn-action">Change Room Form</button>
+          <router-link to="/maintenance-room-form" class="btn-action">Maintenance Room Form</router-link>
+          <router-link to="/change-room-form" class="btn-action">Change Room Form</router-link>
         </div>
       </div>
       <div class="image-wrapper">
