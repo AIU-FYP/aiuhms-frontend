@@ -54,6 +54,17 @@ const dashboardItems = computed(() => [
         subTitle: "Total Rooms",
         icon: "mdi-door",
         totalNum: stats.value?.hostel_statistics.total_rooms ?? 0
+      }
+      ,
+      {
+        subTitle: "Available Beds",
+        icon: "mdi-bed-outline",
+        totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
+      },
+      {
+        subTitle: "Occupied Beds",
+        icon: "mdi-bed",
+        totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
       },
       {
         subTitle: "Maintenance Requests",
@@ -64,16 +75,6 @@ const dashboardItems = computed(() => [
         subTitle: "Change Room Requests",
         icon: "mdi-swap-horizontal",
         totalNum: stats.value?.request_statistics.change_room_requests ?? 0
-      },
-      {
-        subTitle: "Available Beds",
-        icon: "mdi-bed-outline",
-        totalNum: stats.value?.occupancy_statistics.available_beds ?? 0
-      },
-      {
-        subTitle: "Occupied Beds",
-        icon: "mdi-bed",
-        totalNum: stats.value?.occupancy_statistics.occupied_beds ?? 0
       },
       {
         subTitle: "Male Students",
@@ -131,10 +132,10 @@ onMounted(() => {
   <div class="dashboard-layout">
     <div class="dashboard-container">
       <aside class="navigation-panel">
-        <AdminSidebar />
+        <AdminSidebar/>
       </aside>
 
-      <loader v-if="isLoading" />
+      <loader v-if="isLoading"/>
 
       <main class="content-area" v-else>
         <section class="info-content">
@@ -142,12 +143,12 @@ onMounted(() => {
             <h2>Welcome back</h2>
           </div>
           <div class="image-wrapper">
-            <img src="../public/images/login.webp" alt="welcome-image" />
+            <img src="../public/images/login.webp" alt="welcome-image"/>
           </div>
         </section>
 
         <section v-if="isFetching" class="loading-indicator">
-          <Loader />
+          <Loader/>
         </section>
 
         <section
@@ -164,7 +165,7 @@ onMounted(() => {
             >
               <div class="stat-box">
                 <h3 class="analysis-title">
-                  <UIcon :name="stat.icon" class="stat-icon" />
+                  <UIcon :name="stat.icon" class="stat-icon"/>
                   {{ stat.subTitle }}
                 </h3>
                 <h3 class="analysis-num">{{ stat.totalNum }}</h3>
