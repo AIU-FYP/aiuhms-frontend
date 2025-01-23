@@ -18,6 +18,7 @@
         <img src="/images/hostel.png" alt="AIU Campus" class="image-fade" />
       </div>
     </div>
+
   </section>
 </template>
 
