@@ -13,6 +13,7 @@
           <router-link to="/maintenance-room-form" class="btn-action">Maintenance Room Form</router-link>
           <router-link  to="/change-room-form" class="btn-action">Change Room Form</router-link>
         </div>
+
       </div>
       <div class="image-wrapper">
         <img src="/images/hostel.png" alt="AIU Campus" class="image-fade" />
