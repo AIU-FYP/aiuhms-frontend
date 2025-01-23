@@ -315,7 +315,7 @@ async function handleSubmit() {
 }
 
 .btn-submit:hover {
-  background-color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
   transition: .2s;
 }
 
