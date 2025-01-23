@@ -74,10 +74,10 @@ const openPopup = (row: StudentRequest) => {
 
 onMounted(fetchData)
 
-const selectedFilter = ref('Pending');
+const selectedFilter = ref('pending');
 
 const filterOptions = [
-  {value: 'Pending', label: 'Pending'},
+  {value: 'pending', label: 'Pending'},
   {value: 'ppk_done', label: 'Accepted'},
   {value: 'rejected', label: 'Rejected'},
 ];
