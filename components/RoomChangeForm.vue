@@ -238,7 +238,7 @@ async function handleSubmit() {
   font-size: 1rem;
   padding: 1rem 0;
   font-weight: normal;
-  color: black;
+  color: var(--text-light-color);
   text-align: justify;
 }
 
