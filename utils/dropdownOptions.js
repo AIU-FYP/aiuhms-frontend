@@ -97,5 +97,5 @@ export const roomMaintenanceIssues = [
 export const religions = [
     {value: "christianity", label: "Christianity"},
     {value: "islam", label: "Islam"},
-    {value: "non_muslim", label: "Non Muslim"},
+    {value: "others", label: "Others"},
 ];
