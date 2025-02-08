@@ -24,6 +24,7 @@
 </template>
 
 <style scoped>
+
 .landing-section {
   display: flex;
   justify-content: center;
@@ -111,7 +112,7 @@ h1 {
 @media (max-width: 1200px) {
   .content-container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     flex-direction: column;
   }
 
