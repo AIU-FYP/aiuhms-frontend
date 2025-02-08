@@ -163,9 +163,9 @@ const generatePDF = () => {
                   </option>
                 </select>
               </div>
-
-              <button @click="generatePDF" class="download-button">Download Report</button>
-
+              <div class="download-btn-wrapper">
+                <button @click="generatePDF" class="download-button">Download Report</button>
+              </div>
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
@@ -263,6 +263,21 @@ const generatePDF = () => {
 
 .search-wrapper {
   padding: 1rem;
+}
+
+.download-btn-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download-btn-wrapper button{
+  border: none;
+  background: var(--primary-color);
+  color: var(--text-light-color);
+  outline: none;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .view-button {
