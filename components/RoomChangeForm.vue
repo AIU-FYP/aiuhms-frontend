@@ -21,7 +21,7 @@ const filteredNationalities = computed(() => {
 const RequestedChangeRoomQuestions = [
   {label: "Name", type: "text", placeholder: "Enter your name", required: true, id: 'student'},
   {label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", required: true, id: 'student_id'},
-  {label: "Room No", type: "text", placeholder: "Enter your room No (e.g., 25i-3-10)", required: true, id: "room_number"},
+  {label: "Room No", type: "text", placeholder: "Room No (e.g., 25i-3-10-A)", required: true, id: "room_number"},
   {label: "Phone No (Local No Only)", type: "text", placeholder: "Enter your phone No", required: true, id: 'phone'},
   {label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", required: true, id: 'email'},
   {label: "Gender", type: "select", options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}], required: true, placeholder: "Enter your gender", id: "gender"},
@@ -33,7 +33,9 @@ const RequestedChangeRoomQuestions = [
 const formSchema = z.object({
   student: z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
   student_id: z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
-  room_number: z.string().regex(/^\d+[A-Za-z]*-\d-\d+$/, "Invalid Room Number format").nonempty("Room Number is required"),
+  room_number: z
+      .string()
+      .regex(/^\d+[A-Za-z]?-\d{1,2}-\d{1,2}(-[A-Za-z])?$/, 'Invalid Room Number format'),
   phone: z.string().regex(/^\d{8,15}$/, "Invalid phone number").nonempty("Phone Number is required"),
   email: z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
   gender: z.string().nonempty("Gender is required"),
@@ -63,14 +65,11 @@ RequestedChangeRoomQuestions.forEach(question => {
 });
 
 const supporting_doc = ref(null);
-
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') return;
   supporting_doc.value = event.target.files[0];
 };
-
 const isPopupVisible = ref(false);
-
 async function handleSubmit() {
   const api = useApi();
   form.Date = new Date().toLocaleDateString("en-GB");
@@ -109,6 +108,7 @@ async function handleSubmit() {
     isPopupVisible.value = false;
   }
 }
+
 </script>
 
 <template>
