@@ -101,7 +101,7 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  doc.text(`Student Maintenance Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+  doc.text(` Report on Student Maintenance Room Requests- ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
   const filteredData = filteredRows.value.map((request, index) => [
     index + 1,
@@ -118,7 +118,7 @@ const generatePDF = () => {
     body: filteredData,
   });
 
-  doc.save(`requests-${selectedFilter.value}.pdf`);
+  doc.save(` Maintenance requests-${selectedFilter.value}.pdf`);
 };
 
 onMounted(() => {
