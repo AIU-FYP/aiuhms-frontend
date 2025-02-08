@@ -126,6 +126,7 @@ const generatePDF = () => {
 
   const filteredData = filteredRows.value.map(request => [
     index + 1,
+
     request.student,
     request.room_number,
     request.nationality,
