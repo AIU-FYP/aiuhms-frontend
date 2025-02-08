@@ -13,7 +13,7 @@ const api = $axios()
 interface Person {
   id: number
   date: string
-  student: string
+  name: string
   student_id: string
   passport: string
   phone: string
@@ -78,7 +78,6 @@ const filterOptions = [
   {value: 'terminated', label: 'Terminated'},
   {value: 'inactive', label: 'Non-Active Students'},
 ];
-
 const filteredRows = computed(() => {
   let result = people.value;
 
@@ -96,7 +95,6 @@ const filteredRows = computed(() => {
 
   return result;
 });
-
 const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
@@ -112,11 +110,11 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  doc.text(`Student Maintenance Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+  doc.text(`AIU Student Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
   const filteredData = filteredRows.value.map((people, index) => [
     index + 1,
-    people.student,
+    people.name,
     people.nationality,
     people.phone,
     people.religion,
@@ -129,7 +127,7 @@ const generatePDF = () => {
     body: filteredData,
   });
 
-  doc.save(`requests-${selectedFilter.value}.pdf`);
+  doc.save(`AIU Student-${selectedFilter.value}.pdf`);
 };
 
 
@@ -274,7 +272,7 @@ definePageMeta({
 
 .filter-dropdown .filter-box,
 .filter-wrapper .filter-box,
-.download-btn-wrapper button {
+.download-btn-wrapper .download-button{
   padding: 5px;
   border-radius: 5px;
   outline: none;
