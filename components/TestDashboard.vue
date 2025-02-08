@@ -24,6 +24,7 @@ interface StudentRequest {
   name: string
   studentIdNumber: string
   roomNumber: string
+  room_number: string
   whatsappNumber: string
   emailAddress: string
   gender: string
@@ -71,13 +72,11 @@ const openPopup = (row: StudentRequest) => {
 };
 
 const selectedFilter = ref('pending');
-
 const filterOptions = [
   {value: 'pending', label: 'Pending'},
   {value: 'accepted', label: 'Accepted'},
   {value: 'rejected', label: 'Rejected'},
 ];
-
 const filteredRows = computed(() => {
   let result = requests.value;
 
@@ -96,42 +95,68 @@ const filteredRows = computed(() => {
 
   return result;
 });
-
 const totalItems = computed(() => filteredRows.value.length);
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
   return filteredRows.value.slice(start, end);
 });
-
 const handlePageChange = (newPage: number) => {
   if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
     currentPage.value = newPage;
   }
 };
 
+// const generatePDF = () => {
+//   const doc = new jsPDF();
+//   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+//
+//   const filteredData = filteredRows.value.map(request => [
+//     request.id,
+//     request.name,
+//     request.studentIdNumber,
+//     request.roomNumber,
+//     request.whatsappNumber,
+//     request.emailAddress,
+//     request.gender,
+//     request.status
+//   ]);
+//
+//   autoTable(doc, {
+//     head: [['ID', 'Name', 'Student ID', 'Room No', 'WhatsApp', 'Email', 'Gender', 'Status']],
+//     body: filteredData,
+//   });
+//
+//   doc.save(`requests-${selectedFilter.value}.pdf`);
+// };
+
 const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
+  // Map table headers based on backend keys
+  const tableHeaders = columns
+      .filter(col => col.key !== 'extend') // Remove the "View" column
+      .map(col => col.label);
+
+  // Ensure we match the backend response structure
   const filteredData = filteredRows.value.map(request => [
     request.id,
     request.name,
-    request.studentIdNumber,
     request.roomNumber,
-    request.whatsappNumber,
-    request.emailAddress,
     request.gender,
-    request.status
+    request.status,
   ]);
 
   autoTable(doc, {
-    head: [['ID', 'Date', 'Name', 'Student ID', 'Room No', 'WhatsApp', 'Email', 'Gender', 'Status']],
+    head: [tableHeaders],
     body: filteredData,
   });
 
   doc.save(`requests-${selectedFilter.value}.pdf`);
 };
+
+
 </script>
 
 <template>
