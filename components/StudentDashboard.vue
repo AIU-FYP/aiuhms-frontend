@@ -7,9 +7,6 @@ import Loader from "~/components/Loader.vue";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-const {$axios} = useNuxtApp()
-const api = $axios()
-
 interface Person {
   id: number
   date: string
@@ -30,16 +27,25 @@ interface Person {
   filteredRows: string;
 }
 
+const {$axios} = useNuxtApp()
+const api = $axios()
+const bedMapping: Record<string, string> = {
+  '01': 'A',
+  '02': 'B',
+  '03': 'C',
+  '04': 'D'
+};
+
 const columns = [
-  {key: 'name', label: 'Name', sortable: true},
+  {key: 'name', label: 'Name',},
   {key: 'student_id', label: 'Student ID',},
+  {key: 'gender', label: 'Gender', sortable: true},
   {key: 'hostel_name', label: 'Hostel Name', sortable: true},
   {key: 'level_number', label: 'Level No',},
   {key: 'room_number', label: 'Room No',},
   {key: 'bed_number', label: 'Bed No',},
-  {key: 'gender', label: 'Gender', sortable: true},
   {key: 'status', label: 'Status', sortable: false},
-  {key: 'extend', label: 'View', sortable: false}
+  {key: 'extend', label: 'View', sortable: false},
 ];
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
@@ -51,24 +57,27 @@ const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/students/");
-    const {data} = await api.get('/hostels/');
+    const { data } = await api.get('/hostels/');
+
     allHostels.value = data;
-    people.value = response.data
-    console.log('Fetched students:', response.data);
+
+    people.value = response.data.map((student: Person) => ({
+      ...student,
+      bed_number: bedMapping[String(student.bed_number).padStart(2, '0')] || String(student.bed_number)
+    }));
+
+    console.log('Fetched and transformed students:', people.value);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
     isLoading.value = false;
   }
-};
-
-const isPopupVisible = ref(false);
+};const isPopupVisible = ref(false);
 const currentStudent = ref({});
 const openPopup = (row: Person) => {
   currentStudent.value = row;
   isPopupVisible.value = true;
 };
-
 const selectedFilter = ref('active');
 const filterOptions = [
   {value: 'graduated', label: 'Graduated Students'},
@@ -99,13 +108,11 @@ const paginatedRows = computed(() => {
   const end = start + pageSize.value;
   return filteredRows.value.slice(start, end);
 });
-
 const handlePageChange = (newPage: number) => {
   if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
     currentPage.value = newPage;
   }
 };
-
 const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`AIU Students Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
@@ -120,7 +127,11 @@ const generatePDF = () => {
     people.hostel_name,
     people.level_number,
     people.room_number,
-    String(people.bed_number).replace("01", "A").replace("02", "B").replace("03", "C").replace("04", "D")
+    String(people.bed_number)
+        .replace("01", "A")
+        .replace("02", "B")
+        .replace("03", "C")
+        .replace("04", "D")
   ]);
 
   autoTable(doc, {
@@ -130,7 +141,6 @@ const generatePDF = () => {
 
   doc.save(`AIU Students Report-${selectedFilter.value}.pdf`);
 };
-
 
 onMounted(() => {
   fetchData();
