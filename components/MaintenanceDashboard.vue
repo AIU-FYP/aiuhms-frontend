@@ -259,12 +259,12 @@ definePageMeta({
 
 .filter-wrapper,
 .filter-dropdown,
-.download-btn-wrapper{
+.download-btn-wrapper {
   padding: 1rem 1rem 0 1rem;
 }
 
 .filter-dropdown .filter-box,
-.filter-wrapper .filter-box {
+.filter-wrapper .filter-box,
 .download-btn-wrapper .download-button {
   padding: 5px;
   border-radius: 5px;
