@@ -4,6 +4,8 @@ import Popup from '~/components/StudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
 import AdminSidebar from "~/components/AdminSidebar.vue";
 import Loader from "~/components/Loader.vue";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const {$axios} = useNuxtApp()
 const api = $axios()
@@ -11,18 +13,18 @@ const api = $axios()
 interface Person {
   id: number
   date: string
-  name: string
-  studentIdNumber: string
-  whatsappNumber: string
-  emailAddress: string
+  student: string
+  student_id: string
+  passport: string
+  phone: string
+  email: string
   gender: string
   status: string
   extend?: boolean | string
-  bedId: number;
   hostelName: string;
-  levelNumber: string;
+  nationality: string;
   roomNumber: string;
-  bedNumber: string;
+  bed: string;
   filteredRows: string;
 }
 
@@ -106,6 +108,28 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
+const generatePDF = () => {
+  const doc = new jsPDF();
+  doc.text(`Student Maintenance Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+
+  const filteredData = filteredRows.value.map((people, index) => [
+    index + 1,
+    people.student,
+    people.nationality,
+    people.phone,
+    people.gender,
+    people.status
+  ]);
+
+  autoTable(doc, {
+    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
+    body: filteredData,
+  });
+
+  doc.save(`requests-${selectedFilter.value}.pdf`);
+};
+
+
 onMounted(() => {
   fetchData();
 });
@@ -146,6 +170,11 @@ definePageMeta({
                   </option>
                 </select>
               </div>
+
+              <div class="download-btn-wrapper">
+                <button @click="generatePDF" class="download-button">Download Report</button>
+              </div>
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">

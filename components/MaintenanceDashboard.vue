@@ -121,7 +121,6 @@ const generatePDF = () => {
   doc.save(`requests-${selectedFilter.value}.pdf`);
 };
 
-
 onMounted(() => {
   fetchData();
 });
