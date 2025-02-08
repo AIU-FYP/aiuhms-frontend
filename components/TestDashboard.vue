@@ -271,7 +271,7 @@ const generatePDF = () => {
   background: var(--primary-color);
   color: var(--text-light-color);
   outline: none;
-  padding: 0.5rem;
+  padding: 15px ;
   cursor: pointer;
   border-radius: 0.5rem;
 }
