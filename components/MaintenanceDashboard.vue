@@ -282,7 +282,7 @@ definePageMeta({
 .download-btn-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 }
 
 .download-btn-wrapper button {
@@ -300,7 +300,6 @@ definePageMeta({
     display: block;
   }
 }
-
 
 .view-button {
   padding: .5rem;

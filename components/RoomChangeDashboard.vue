@@ -279,9 +279,7 @@ onMounted(fetchData)
   padding: 1rem;
 }
 
-
-.filter-wrapper,
-.filter-dropdown {
+.filter-wrapper{
   padding: 1rem 1rem 0 1rem;
 }
 
@@ -297,7 +295,7 @@ onMounted(fetchData)
 .download-btn-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 }
 
 .download-btn-wrapper button {
