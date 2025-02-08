@@ -8,8 +8,8 @@ interface RequestFields {
   id: number
   date: string
   name: string
-  studentIdNumber: string
-  roomNumber: string
+  student: string
+  room_number: string
   whatsappNumber: string
   emailAddress: string
   gender: string
@@ -62,8 +62,8 @@ const fetchData = async () => {
     requests.value = response.data.map((request: RequestFields) => ({
       ...request,
       date: new Date().toLocaleDateString(),
-      name: request.name,
-      studentIdNumber: request.studentIdNumber,
+      name: request.student,
+      studentIdNumber: request.room_number,
     }));
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -122,16 +122,15 @@ const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  // Extract only the relevant columns dynamically
   const filteredData = filteredRows.value.map(request => [
-    request.name,       // Matches 'student' from backend
-    request.roomNumber,   // Matches 'room_number' from backend
-    request.gender,        // Matches 'gender' from backend
-    request.status         // Matches 'status' from backend
+    request.student,
+    request.room_number,
+    request.gender,
+    request.status
   ]);
 
   autoTable(doc, {
-    head: [['Name', 'Room No', 'Gender', 'Status']], // Match UI table headers
+    head: [['Name', 'Room No', 'Gender', 'Status']],
     body: filteredData,
   });
 
