@@ -259,12 +259,14 @@ definePageMeta({
 }
 
 .filter-wrapper,
-.filter-dropdown {
+.filter-dropdown,
+.download-btn-wrapper{
   padding: 1rem 1rem 0 1rem;
 }
 
 .filter-dropdown .filter-box,
 .filter-wrapper .filter-box {
+.download-btn-wrapper .download-button {
   padding: 5px;
   border-radius: 5px;
   outline: none;
@@ -277,22 +279,6 @@ definePageMeta({
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
-}
-
-.download-btn-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-}
-
-.download-btn-wrapper button {
-  border: none;
-  background: var(--primary-color);
-  color: var(--text-light-color);
-  outline: none;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 0.5rem;
 }
 
 @media (max-width: 1200px) {

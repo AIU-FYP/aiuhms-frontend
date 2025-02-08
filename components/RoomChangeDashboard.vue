@@ -164,7 +164,7 @@ onMounted(fetchData)
           <div class="content-body">
             <div class="header-section">
 
-              <div class="search-wrapper">
+              <div class="filter-dropdown">
                 <input v-model="q" placeholder="Filter requests..." class="filter-box"/>
               </div>
 
@@ -275,86 +275,78 @@ onMounted(fetchData)
   border: 2px solid #EEEEEE;
 }
 
-.search-wrapper {
+.filter-dropdown {
   padding: 1rem;
 }
 
-.filter-wrapper{
+.filter-wrapper {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.filter-wrapper,
+.filter-dropdown,
+.download-btn-wrapper {
   padding: 1rem 1rem 0 1rem;
 }
 
 .filter-dropdown .filter-box,
 .filter-wrapper .filter-box {
-  padding: 5px;
-  border-radius: 5px;
-  outline: none;
-  border: none;
-  color: var(--primary-hover-color);
-}
-
-.download-btn-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: end;
-}
-
-.download-btn-wrapper button {
-  border: none;
-  background: var(--primary-color);
-  color: var(--text-light-color);
-  outline: none;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 0.5rem;
-}
-
-.view-button {
-  padding: .5rem;
-  border-radius: .5rem 0;
-  color: var(--text-hover-color);
-  background-color: var(--primary-hover-color);
-  cursor: pointer;
-}
-
-.view-button:hover {
-  color: var(--text-light-color);
-  background-color: var(--primary-color);
-  transition: .3s ease-in-out;
-}
-
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
-}
-
-.pagination-info {
-  padding: .5rem 1rem;
-  border-radius: .5rem;
-  transition: 0.3s ease-in-out;
-}
-
-.pagination-button {
-  padding: .5rem;
-  border-radius: .5rem;
-  color: var(--text-light-color);
-  background-color: var(--primary-color);
-  transition: 0.3s ease-in-out;
-}
-
-@media (max-width: 1200px) {
-  .dashboard-container {
-    display: block;
-  }
-}
-
-@media (max-width: 768px) {
-  .navigation-panel {
-    flex-basis: 100%;
+  .download-btn-wrapper .download-button {
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    color: var(--primary-hover-color);
   }
 
-  .content-area {
-    padding: 1rem;
+  .view-button {
+    padding: .5rem;
+    border-radius: .5rem 0;
+    color: var(--text-hover-color);
+    background-color: var(--primary-hover-color);
+    cursor: pointer;
+  }
+
+  .view-button:hover {
+    color: var(--text-light-color);
+    background-color: var(--primary-color);
+    transition: .3s ease-in-out;
+  }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+
+  .pagination-info {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    transition: 0.3s ease-in-out;
+  }
+
+  .pagination-button {
+    padding: .5rem;
+    border-radius: .5rem;
+    color: var(--text-light-color);
+    background-color: var(--primary-color);
+    transition: 0.3s ease-in-out;
+  }
+
+  @media (max-width: 1200px) {
+    .dashboard-container {
+      display: block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .navigation-panel {
+      flex-basis: 100%;
+    }
+
+    .content-area {
+      padding: 1rem;
+    }
   }
 }
 </style>
