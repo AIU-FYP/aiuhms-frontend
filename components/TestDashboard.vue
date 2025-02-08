@@ -1,112 +1,103 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
-import Popup from '~/components/StudentRoomChangePopup.vue'
+import Popup from '~/components/StudentInfoPopup.vue'
 import {useNuxtApp} from "#app";
+import AdminSidebar from "~/components/AdminSidebar.vue";
+import Loader from "~/components/Loader.vue";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-interface RequestFields {
+const {$axios} = useNuxtApp()
+const api = $axios()
+
+interface Person {
   id: number
   date: string
-  name: string
   student: string
-  room_number: string
+  student_id: string
+  passport: string
   phone: string
   email: string
-  nationality: string
   gender: string
+  religion: string
   status: string
   extend?: boolean | string
-}
-
-let {$axios} = useNuxtApp()
-
-interface StudentRequest {
-  id: number
-  date: string
-  name: string
-  studentIdNumber: string
-  roomNumber: string
-  room_number: string
-  whatsappNumber: string
-  emailAddress: string
-  gender: string
-  extend?: boolean | string
+  nationality: string;
+  hostel_name: string;
+  level_number: number;
+  room_number: number;
+  bed_number: number;
+  filteredRows: string;
 }
 
 const columns = [
-  {key: 'student', label: 'Name', sortable: true},
-  {key: 'room_number', label: 'Room No', sortable: true},
+  {key: 'name', label: 'Name', sortable: true},
+  {key: 'student_id', label: 'Student ID',},
+  {key: 'hostel_name', label: 'Hostel Name', sortable: true},
+  {key: 'level_number', label: 'Level No',},
+  {key: 'room_number', label: 'Room No',},
+  {key: 'bed_number', label: 'Bed No',},
   {key: 'gender', label: 'Gender', sortable: true},
-  {key: 'status', label: 'Status', sortable: true},
-  {key: 'extend', label: 'View', sortable: false,}
-]
+  {key: 'status', label: 'Status', sortable: false},
+  {key: 'extend', label: 'View', sortable: false}
+];
 
-const api = $axios()
-
-const requests = ref<RequestFields[]>([]);
-
+const people = ref<Person[]>([]);
 const currentPage = ref(1);
-
-const pageSize = ref(10);
-
+const pageSize = ref(8);
 const q = ref('');
-
-const isLoading = ref(false);
-
-const isPopupVisible = ref(false);
-
-const currentRequest = ref({});
+const isLoading = ref(true);
+const allHostels = ref([]);
 
 const fetchData = async () => {
   isLoading.value = true;
   try {
-    const response = await api.get("/change-room-requests/");
-    requests.value = response.data.map((request: RequestFields) => ({
-      ...request,
-      date: new Date().toLocaleDateString(),
-    }));
+    const response = await api.get("/students/");
+    const {data} = await api.get('/hostels/');
+    allHostels.value = data;
+    people.value = response.data
+    console.log('Fetched students:', response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
     isLoading.value = false;
   }
-}
+};
 
-const openPopup = (row: StudentRequest) => {
-  currentRequest.value = row;
+const isPopupVisible = ref(false);
+const currentStudent = ref({});
+const openPopup = (row: Person) => {
+  currentStudent.value = row;
   isPopupVisible.value = true;
 };
 
-const selectedFilter = ref('pending');
-
+const selectedFilter = ref('active');
 const filterOptions = [
-  {value: 'pending', label: 'Pending'},
-  {value: 'accepted', label: 'Accepted'},
-  {value: 'rejected', label: 'Rejected'},
+  {value: 'graduated', label: 'Graduated Students'},
+  {value: 'active', label: 'Active Students'},
+  {value: 'terminated', label: 'Terminated'},
+  {value: 'inactive', label: 'Non-Active Students'},
 ];
 
 const filteredRows = computed(() => {
-  let result = requests.value;
+  let result = people.value;
 
   if (selectedFilter.value) {
     result = result.filter(request => request.status === selectedFilter.value);
   }
 
   if (q.value) {
-    const query = q.value.toLowerCase();
-    result = result.filter(request =>
-        Object.values(request).some(value =>
-            String(value).toLowerCase().includes(query)
-        )
-    );
+    result = result.filter(person => {
+      return Object.values(person).some(value =>
+          String(value).toLowerCase().includes(q.value.toLowerCase())
+      );
+    });
   }
 
   return result;
 });
 
 const totalItems = computed(() => filteredRows.value.length);
-
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
@@ -121,51 +112,57 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+  doc.text(`Student Maintenance Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  const filteredData = filteredRows.value.map((request, index) => [
+  const filteredData = filteredRows.value.map((people, index) => [
     index + 1,
-    request.student,
-    request.room_number,
-    request.nationality,
-    request.phone,
-    request.gender,
-    request.status
+    people.student,
+    people.nationality,
+    people.phone,
+    people.religion,
+    people.gender,
+    people.status
   ]);
 
   autoTable(doc, {
-    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
+    head: [['#', 'Name', 'Nationality', 'Phone', 'Religion', 'Gender', 'Status']],
     body: filteredData,
   });
 
   doc.save(`requests-${selectedFilter.value}.pdf`);
 };
 
+
+onMounted(() => {
+  fetchData();
+});
+
 definePageMeta({
   middleware: 'auth',
 });
-
-onMounted(fetchData)
 </script>
 
 <template>
-  <div class="dashboard-layout">
+  <div class="dashboard-wrapper">
+    <Popup
+        :show="isPopupVisible"
+        @update:show="isPopupVisible = $event"
+        :student="currentStudent"
+        :all-hostels="allHostels"
+    />
     <div class="dashboard-container">
-
       <aside class="navigation-panel">
         <AdminSidebar/>
       </aside>
 
-      <loader v-if="isLoading"/>
+      <Loader v-if="isLoading"/>
 
       <main class="content-area" v-else>
         <div class="content-wrapper">
-
           <div class="content-body">
             <div class="header-section">
-
-              <div class="search-wrapper">
-                <input v-model="q" placeholder="Filter requests..." class="filter-box"/>
+              <div class="filter-wrapper">
+                <input type="text" v-model="q" placeholder="Filter students..." class="filter-box">
               </div>
 
               <div class="filter-dropdown">
@@ -176,49 +173,39 @@ onMounted(fetchData)
                   </option>
                 </select>
               </div>
+
               <div class="download-btn-wrapper">
                 <button @click="generatePDF" class="download-button">Download Report</button>
               </div>
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
               <template #extend-data="{ row }">
                 <a @click="openPopup(row)" class="view-button">View</a>
-                <Popup
-                    :show="isPopupVisible"
-                    @update:show="isPopupVisible = $event"
-                    :request="currentRequest"
-                />
               </template>
             </UTable>
 
             <div class="pagination-controls">
-              <button
-                  :disabled="currentPage === 1"
-                  @click="handlePageChange(currentPage - 1)"
-                  class="pagination-button"
-              >
+              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)"
+                      class="pagination-button">
                 <UIcon name="mdi-arrow-left"/>
               </button>
               <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button
-                  :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)"
-                  class="pagination-button"
-              >
+              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                      @click="handlePageChange(currentPage + 1)" class="pagination-button">
                 <UIcon name="mdi-arrow-right"/>
               </button>
             </div>
           </div>
         </div>
       </main>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-.dashboard-layout {
+.dashboard-wrapper {
   display: block;
 }
 
@@ -246,7 +233,7 @@ onMounted(fetchData)
 }
 
 @media (max-width: 1200px) {
-  .dashboard-layout {
+  .dashboard-wrapper {
     display: block;
   }
 
@@ -255,9 +242,44 @@ onMounted(fetchData)
   }
 }
 
+.navigation-links li {
+  list-style: none;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: start;
+  text-transform: capitalize;
+  font-weight: normal;
+  color: var(--text-hover-color);
+  background-color: transparent;
+}
+
+.navigation-links li:hover {
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
+  transition: .3s ease-in-out;
+}
+
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
+  min-height: 90vh;
+}
+
+.filter-wrapper,
+.filter-dropdown,
+.download-btn-wrapper {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.filter-dropdown .filter-box,
+.filter-wrapper .filter-box,
+.download-btn-wrapper button {
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: var(--primary-hover-color);
 }
 
 .header-section {
@@ -265,35 +287,14 @@ onMounted(fetchData)
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
-  gap: 0 15px;
 }
 
-.filter-box {
-  padding: 2px;
-  border-radius: 5px;
-  outline: none;
-  border: 2px solid #EEEEEE;
+@media (max-width: 1200px) {
+  .header-section {
+    display: block;
+  }
 }
 
-.search-wrapper {
-  padding: 1rem;
-}
-
-.download-btn-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.download-btn-wrapper button {
-  border: none;
-  background: var(--primary-color);
-  color: var(--text-light-color);
-  outline: none;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 0.5rem;
-}
 
 .view-button {
   padding: .5rem;
