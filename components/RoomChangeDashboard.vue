@@ -168,7 +168,7 @@ onMounted(fetchData)
                 <input v-model="q" placeholder="Filter requests..." class="filter-box"/>
               </div>
 
-              <div class="filter-dropdown">
+              <div class="filter-wrapper">
                 <select class="filter-box" v-model="selectedFilter" @click="filteredRows">
                   <option value="" disabled selected>Filter students...</option>
                   <option v-for="option in filterOptions" :key="option.value" :value="option.value">
@@ -277,6 +277,21 @@ onMounted(fetchData)
 
 .search-wrapper {
   padding: 1rem;
+}
+
+
+.filter-wrapper,
+.filter-dropdown {
+  padding: 1rem 1rem 0 1rem;
+}
+
+.filter-dropdown .filter-box,
+.filter-wrapper .filter-box {
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: var(--primary-hover-color);
 }
 
 .download-btn-wrapper {
