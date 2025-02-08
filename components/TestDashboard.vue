@@ -2,7 +2,8 @@
 import {computed, onMounted, ref} from 'vue';
 import Popup from '~/components/StudentRoomChangePopup.vue'
 import {useNuxtApp} from "#app";
-
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 interface RequestFields {
   id: number
   date: string
@@ -15,17 +16,7 @@ interface RequestFields {
   status: string
   extend?: boolean | string
 }
-
-const columns = [
-  {key: 'student', label: 'Name', sortable: true},
-  {key: 'room_number', label: 'Room No', sortable: true},
-  {key: 'gender', label: 'Gender', sortable: true},
-  {key: 'status', label: 'Status', sortable: true},
-  {key: 'extend', label: 'View', sortable: false,}
-]
-
 let {$axios} = useNuxtApp()
-const api = $axios()
 
 interface StudentRequest {
   id: number
@@ -38,7 +29,14 @@ interface StudentRequest {
   gender: string
   extend?: boolean | string
 }
-
+const columns = [
+  {key: 'student', label: 'Name', sortable: true},
+  {key: 'room_number', label: 'Room No', sortable: true},
+  {key: 'gender', label: 'Gender', sortable: true},
+  {key: 'status', label: 'Status', sortable: true},
+  {key: 'extend', label: 'View', sortable: false,}
+]
+const api = $axios()
 const requests = ref<RequestFields[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
@@ -46,7 +44,6 @@ const q = ref('');
 const isLoading = ref(false);
 const isPopupVisible = ref(false);
 const currentRequest = ref({});
-
 const fetchData = async () => {
   isLoading.value = true;
   try {
@@ -112,6 +109,32 @@ const handlePageChange = (newPage: number) => {
     currentPage.value = newPage;
   }
 };
+
+const generatePDF = () => {
+  const doc = new jsPDF();
+
+  doc.text("Room Change Requests Report", 14, 10);
+
+  const tableData = requests.value.map((req, index) => [
+    index + 1,
+    req.name,
+    req.studentIdNumber,
+    req.roomNumber,
+    req.whatsappNumber,
+    req.emailAddress,
+    req.gender,
+    req.status
+  ]);
+
+  autoTable(doc, {
+    head: [["#", "Name", "Student ID", "Room No", "WhatsApp", "Email", "Gender", "Status"]],
+    body: tableData,
+    startY: 20,
+  });
+
+  doc.save("requests_report.pdf");
+};
+
 </script>
 
 <template>
@@ -119,10 +142,10 @@ const handlePageChange = (newPage: number) => {
     <div class="dashboard-container">
 
       <aside class="navigation-panel">
-        <AdminSidebar/>
+        <AdminSidebar />
       </aside>
 
-      <loader v-if="isLoading"/>
+      <loader v-if="isLoading" />
 
       <main class="content-area" v-else>
         <div class="content-wrapper">
@@ -143,6 +166,8 @@ const handlePageChange = (newPage: number) => {
                 </select>
               </div>
 
+              <button @click="generatePDF" class="download-button">Download Report</button>
+
             </div>
 
             <UTable :columns="columns" :rows="paginatedRows">
@@ -155,6 +180,7 @@ const handlePageChange = (newPage: number) => {
                 />
               </template>
             </UTable>
+
             <div class="pagination-controls">
               <button
                   :disabled="currentPage === 1"
