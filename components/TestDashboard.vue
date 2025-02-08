@@ -112,29 +112,27 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
+  doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  doc.text("Room Change Requests Report", 14, 10);
-
-  const tableData = requests.value.map((req, index) => [
-    index + 1,
-    req.name,
-    req.studentIdNumber,
-    req.roomNumber,
-    req.whatsappNumber,
-    req.emailAddress,
-    req.gender,
-    req.status
+  const filteredData = filteredRows.value.map(request => [
+    request.id,
+    request.date,
+    request.name,
+    request.studentIdNumber,
+    request.roomNumber,
+    request.whatsappNumber,
+    request.emailAddress,
+    request.gender,
+    request.status
   ]);
 
   autoTable(doc, {
-    head: [["#", "Name", "Student ID", "Room No", "WhatsApp", "Email", "Gender", "Status"]],
-    body: tableData,
-    startY: 20,
+    head: [['ID', 'Date', 'Name', 'Student ID', 'Room No', 'WhatsApp', 'Email', 'Gender', 'Status']],
+    body: filteredData,
   });
 
-  doc.save("requests_report.pdf");
+  doc.save(`requests-${selectedFilter.value}.pdf`);
 };
-
 </script>
 
 <template>
