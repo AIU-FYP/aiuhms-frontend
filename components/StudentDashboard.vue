@@ -110,7 +110,7 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  doc.text(`AIU Student Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+  doc.text(`AIU Students Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
   const filteredData = filteredRows.value.map((people, index) => [
     index + 1,
@@ -127,7 +127,7 @@ const generatePDF = () => {
     body: filteredData,
   });
 
-  doc.save(`AIU Student-${selectedFilter.value}.pdf`);
+  doc.save(`AIU Students Report-${selectedFilter.value}.pdf`);
 };
 
 
