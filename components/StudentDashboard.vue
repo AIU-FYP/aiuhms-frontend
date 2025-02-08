@@ -41,14 +41,12 @@ const columns = [
   {key: 'status', label: 'Status', sortable: false},
   {key: 'extend', label: 'View', sortable: false}
 ];
-
 const people = ref<Person[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(8);
 const q = ref('');
 const isLoading = ref(true);
 const allHostels = ref([]);
-
 const fetchData = async () => {
   isLoading.value = true;
   try {
@@ -117,13 +115,16 @@ const generatePDF = () => {
     people.name,
     people.nationality,
     people.phone,
-    people.religion,
     people.gender,
-    people.status
+    people.status,
+    people.hostel_name,
+    people.level_number,
+    people.room_number,
+    String(people.bed_number).replace("01", "A").replace("02", "B").replace("03", "C").replace("04", "D")
   ]);
 
   autoTable(doc, {
-    head: [['#', 'Name', 'Nationality', 'Phone', 'Religion', 'Gender', 'Status']],
+    head: [['#', 'Name', 'Nationality', 'Phone', 'Gender', 'Status', 'Hostel', 'Level', 'Room', 'Bed'],],
     body: filteredData,
   });
 
@@ -272,7 +273,7 @@ definePageMeta({
 
 .filter-dropdown .filter-box,
 .filter-wrapper .filter-box,
-.download-btn-wrapper .download-button{
+.download-btn-wrapper .download-button {
   padding: 5px;
   border-radius: 5px;
   outline: none;
