@@ -30,6 +30,7 @@ interface StudentRequest {
   gender: string
   extend?: boolean | string
 }
+
 const columns = [
   {key: 'student', label: 'Name', sortable: true},
   {key: 'room_number', label: 'Room No', sortable: true},
@@ -37,14 +38,23 @@ const columns = [
   {key: 'status', label: 'Status', sortable: true},
   {key: 'extend', label: 'View', sortable: false,}
 ]
+
 const api = $axios()
+
 const requests = ref<RequestFields[]>([]);
+
 const currentPage = ref(1);
+
 const pageSize = ref(10);
+
 const q = ref('');
+
 const isLoading = ref(false);
+
 const isPopupVisible = ref(false);
+
 const currentRequest = ref({});
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
@@ -52,6 +62,8 @@ const fetchData = async () => {
     requests.value = response.data.map((request: RequestFields) => ({
       ...request,
       date: new Date().toLocaleDateString(),
+      name: request.name,
+      studentIdNumber: request.studentIdNumber,
     }));
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -60,23 +72,19 @@ const fetchData = async () => {
   }
 }
 
-definePageMeta({
-  middleware: 'auth',
-});
-
-onMounted(fetchData)
-
 const openPopup = (row: StudentRequest) => {
   currentRequest.value = row;
   isPopupVisible.value = true;
 };
 
 const selectedFilter = ref('pending');
+
 const filterOptions = [
   {value: 'pending', label: 'Pending'},
   {value: 'accepted', label: 'Accepted'},
   {value: 'rejected', label: 'Rejected'},
 ];
+
 const filteredRows = computed(() => {
   let result = requests.value;
 
@@ -95,12 +103,15 @@ const filteredRows = computed(() => {
 
   return result;
 });
+
 const totalItems = computed(() => filteredRows.value.length);
+
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
   return filteredRows.value.slice(start, end);
 });
+
 const handlePageChange = (newPage: number) => {
   if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
     currentPage.value = newPage;
@@ -111,22 +122,27 @@ const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  // Match the table columns with backend response keys
+  // Extract only the relevant columns dynamically
   const filteredData = filteredRows.value.map(request => [
-    request.name,             // Matches 'student'
-    request.roomNumber,       // Matches 'room_number'
-    request.gender,           // Matches 'gender'
-    request.status            // Matches 'status'
+    request.name,       // Matches 'student' from backend
+    request.roomNumber,   // Matches 'room_number' from backend
+    request.gender,        // Matches 'gender' from backend
+    request.status         // Matches 'status' from backend
   ]);
 
   autoTable(doc, {
-    head: [['Name', 'Room No', 'Gender', 'Status']], // Column Labels from 'columns'
+    head: [['Name', 'Room No', 'Gender', 'Status']], // Match UI table headers
     body: filteredData,
   });
 
   doc.save(`requests-${selectedFilter.value}.pdf`);
 };
 
+definePageMeta({
+  middleware: 'auth',
+});
+
+onMounted(fetchData)
 </script>
 
 <template>
