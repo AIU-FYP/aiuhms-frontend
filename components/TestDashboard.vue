@@ -246,7 +246,7 @@ const generatePDF = () => {
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
-  gap: 15px 0 ;
+  gap: 0 15px;
 }
 
 .filter-box {
