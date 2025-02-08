@@ -4,18 +4,21 @@ import Popup from '~/components/StudentRoomChangePopup.vue'
 import {useNuxtApp} from "#app";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+
 interface RequestFields {
   id: number
   date: string
   name: string
   student: string
   room_number: string
-  whatsappNumber: string
-  emailAddress: string
+  phone: string
+  email: string
+  nationality: string
   gender: string
   status: string
   extend?: boolean | string
 }
+
 let {$axios} = useNuxtApp()
 
 interface StudentRequest {
@@ -62,8 +65,6 @@ const fetchData = async () => {
     requests.value = response.data.map((request: RequestFields) => ({
       ...request,
       date: new Date().toLocaleDateString(),
-      name: request.student,
-      studentIdNumber: request.room_number,
     }));
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -120,17 +121,21 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
+  const index = 1;
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
   const filteredData = filteredRows.value.map(request => [
+    index + 1,
     request.student,
     request.room_number,
+    request.nationality,
+    request.phone,
     request.gender,
     request.status
   ]);
 
   autoTable(doc, {
-    head: [['Name', 'Room No', 'Gender', 'Status']],
+    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
     body: filteredData,
   });
 
@@ -149,10 +154,10 @@ onMounted(fetchData)
     <div class="dashboard-container">
 
       <aside class="navigation-panel">
-        <AdminSidebar />
+        <AdminSidebar/>
       </aside>
 
-      <loader v-if="isLoading" />
+      <loader v-if="isLoading"/>
 
       <main class="content-area" v-else>
         <div class="content-wrapper">
@@ -275,18 +280,18 @@ onMounted(fetchData)
   padding: 1rem;
 }
 
-.download-btn-wrapper{
+.download-btn-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.download-btn-wrapper button{
+.download-btn-wrapper button {
   border: none;
   background: var(--primary-color);
   color: var(--text-light-color);
   outline: none;
-  padding: 15px ;
+  padding: 15px;
   cursor: pointer;
   border-radius: 0.5rem;
 }
