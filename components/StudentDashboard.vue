@@ -19,12 +19,14 @@ interface Person {
   phone: string
   email: string
   gender: string
+  religion: string
   status: string
   extend?: boolean | string
-  hostelName: string;
   nationality: string;
-  roomNumber: string;
-  bed: string;
+  hostel_name: string;
+  level_number: number;
+  room_number: number;
+  bed_number: number;
   filteredRows: string;
 }
 
@@ -117,12 +119,13 @@ const generatePDF = () => {
     people.student,
     people.nationality,
     people.phone,
+    people.religion,
     people.gender,
     people.status
   ]);
 
   autoTable(doc, {
-    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
+    head: [['#', 'Name', 'Nationality', 'Phone', 'Religion', 'Gender', 'Status']],
     body: filteredData,
   });
 
@@ -264,12 +267,14 @@ definePageMeta({
 }
 
 .filter-wrapper,
-.filter-dropdown {
+.filter-dropdown,
+.download-btn-wrapper {
   padding: 1rem 1rem 0 1rem;
 }
 
 .filter-dropdown .filter-box,
-.filter-wrapper .filter-box {
+.filter-wrapper .filter-box,
+.download-btn-wrapper button {
   padding: 5px;
   border-radius: 5px;
   outline: none;
