@@ -2,17 +2,20 @@
 import {computed, onMounted, ref} from 'vue';
 import Popup from '~/components/StudentMaintenanceRoomPopup.vue'
 import {useNuxtApp} from "#app";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 let {$axios} = useNuxtApp()
 
 interface StudentRequest {
   id: number
   date: string
-  name: string
+  student: string
   studentIdNumber: string
-  roomNumber: string
-  whatsappNumber: string
-  emailAddress: string
+  room_number: string
+  nationality: string
+  phone: string
+  email: string
   gender: string
   request: string
   status: string
@@ -26,21 +29,11 @@ const columns = [
   {key: 'status', label: 'Status', sortable: true},
   {key: 'extend', label: 'View', sortable: false,}
 ]
-
 const isLoading = ref(false);
 const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const q = ref('');
-
-onMounted(() => {
-  fetchData();
-});
-
-definePageMeta({
-  middleware: 'auth',
-});
-
 const api = $axios()
 const fetchData = async () => {
 
@@ -61,18 +54,10 @@ const fetchData = async () => {
 const isPopupVisible = ref(false);
 const currentRequest = ref({});
 
-onMounted(fetchData)
-
-definePageMeta({
-  middleware: 'auth',
-});
-
 const openPopup = (row: StudentRequest) => {
   currentRequest.value = row;
   isPopupVisible.value = true;
 };
-
-onMounted(fetchData)
 
 const selectedFilter = ref('pending');
 
@@ -101,6 +86,7 @@ const filteredRows = computed(() => {
 });
 
 const totalItems = computed(() => filteredRows.value.length);
+
 const paginatedRows = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   const end = start + pageSize.value;
@@ -113,7 +99,36 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
+const generatePDF = () => {
+  const doc = new jsPDF();
+  doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
+  const filteredData = filteredRows.value.map((request, index) => [
+    index + 1,
+    request.student,
+    request.room_number,
+    request.nationality,
+    request.phone,
+    request.gender,
+    request.status
+  ]);
+
+  autoTable(doc, {
+    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
+    body: filteredData,
+  });
+
+  doc.save(`requests-${selectedFilter.value}.pdf`);
+};
+
+
+onMounted(() => {
+  fetchData();
+});
+
+definePageMeta({
+  middleware: 'auth',
+});
 
 
 </script>
@@ -145,6 +160,9 @@ const handlePageChange = (newPage: number) => {
                 </select>
               </div>
 
+              <div class="download-btn-wrapper">
+                <button @click="generatePDF" class="download-button">Download Report</button>
+              </div>
 
             </div>
 
@@ -259,6 +277,22 @@ const handlePageChange = (newPage: number) => {
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
+}
+
+.download-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.download-btn-wrapper button {
+  border: none;
+  background: var(--primary-color);
+  color: var(--text-light-color);
+  outline: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 0.5rem;
 }
 
 @media (max-width: 1200px) {
