@@ -107,55 +107,25 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
-// const generatePDF = () => {
-//   const doc = new jsPDF();
-//   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
-//
-//   const filteredData = filteredRows.value.map(request => [
-//     request.id,
-//     request.name,
-//     request.studentIdNumber,
-//     request.roomNumber,
-//     request.whatsappNumber,
-//     request.emailAddress,
-//     request.gender,
-//     request.status
-//   ]);
-//
-//   autoTable(doc, {
-//     head: [['ID', 'Name', 'Student ID', 'Room No', 'WhatsApp', 'Email', 'Gender', 'Status']],
-//     body: filteredData,
-//   });
-//
-//   doc.save(`requests-${selectedFilter.value}.pdf`);
-// };
-
 const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  // Map table headers based on backend keys
-  const tableHeaders = columns
-      .filter(col => col.key !== 'extend') // Remove the "View" column
-      .map(col => col.label);
-
-  // Ensure we match the backend response structure
+  // Match the table columns with backend response keys
   const filteredData = filteredRows.value.map(request => [
-    request.id,
-    request.name,
-    request.roomNumber,
-    request.gender,
-    request.status,
+    request.name,             // Matches 'student'
+    request.roomNumber,       // Matches 'room_number'
+    request.gender,           // Matches 'gender'
+    request.status            // Matches 'status'
   ]);
 
   autoTable(doc, {
-    head: [tableHeaders],
+    head: [['Name', 'Room No', 'Gender', 'Status']], // Column Labels from 'columns'
     body: filteredData,
   });
 
   doc.save(`requests-${selectedFilter.value}.pdf`);
 };
-
 
 </script>
 
