@@ -261,7 +261,7 @@ definePageMeta({
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  min-height: 90vh;
+  min-height: 110vh;
 }
 
 .filter-wrapper,
@@ -278,6 +278,12 @@ definePageMeta({
   outline: none;
   border: none;
   color: var(--primary-hover-color);
+}
+
+.download-button {
+  background-color: var(--primary-hover-color);
+  color: var(--text-light-color) !important;
+  border-radius: 10px 0 !important;
 }
 
 .header-section {
