@@ -121,7 +121,7 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
+  doc.text(`Report on Student Change Room Requests - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
   const filteredData = filteredRows.value.map((request, index) => [
     index + 1,
@@ -138,7 +138,7 @@ const generatePDF = () => {
     body: filteredData,
   });
 
-  doc.save(`requests-${selectedFilter.value}.pdf`);
+  doc.save(`Change Room requests-${selectedFilter.value}.pdf`);
 };
 
 definePageMeta({
@@ -258,6 +258,7 @@ onMounted(fetchData)
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
+  min-height: 110vh;
 }
 
 .header-section {
@@ -290,64 +291,70 @@ onMounted(fetchData)
 }
 
 .filter-dropdown .filter-box,
-.filter-wrapper .filter-box {
-  .download-btn-wrapper .download-button {
-    padding: 5px;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    color: var(--primary-hover-color);
-  }
+.filter-wrapper .filter-box,
+.download-btn-wrapper .download-button {
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  color: var(--primary-hover-color);
+}
 
-  .view-button {
-    padding: .5rem;
-    border-radius: .5rem 0;
-    color: var(--text-hover-color);
-    background-color: var(--primary-hover-color);
-    cursor: pointer;
-  }
+.download-button {
+  background-color: var(--primary-hover-color);
+  color: var(--text-light-color) !important;
+  border-radius: 10px 0 !important;
+}
 
-  .view-button:hover {
-    color: var(--text-light-color);
-    background-color: var(--primary-color);
-    transition: .3s ease-in-out;
-  }
+.view-button {
+  padding: .5rem;
+  border-radius: .5rem 0;
+  color: var(--text-hover-color);
+  background-color: var(--primary-hover-color);
+  cursor: pointer;
+}
 
-  .pagination-controls {
-    display: flex;
-    justify-content: center;
-    margin: 1rem 0;
-  }
+.view-button:hover {
+  color: var(--text-light-color);
+  background-color: var(--primary-color);
+  transition: .3s ease-in-out;
+}
 
-  .pagination-info {
-    padding: .5rem 1rem;
-    border-radius: .5rem;
-    transition: 0.3s ease-in-out;
-  }
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
 
-  .pagination-button {
-    padding: .5rem;
-    border-radius: .5rem;
-    color: var(--text-light-color);
-    background-color: var(--primary-color);
-    transition: 0.3s ease-in-out;
-  }
+.pagination-info {
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  transition: 0.3s ease-in-out;
+}
 
-  @media (max-width: 1200px) {
-    .dashboard-container {
-      display: block;
-    }
-  }
+.pagination-button {
+  padding: .5rem;
+  border-radius: .5rem;
+  color: var(--text-light-color);
+  background-color: var(--primary-color);
+  transition: 0.3s ease-in-out;
+}
 
-  @media (max-width: 768px) {
-    .navigation-panel {
-      flex-basis: 100%;
-    }
-
-    .content-area {
-      padding: 1rem;
-    }
+@media (max-width: 1200px) {
+  .dashboard-container {
+    display: block;
   }
 }
+
+@media (max-width: 768px) {
+  .navigation-panel {
+    flex-basis: 100%;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+}
+
 </style>
 
