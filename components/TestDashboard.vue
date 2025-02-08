@@ -116,7 +116,6 @@ const generatePDF = () => {
 
   const filteredData = filteredRows.value.map(request => [
     request.id,
-    request.date,
     request.name,
     request.studentIdNumber,
     request.roomNumber,
@@ -252,6 +251,7 @@ const generatePDF = () => {
   flex-wrap: wrap;
   margin: 0.5rem;
   align-items: center;
+  gap: 15px 0 ;
 }
 
 .filter-box {
@@ -278,6 +278,7 @@ const generatePDF = () => {
   outline: none;
   padding: 0.5rem;
   cursor: pointer;
+  border-radius: 0.5rem;
 }
 
 .view-button {
