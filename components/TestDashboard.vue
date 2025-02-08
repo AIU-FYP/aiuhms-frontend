@@ -121,12 +121,10 @@ const handlePageChange = (newPage: number) => {
 
 const generatePDF = () => {
   const doc = new jsPDF();
-  const index = 1;
   doc.text(`Student Requests Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  const filteredData = filteredRows.value.map(request => [
+  const filteredData = filteredRows.value.map((request, index) => [
     index + 1,
-
     request.student,
     request.room_number,
     request.nationality,
