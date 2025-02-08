@@ -37,8 +37,7 @@ const formSchema = z.object({
       .regex(/^[a-zA-Z0-9]{6,15}$/, "Invalid Passport Number format"),
   "arrival_date": z.string(),
   "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format"),
-  "email": z.string().email("Invalid email format")
-      .regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
+  "email": z.string().email("Invalid email format"),
   "gender": z.string().optional(),
   "religion": z.string().optional(),
   "nationality": z.string().optional(),
