@@ -291,7 +291,7 @@ onMounted(fetchData)
   background: var(--primary-color);
   color: var(--text-light-color);
   outline: none;
-  padding: 15px;
+  padding: 0 15px;
   cursor: pointer;
   border-radius: 0.5rem;
 }
