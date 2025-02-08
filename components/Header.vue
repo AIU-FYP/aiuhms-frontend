@@ -63,8 +63,8 @@ onMounted(() => {
 }
 
 .logo img {
-  width: 70px;
-  height: 50px;
+  width: 120px;
+  height: 90px;
 }
 
 .header-title h2 {

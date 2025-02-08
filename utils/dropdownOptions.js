@@ -100,3 +100,4 @@ export const religions = [
     {value: "buddhist", label: "Buddhist"},
     {value: "others", label: "Others"},
 ];
+
