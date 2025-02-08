@@ -13,9 +13,7 @@ const filteredNationalities = computed(() => {
       n.toLowerCase().startsWith(userNationalityInput.value.toLowerCase())
   );
 });
-
 const userLocationInput = ref('');
-
 const userFilteredLocationsSpecificIssues = ref('');
 const filteredLocationsSpecificIssues = computed(() => {
   if (!userLocationInput.value) {
@@ -25,7 +23,6 @@ const filteredLocationsSpecificIssues = computed(() => {
       n.toLowerCase().startsWith(userFilteredLocationsSpecificIssues.value.toLowerCase())
   );
 });
-
 const maintenanceQuestions = [
   {
     label: "Name",
@@ -44,7 +41,7 @@ const maintenanceQuestions = [
   {
     label: "Room No",
     type: "text",
-    placeholder: "Enter your room No (e.g., 25i-3-10)",
+    placeholder: "Room No (e.g., 25i-3-10-A)",
     required: true,
     id: "room_number",
   },
@@ -89,7 +86,7 @@ const maintenanceQuestions = [
     label: "How frequent the damages occur?",
     type: "select",
     options: [
-        {value : "1 time", label : "1 Time" },
+      {value : "1 time", label : "1 Time" },
       {value : "2 time", label : "2 Time" },
       {value : "3 time", label : "3 Time" },
       {value : "4 time", label : "4 Time" },
@@ -115,7 +112,6 @@ const maintenanceQuestions = [
     placeholder: "Explain in detail the damage in mention above",
   }
 ];
-
 const formSchema = z.object({
   student: z
       .string()
@@ -125,7 +121,7 @@ const formSchema = z.object({
       .regex(/^AIU\d{8}$/, 'Invalid Student ID format'),
   room_number: z
       .string()
-      .regex(/^\d+[A-Za-z]*-\d-\d+$/, 'Invalid Room Number format'),
+      .regex(/^\d+[A-Za-z]?-\d{1,2}-\d{1,2}(-[A-Za-z])?$/, 'Invalid Room Number format'),
   phone: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
@@ -183,7 +179,7 @@ async function handleSubmit() {
   const validationResults = formSchema.safeParse(form);
   if (validationResults.success) {
     try {
-      // console.log("Sending API Request...");
+      console.log("Sending API Request...");
       const formDataObj = new FormData();
       for (const key in form) {
         const value = form[key];
