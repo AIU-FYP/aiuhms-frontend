@@ -35,7 +35,6 @@ const bedMapping: Record<string, string> = {
   '03': 'C',
   '04': 'D'
 };
-
 const columns = [
   {key: 'name', label: 'Name',},
   {key: 'student_id', label: 'Student ID',},
@@ -57,7 +56,7 @@ const fetchData = async () => {
   isLoading.value = true;
   try {
     const response = await api.get("/students/");
-    const { data } = await api.get('/hostels/');
+    const {data} = await api.get('/hostels/');
 
     allHostels.value = data;
 
@@ -72,7 +71,8 @@ const fetchData = async () => {
   } finally {
     isLoading.value = false;
   }
-};const isPopupVisible = ref(false);
+};
+const isPopupVisible = ref(false);
 const currentStudent = ref({});
 const openPopup = (row: Person) => {
   currentStudent.value = row;
@@ -80,10 +80,11 @@ const openPopup = (row: Person) => {
 };
 const selectedFilter = ref('active');
 const filterOptions = [
-  {value: 'graduated', label: 'Graduated Students'},
   {value: 'active', label: 'Active Students'},
-  {value: 'terminated', label: 'Terminated'},
+  {value: 'internship', label: 'Internship'},
   {value: 'inactive', label: 'Non-Active Students'},
+  {value: 'graduated', label: 'Graduated Students'},
+  {value: 'terminated', label: 'Terminated'},
 ];
 const filteredRows = computed(() => {
   let result = people.value;

@@ -9,11 +9,9 @@ const props = defineProps({
   student: Object,
   allHostels: Array,
 });
-
 const emit = defineEmits(['update:show']);
 const studentRef = toRef(props, 'student');
 const allHostelsRef = toRef(props, 'allHostels');
-
 const {fields, options} = useStudentFields(allHostelsRef, studentRef, religions);
 const {updateStudent, deleteStudent, initializeTracking} = useStudentOperations();
 
@@ -24,7 +22,6 @@ watch(() => props.student, (newStudent) => {
 }, {immediate: true});
 
 const closePopup = () => emit('update:show', false);
-
 const handleUpdateStudent = async () => {
   const result = await updateStudent(props.student);
   if (result.success) {
@@ -34,7 +31,6 @@ const handleUpdateStudent = async () => {
     alert(`Update failed: ${result.error}`);
   }
 };
-
 const handleDeleteStudent = async () => {
   if (!confirm('Are you sure you want to delete this student?')) return;
 

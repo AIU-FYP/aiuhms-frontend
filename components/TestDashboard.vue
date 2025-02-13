@@ -263,7 +263,7 @@ definePageMeta({
 .content-wrapper {
   flex: 10;
   background-color: #eeeeee;
-  min-height: 90vh;
+  min-height: 110vh;
 }
 
 .filter-wrapper,
@@ -274,7 +274,7 @@ definePageMeta({
 
 .filter-dropdown .filter-box,
 .filter-wrapper .filter-box,
-.download-btn-wrapper button {
+.download-btn-wrapper .download-button{
   padding: 5px;
   border-radius: 5px;
   outline: none;

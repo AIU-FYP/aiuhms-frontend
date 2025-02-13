@@ -1,10 +1,11 @@
 export const useStudentFields = (hostels, student, religions) => {
     const options = reactive({
         status: [
-            {value: "active", label: "Active"},
-            {value: "inactive", label: "Inactive"},
-            {value: "graduated", label: "Graduated"},
-            {value: "terminated", label: "Terminated"},
+            {value: 'active', label: 'Active'},
+            {value: 'internship', label: 'Internship'},
+            {value: 'inactive', label: 'Non-Active'},
+            {value: 'graduated', label: 'Graduated'},
+            {value: 'terminated', label: 'Terminated'},
         ],
         gender: [
             {value: "male", label: "Male"},
