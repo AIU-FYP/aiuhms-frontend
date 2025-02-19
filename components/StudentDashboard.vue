@@ -17,6 +17,7 @@ interface Person {
   email: string
   gender: string
   religion: string
+  major: string
   status: string
   extend?: boolean | string
   nationality: string;
@@ -80,11 +81,11 @@ const openPopup = (row: Person) => {
 };
 const selectedFilter = ref('active');
 const filterOptions = [
-  {value: 'active', label: 'Active Students'},
-  {value: 'foundation', label: 'Foundation Students'},
+  {value: 'active', label: 'Active'},
+  {value: 'foundation', label: 'Foundation'},
   {value: 'internship', label: 'Internship'},
-  {value: 'inactive', label: 'Non-Active Students'},
-  {value: 'graduated', label: 'Graduated Students'},
+  {value: 'inactive', label: 'Non-Active'},
+  {value: 'graduated', label: 'Graduated'},
   {value: 'terminated', label: 'Terminated'},
 ];
 const filteredRows = computed(() => {
@@ -119,25 +120,49 @@ const generatePDF = () => {
   const doc = new jsPDF();
   doc.text(`AIU Students Report - ${selectedFilter.value.toUpperCase()}`, 14, 10);
 
-  const filteredData = filteredRows.value.map((people, index) => [
-    index + 1,
-    people.name,
-    people.nationality,
-    people.phone,
-    people.gender,
-    people.status,
-    people.hostel_name,
-    people.level_number,
-    people.room_number,
-    String(people.bed_number)
-        .replace("01", "A")
-        .replace("02", "B")
-        .replace("03", "C")
-        .replace("04", "D")
-  ]);
+  const isGraduatedReport = filteredRows.value.every(people => people.status.toLowerCase() === "graduated");
+
+  const filteredData = filteredRows.value.map((people, index) => {
+    if (people.status.toLowerCase() === "graduated") {
+      return [
+        index + 1,
+        people.name,
+        people.nationality,
+        people.phone,
+        people.gender,
+        people.status,
+        people.major,
+      ];
+    } else {
+      return [
+        index + 1,
+        people.name,
+        people.nationality,
+        people.phone,
+        people.gender,
+        people.status,
+        people.hostel_name,
+        people.level_number,
+        people.room_number,
+        String(people.bed_number)
+            .replace("01", "A")
+            .replace("02", "B")
+            .replace("03", "C")
+            .replace("04", "D")
+      ];
+    }
+  });
+
+  let tableHeaders = ['#', 'Name', 'Nationality', 'Phone', 'Gender', 'Status'];
+
+  if (isGraduatedReport) {
+    tableHeaders.push('Program/Major');
+  } else {
+    tableHeaders.push('Hostel', 'Level', 'Room', 'Bed');
+  }
 
   autoTable(doc, {
-    head: [['#', 'Name', 'Nationality', 'Phone', 'Gender', 'Status', 'Hostel', 'Level', 'Room', 'Bed'],],
+    head: [tableHeaders],
     body: filteredData,
   });
 
