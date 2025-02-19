@@ -1,4 +1,3 @@
-
 <script setup>
 </script>
 
@@ -9,14 +8,12 @@
       <div class="text-content">
         <h2 class="fade-in">Welcome Students</h2>
         <h1 class="slide-up">Albukhary International University</h1>
-        <div class="action-buttons">
-          <router-link to="/maintenance-room-form" class="btn-action">Maintenance Room Form</router-link>
-          <router-link  to="/change-room-form" class="btn-action">Change Room Form</router-link>
-        </div>
-
+        <h3 class="slide-up">
+          Developed by School of Computing and Informatics
+        </h3>
       </div>
       <div class="image-wrapper">
-        <img src="/images/hostel.png" alt="AIU Campus" class="image-fade" />
+        <img src="/images/hostel.png" alt="AIU Campus" class="image-fade"/>
       </div>
     </div>
 
@@ -56,7 +53,7 @@
   align-items: flex-start;
 }
 
-.text-content h2, .text-content h1 {
+.text-content h2, .text-content h1, h3 {
   margin: 1rem 0;
   opacity: 0;
 }
@@ -72,26 +69,10 @@ h1 {
   animation: slideUp 1.2s ease forwards;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.btn-action {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 1rem;
-  background-color: var(--primary-hover-color);
-  color: var(--text-light-color);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.btn-action:hover {
-  transform: scale(1.1);
-  background-color: var(--primary-color);
+h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  animation: fadeIn 1s ease forwards;
 }
 
 .image-wrapper {
@@ -116,16 +97,12 @@ h1 {
     flex-direction: column;
   }
 
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .landing-section h2 {
     font-size: 1.5rem;
   }
 
-  h1 {
+  h1,
+  h3 {
     font-size: 1.5rem;
   }
 
