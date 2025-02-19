@@ -39,6 +39,7 @@ const formSchema = z.object({
   "phone": z.string().regex(/^\d{8,15}$/, "Invalid WhatsApp number format"),
   "email": z.string().email("Invalid email format"),
   "gender": z.string().optional(),
+  "status": z.string().optional(),
   "religion": z.string().optional(),
   "nationality": z.string().optional(),
   "major": z.string().min(3, "Major must be at least 3 characters long"),
@@ -58,17 +59,23 @@ const selectedHostel = computed(() => allHostels[selectedHostelIndex]);
 const questions = computed(() => {
   return [
     {
-      label: "Name", type: "text", placeholder: "Enter your name", id: "name"},
+      label: "Name", type: "text", placeholder: "Enter your name", id: "name"
+    },
     {
-      label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", id: "student_id"},
+      label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", id: "student_id"
+    },
     {
-      label: "Passport No", type: "text", placeholder: "Enter your passport No", id: "passport"},
+      label: "Passport No", type: "text", placeholder: "Enter your passport No", id: "passport"
+    },
     {
-      label: "Date of Arrive", type: "date", placeholder: "Select your date of birth", id: "arrival_date"},
+      label: "Date of Arrive", type: "date", placeholder: "Select your date of birth", id: "arrival_date"
+    },
     {
-      label: "WhatsApp No", type: "text", placeholder: "Enter your WhatsApp No", id: "phone"},
+      label: "WhatsApp No", type: "text", placeholder: "Enter your WhatsApp No", id: "phone"
+    },
     {
-      label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", id: "email"},
+      label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", id: "email"
+    },
     {
       label: "Gender",
       type: "select",
@@ -76,6 +83,17 @@ const questions = computed(() => {
       placeholder: "Select your gender",
       model: ref(""),
       id: "gender"
+    },
+    {
+      label: "Status",
+      type: "select",
+      options: [
+        {value: 'active', label: 'Active'},
+        {value: 'foundation', label: 'Foundation '},
+      ],
+      placeholder: "Select your status",
+      model: ref(""),
+      id: "status"
     },
     {
       label: "Religion",
