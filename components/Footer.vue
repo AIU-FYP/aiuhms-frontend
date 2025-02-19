@@ -15,7 +15,7 @@ const currentYear = new Date().getFullYear();
             Kedah Darul Aman, Malaysia.</a></p>
         </div>
         <div class="box">
-          <span class="icon"><UIcon name="ic-baseline-email"/></span>
+          <span class="icon"><UIcon name="ic-baseline-phone"/></span>
           <p class="info"><a href="tel:+604774 7300">(60) 4774 7300</a></p>
         </div>
         <div class="box">
