@@ -8,7 +8,7 @@ const members = [
   },
   {
     name: "Halawati Binti Abd Jalil Safuan",
-    position: "Super advisor",
+    position: "supervisor",
     photo: "images/Halawati Binti Abd Jalil Safuan.jpg",
   },
   {
