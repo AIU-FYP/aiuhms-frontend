@@ -98,7 +98,7 @@ const updateStatus = async (newStatus) => {
           <button class="reject-request" @click="updateStatus('rejected')">
             Reject request
           </button>
-          <button class="work-done" @click="updateStatus('ppk_done')">
+          <button class="work-done" @click="updateStatus('completed')">
             Work done by PPK
           </button>
         </div>

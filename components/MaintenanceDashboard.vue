@@ -63,7 +63,7 @@ const selectedFilter = ref('pending');
 
 const filterOptions = [
   {value: 'pending', label: 'Pending'},
-  {value: 'ppk_done', label: 'Accepted'},
+  {value: 'completed', label: 'Completed'},
   {value: 'rejected', label: 'Rejected'},
 ];
 
