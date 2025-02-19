@@ -13,7 +13,7 @@
         </h3>
       </div>
       <div class="image-wrapper">
-        <img src="/images/hostel.png" alt="AIU Campus" class="image-fade"/>
+        <img src="../public/images/hostel.png" alt="AIU Campus" class="image-fade"/>
       </div>
     </div>
 
