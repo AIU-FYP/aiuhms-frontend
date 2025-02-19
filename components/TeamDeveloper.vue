@@ -103,19 +103,12 @@ const members = [
   min-height: 70px;
 }
 
-.team-details h2 {
+.team-details h2,
+.team-details h3 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 5px;
-}
-
-.team-details p {
-  font-size: 1rem;
-}
-
-.team-details h3 {
-  font-size: .8rem;
-  font-weight: 800;
+  text-transform: capitalize;
 }
 
 </style>
