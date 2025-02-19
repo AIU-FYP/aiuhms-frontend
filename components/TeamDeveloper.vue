@@ -33,7 +33,8 @@ const members = [
 
 <template>
   <div class="team-section">
-    <h2 class="team-title">Team Developer </h2>
+    <h2 class="team-developer-title">Team Developer </h2>
+    <hr class="team-developer-divider"/>
     <div class="team-grid">
       <div v-for="member in members" :key="member.name" class="team-card">
         <div class="team-photo">
@@ -56,21 +57,13 @@ const members = [
 
 }
 
-.team-title {
-  text-align: center;
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 40px 0;
-}
-
 .team-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
   justify-content: center;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 5rem auto;
 }
 
 .team-card {
@@ -109,6 +102,20 @@ const members = [
   font-weight: 600;
   margin-bottom: 5px;
   text-transform: capitalize;
+}
+
+.team-developer-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 0 2rem;
+  margin: 1rem 0;
+}
+
+.team-developer-divider {
+  margin: 2rem auto;
+  border: 2px solid var(--primary-color);
+  width: 100%;
 }
 
 </style>
