@@ -7,6 +7,7 @@ import Team from "~/components/Team.vue";
   <Header/>
   <LandingPage/>
   <About/>
+  <TeamDeveloper/>
   <Team/>
   <Footer/>
 </template>
