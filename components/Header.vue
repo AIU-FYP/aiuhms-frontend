@@ -50,7 +50,7 @@ onMounted(() => {
 
 <style scoped>
 .header-container {
-  background-color: var(--primary-color);
+  background-color: var(--text-light-color);
   padding: 0.5rem 1rem;
   max-height: 500px;
 }
@@ -63,15 +63,15 @@ onMounted(() => {
 }
 
 .logo img {
-  width: 120px;
-  height: 90px;
+  width: 150px;
+  height: 120px;
 }
 
 .header-title h2 {
   font-size: 1.5rem;
   font-weight: normal;
   text-transform: uppercase;
-  color: var(--text-light-color);
+  color: var(--primary-color);
 }
 
 .navigation-links {
@@ -86,13 +86,15 @@ onMounted(() => {
   padding: 0.3rem;
   margin-right: 0.5rem;
   border-radius: 0.5rem;
-  border: 1px solid transparent;
-  background-color: transparent;
+  border: 1px solid var(--primary-hover-color);
+  background-color: var(--primary-hover-color);
+  color: var(--primary-hover-color);
 }
 
 .navigation-links li:hover {
   border: 1px solid var(--primary-hover-color);
   background-color: var(--primary-hover-color);
+  color: var(--primary-hover-color);
 }
 
 .navigation-links a {
