@@ -2,6 +2,7 @@ export const useStudentFields = (hostels, student, religions) => {
     const options = reactive({
         status: [
             {value: 'active', label: 'Active'},
+            {value: 'foundation', label: 'Foundation'},
             {value: 'internship', label: 'Internship'},
             {value: 'inactive', label: 'Non-Active'},
             {value: 'graduated', label: 'Graduated'},
@@ -71,7 +72,7 @@ export const useStudentFields = (hostels, student, religions) => {
             {label: 'ID', key: 'id', editable: false, type: 'input'},
             {label: 'Status', key: 'status', editable: true, type: 'select', optionsKey: 'status'},
             {label: 'Name', key: 'name', editable: false, type: 'input'},
-            {label: 'Student ID', key: 'student_id', editable: false, type: 'input'},
+            {label: 'Student ID', key: 'student_id', editable: true, type: 'input'},
             {label: 'Passport No', key: 'passport', editable: true, type: 'input'},
             {label: 'Date of Arrival', key: 'arrival_date', editable: false, type: 'input'},
             {label: 'WhatsApp No', key: 'phone', editable: true, type: 'input'},

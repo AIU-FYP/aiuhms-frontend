@@ -81,6 +81,7 @@ const openPopup = (row: Person) => {
 const selectedFilter = ref('active');
 const filterOptions = [
   {value: 'active', label: 'Active Students'},
+  {value: 'foundation', label: 'Foundation Students'},
   {value: 'internship', label: 'Internship'},
   {value: 'inactive', label: 'Non-Active Students'},
   {value: 'graduated', label: 'Graduated Students'},
