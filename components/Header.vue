@@ -81,32 +81,29 @@ onMounted(() => {
   margin: 0;
 }
 
-.navigation-links li {
-  display: inline-block;
-  padding: 0.3rem;
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid var(--primary-hover-color);
-  background-color: var(--primary-hover-color);
-  color: var(--primary-hover-color);
-}
-
-.navigation-links li:hover {
-  border: 1px solid var(--primary-hover-color);
-  background-color: var(--primary-hover-color);
-  color: var(--primary-hover-color);
-}
-
 .navigation-links a {
-  color: var(--text-light-color);
   padding: 0 0.5rem;
   font-size: 1rem;
   text-decoration: none;
 }
 
 .navigation-links a:hover {
-  color: var(--text-hover-color);
   transition: 0.3s ease-in-out;
+}
+
+
+.navigation-links li {
+  display: inline-block;
+  padding: 0.3rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--primary-hover-color);
+}
+
+.navigation-links li:hover {
+  background-color: var(--primary-hover-color);
+  color: var(--text-hover-color);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 @media (max-width: 1200px) {
