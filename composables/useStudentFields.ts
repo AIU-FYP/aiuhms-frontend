@@ -1,3 +1,5 @@
+import {computed, reactive, watch} from 'vue';
+
 export const useStudentFields = (hostels, student, religions) => {
     const options = reactive({
         status: [
@@ -67,25 +69,30 @@ export const useStudentFields = (hostels, student, religions) => {
             }
         }, {immediate: true});
 
+    const isStudentIdEditable = computed(() => student.value?.status === 'foundation');
+
+
+
+    const fields = computed(() => [
+        { label: 'ID', key: 'id', editable: false, type: 'input' },
+        { label: 'Status', key: 'status', type: 'select', optionsKey: 'status' },
+        { label: 'Name', key: 'name', editable: false, type: 'input' },
+        { label: 'Student ID', key: 'student_id', editable: isStudentIdEditable.value, type: 'input' },
+        { label: 'Passport No', key: 'passport', editable: true, type: 'input' },
+        { label: 'Date of Arrival', key: 'arrival_date', editable: false, type: 'input' },
+        { label: 'WhatsApp No', key: 'phone', editable: true, type: 'input' },
+        { label: 'Student Email', key: 'email', editable: true, type: 'input' },
+        { label: 'Nationality', key: 'nationality', editable: false, type: 'input' },
+        { label: 'Program/Major', key: 'major', editable: true, type: 'input' },
+        { label: 'Gender', key: 'gender', editable: true, type: 'select', optionsKey: 'gender' },
+        { label: 'Religion', key: 'religion', editable: true, type: 'select', optionsKey: 'religion' },
+        { label: 'Block Name', key: 'hostel_id', editable: true, type: 'select', optionsKey: 'hostel' },
+        { label: 'Level No', key: 'level_id', editable: true, type: 'select', optionsKey: 'level' },
+        { label: 'Room No', key: 'room_id', editable: true, type: 'select', optionsKey: 'room' },
+        { label: 'Bed', key: 'bed_id', editable: true, type: 'select', optionsKey: 'bed' }
+    ]);
+
     return {
-        fields: [
-            {label: 'ID', key: 'id', editable: false, type: 'input'},
-            {label: 'Status', key: 'status', editable: true, type: 'select', optionsKey: 'status'},
-            {label: 'Name', key: 'name', editable: false, type: 'input'},
-            {label: 'Student ID', key: 'student_id', editable: true, type: 'input'},
-            {label: 'Passport No', key: 'passport', editable: true, type: 'input'},
-            {label: 'Date of Arrival', key: 'arrival_date', editable: false, type: 'input'},
-            {label: 'WhatsApp No', key: 'phone', editable: true, type: 'input'},
-            {label: 'Student Email', key: 'email', editable: true, type: 'input'},
-            {label: 'Nationality', key: 'nationality', editable: false, type: 'input'},
-            {label: 'Program/Major', key: 'major', editable: true, type: 'input'},
-            {label: 'Gender', key: 'gender', editable: true, type: 'select', optionsKey: 'gender'},
-            {label: 'Religion', key: 'religion', editable: true, type: 'select', optionsKey: 'religion'},
-            {label: 'Block Name', key: 'hostel_id', editable: true, type: 'select', optionsKey: 'hostel'},
-            {label: 'Level No', key: 'level_id', editable: true, type: 'select', optionsKey: 'level'},
-            {label: 'Room No', key: 'room_id', editable: true, type: 'select', optionsKey: 'room'},
-            {label: 'Bed', key: 'bed_id', editable: true, type: 'select', optionsKey: 'bed'}
-        ],
+        fields,
         options
-    };
-};
+    };};
