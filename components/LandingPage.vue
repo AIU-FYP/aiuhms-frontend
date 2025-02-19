@@ -41,7 +41,6 @@
   height: 90vh;
   padding: 2rem;
   border-radius: 1.5rem;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   background: linear-gradient(120deg, #82B4F9, #4B8AE6, #133E87FF);
 }
 
@@ -71,8 +70,12 @@ h1 {
 
 h3 {
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--text-light-color);
+  background-color: hsla(180, 3%, 7%, 0.5);
+  padding: 1.5rem 2rem;
   animation: fadeIn 1s ease forwards;
+  border-radius: 30px 20px 35px 70px;
+  display: inline-block;
 }
 
 .image-wrapper {
