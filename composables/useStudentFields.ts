@@ -75,7 +75,7 @@ export const useStudentFields = (hostels, student, religions) => {
 
     const fields = computed(() => [
         { label: 'ID', key: 'id', editable: false, type: 'input' },
-        { label: 'Status', key: 'status', type: 'select', optionsKey: 'status' },
+        { label: 'Status', key: 'status', type: 'select', optionsKey: 'status',editable: true, },
         { label: 'Name', key: 'name', editable: false, type: 'input' },
         { label: 'Student ID', key: 'student_id', editable: isStudentIdEditable.value, type: 'input' },
         { label: 'Passport No', key: 'passport', editable: true, type: 'input' },
