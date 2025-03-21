@@ -18,7 +18,7 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
     <div class="popup-container" @click.stop>
       <div class="notification">
         <div class="logo-box">
-          <img src="/images/AIU-Official-Logo.png" alt="aiu-logo">
+          <img src="/images" alt="aiu-logo">
         </div>
         <div class="thank-info">
           <p>
