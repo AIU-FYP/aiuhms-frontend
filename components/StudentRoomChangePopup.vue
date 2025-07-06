@@ -28,7 +28,7 @@ const closePopup = () => {
 }
 
 let {$axios} = useNuxtApp()
-const api = $axios()
+const api = $axios
 
 const updateStatus = async (newStatus) => {
   try {
