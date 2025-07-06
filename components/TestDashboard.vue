@@ -8,7 +8,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const {$axios} = useNuxtApp()
-const api = $axios()
+const api = $axios
 
 interface Person {
   id: number
