@@ -31,7 +31,7 @@ const bedStatusColor = (status) => {
 };
 
 let {$axios} = useNuxtApp();
-const api = $axios();
+const api = $axios;
 
 const toggleBedStatus = async (bed, newStatus) => {
   if (bed.status === "occupied") {
