@@ -5,7 +5,7 @@ export default defineNuxtConfig({
         baseURL: '/',
     },
     nitro: {
-        preset: 'static'  // <-- this is key for `.output/public` to have index.html
+        preset: 'static'
     },
     routeRules: {
         '/**': {static: true}
