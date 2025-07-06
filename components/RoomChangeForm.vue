@@ -265,7 +265,8 @@ async function handleSubmit() {
 
 .container .change-room-form {
   flex: 60%;
-  padding: 1.5rem;
+  padding: 1rem;
+  margin: 0;
 }
 
 @media (max-width: 800px) {
@@ -312,10 +313,12 @@ async function handleSubmit() {
   flex-wrap: wrap;
   flex-direction: row;
   gap: 10px;
+  padding: 0;
+  margin: 0;
 }
 
 .info {
-  flex-basis: calc(100% - 10px);
+  flex-basis: calc(50% - 10px);
   box-sizing: border-box;
   display: block;
 }
@@ -324,19 +327,21 @@ async function handleSubmit() {
   font-size: 1rem;
   color: var(--primary-color);
   padding: .5rem 0;
+  margin: 0.3rem 0;
 }
 
 .change-room-form input,
 .change-room-form select {
   width: 100%;
   padding: 0.5rem;
+  margin: 0.3rem 0 ;
   border: 2px solid #EEEEEE;
   border-radius: 5px;
   outline: none;
 }
 
 .change-room-form textarea {
-  width: 100%;
+  width: 200%;
   height: 4rem;
   max-height: 4rem;
   padding: 0.5rem;
@@ -363,13 +368,13 @@ async function handleSubmit() {
 }
 
 .btn-submit {
-  margin: 0 1.5rem ;
+  margin: 1rem ;
   padding: .5rem;
   font-size: 1rem;
   border-radius: .5rem;
   background-color: var(--primary-color);
   color: var(--text-light-color);
-  width: 90% ;
+  width: 93% ;
   align-items: center;
   text-align: center;
   display: block;
