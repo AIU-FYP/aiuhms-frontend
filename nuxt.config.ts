@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'fypbackend-production-ed18.up.railway.app'
+      apiBase: 'https://fypbackend-production-ed18.up.railway.app/'
     }
   }
 })
