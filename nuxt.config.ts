@@ -1,17 +1,12 @@
 export default defineNuxtConfig({
-  ssr: false,
-  devtools: { enabled: true },
+  ssr: false, // SPA mode
   modules: ['@nuxt/ui'],
-  colorMode: {
-    preference: 'light'
-  },
   app: {
     baseURL: '/',
   },
   runtimeConfig: {
     public: {
-      isDev: process.env.NODE_ENV === 'development',
-      apiBase: 'https://fypbackend-production-ed18.up.railway.app' // or use env var
+      apiBase: 'https://fypbackend-production-ed18.up.railway.app'
     }
   }
 })
