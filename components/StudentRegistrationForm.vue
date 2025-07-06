@@ -50,7 +50,7 @@ const formSchema = z.object({
 });
 
 let {$axios} = useNuxtApp();
-const api = $axios();
+const api = $axios;
 
 const selectedHostelIndex = ref(0);
 const allHostels = ref([]);
