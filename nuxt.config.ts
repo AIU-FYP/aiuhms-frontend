@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     colorMode: {
         preference: 'light',
         fallback: 'light',
-        classSuffix: '',
+        forced: 'light',
+        classSuffix: ''
     },
     runtimeConfig: {
         public: {
