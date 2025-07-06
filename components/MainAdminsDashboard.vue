@@ -4,7 +4,7 @@ import Popup from '~/components/AdminInfoPopup.vue'
 import {useNuxtApp} from "#app";
 
 let {$axios} = useNuxtApp()
-const api = $axios()
+const api = $axios
 
 interface User {
   id: number;
