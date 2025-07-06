@@ -9,6 +9,8 @@ import RoomChangeProcess from "~/components/RoomChangeProcess.vue";
   <LandingPage/>
   <MaintenanceProcess/>
   <RoomChangeProcess/>
+  <About/>
+  <TeamDeveloper/>
   <Footer/>
 </template>
 
