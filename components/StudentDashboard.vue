@@ -29,7 +29,7 @@ interface Person {
 }
 
 const {$axios} = useNuxtApp()
-const api = $axios()
+const api = $axios
 const bedMapping: Record<string, string> = {
   '01': 'A',
   '02': 'B',
