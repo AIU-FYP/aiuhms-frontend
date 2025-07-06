@@ -123,7 +123,7 @@ const currentYear = new Date().getFullYear();
           <div></div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; Copyright <a href="https://aiu.edu.my/">Albukhary International University {{ currentYear }}</a></p>
+          <p>&copy; {{ currentYear }} <a href="https://aiu.edu.my/">Albukhary International University</a>. All rights reserved.</p>
         </div>
       </div>
     </div>
