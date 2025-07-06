@@ -42,7 +42,7 @@ const columns = [
   {key: 'extend', label: 'View', sortable: false,}
 ]
 
-const api = $axios()
+const api = $axios
 
 const requests = ref<RequestFields[]>([]);
 
