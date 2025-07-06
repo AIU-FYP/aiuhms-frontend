@@ -2,6 +2,14 @@
   <nuxt-page/>
 </template>
 <script setup lang="ts">
+
+useHead({
+  htmlAttrs: {
+    class: 'light',
+    'data-theme': 'light'
+  }
+})
+
 </script>
 
 
