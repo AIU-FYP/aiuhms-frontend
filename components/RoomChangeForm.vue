@@ -19,23 +19,77 @@ const filteredNationalities = computed(() => {
 });
 
 const RequestedChangeRoomQuestions = [
-  {label: "Name", type: "text", placeholder: "Enter your name", required: true, id: 'student'},
-  {label: "Student ID", type: "text", placeholder: "Enter your student ID (e.g., AIU21011234)", required: true, id: 'student_id'},
-  {label: "Room No", type: "text", placeholder: "Room No (e.g., 25i-3-10-A)", required: true, id: "room_number"},
-  {label: "Phone No (Local No Only)", type: "text", placeholder: "Enter your phone No", required: true, id: 'phone'},
-  {label: "Email Address (Student Email Only)", type: "text", placeholder: "Enter your email address", required: true, id: 'email'},
-  {label: "Gender", type: "select", options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}], required: true, placeholder: "Enter your gender", id: "gender"},
-  {label: "Enter your Nationality", type: "select", options: filteredNationalities.value, placeholder: "Select nationality", id: "nationality"},
-  {label: "Other supporting docs", type: "file", required: true, placeholder: "Other supporting docs", id: "supporting_doc"},
-  {label: "Explain your reason for room change?", type: "textarea", required: true, placeholder: "Explain in detail the reason for room change?", id: "reason"}
+  {
+    label: "Name",
+    type: "text",
+    placeholder: "Enter your name",
+    required: true,
+    id: 'student'
+  },
+  {
+    label: "Student ID",
+    type: "text",
+    placeholder: "Enter your student ID (e.g., AIU21011234)",
+    required: true,
+    id: 'student_id'
+  },
+  {
+    label: "Room No",
+    type: "text",
+    placeholder: "Room No (e.g., 25i-3-10-A)",
+    required: true,
+    id: "room_number"
+  },
+  {
+    label: "Phone No (Local No Only)",
+    type: "text",
+    placeholder: "Enter your phone No",
+    required: true,
+    id: 'phone'
+  },
+  {
+    label: "Email Address (Student Email Only)",
+    type: "text",
+    placeholder: "Enter your email address",
+    required: true,
+    id: 'email'
+  },
+  {
+    label: "Gender",
+    type: "select",
+    options: [{value: "male", label: "Male"}, {value: "female", label: "Female"}],
+    required: true,
+    placeholder: "Enter your gender",
+    id: "gender"
+  },
+  {
+    label: "Enter your Nationality",
+    type: "select",
+    options: filteredNationalities.value,
+    placeholder: "Select nationality",
+    id: "nationality"
+  },
+  {
+    label: "Other supporting docs",
+    type: "file",
+    required: true,
+    placeholder: "Other supporting docs",
+    id: "supporting_doc"
+  },
+  {
+    label: "Explain your reason for room change?",
+    type: "textarea",
+    required: true,
+    placeholder: "Explain in detail the reason for room change?",
+    id: "reason"
+  }
 ];
 
 const formSchema = z.object({
   student: z.string().min(8, "Name must be at least 8 characters long").nonempty("Name is required"),
   student_id: z.string().regex(/^AIU\d{8}$/, "Invalid Student ID format").nonempty("Student ID is required"),
   room_number: z
-      .string()
-      .regex(/^\d+[A-Za-z]?-\d{1,2}-\d{1,2}(-[A-Za-z])?$/, 'Invalid Room Number format'),
+      .string('Invalid Room Number format'),
   phone: z.string().regex(/^\d{8,15}$/, "Invalid phone number").nonempty("Phone Number is required"),
   email: z.string().email("Invalid email format").regex(/@student\.aiu\.edu\.my$/, "Must be a student email ending with '@student.aiu.edu.my'"),
   gender: z.string().nonempty("Gender is required"),
@@ -70,6 +124,7 @@ const handleFileUpload = (event, inputDetails) => {
   supporting_doc.value = event.target.files[0];
 };
 const isPopupVisible = ref(false);
+
 async function handleSubmit() {
   const api = useApi();
   form.Date = new Date().toLocaleDateString("en-GB");
@@ -80,26 +135,30 @@ async function handleSubmit() {
       const formDataObj = new FormData();
       for (const key in form) {
         const value = form[key];
-        if (value !== null && value !== undefined) formDataObj.append(key, value);
+        if (value !== null && value !== undefined) {
+          formDataObj.append(key, value);
+        }
       }
-      formDataObj.delete('supporting_doc');
-      if (supporting_doc.value) formDataObj.append('supporting_doc', supporting_doc.value);
 
-      const response = await api.post("/change-room-requests/", formDataObj);
+      formDataObj.delete('supporting_doc');
+      if (supporting_doc.value) {
+        formDataObj.append('supporting_doc', supporting_doc.value);
+      }
+
+      await api.post("/change-room-requests/", formDataObj);
+
       isPopupVisible.value = true;
       Object.keys(form).forEach(key => (form[key] = ""));
-      isPopupVisible.value = true;
       location.reload();
+
     } catch (error) {
       isPopupVisible.value = false;
+
       if (error.response) {
-        isPopupVisible.value = false;
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
       } else if (error.request) {
-        isPopupVisible.value = false;
         alert("Server is not responding. Please try again later.");
       } else {
-        isPopupVisible.value = false;
         alert("An error occurred while submitting the form. Please try again.");
       }
     }
@@ -116,8 +175,8 @@ async function handleSubmit() {
     <div class="container">
       <div class="description">
         <img src="/images/AIU-Official-Logo.png" alt="AIU">
-        <h2 class="title-maintenance-form">Form for request to change room </h2>
-        <p class="description-maintenance-form">If you need to request a room change, please fill out this form with
+        <h2 class="title-change-room-form">Form for request to change room </h2>
+        <p class="description-change-room-form">If you need to request a room change, please fill out this form with
           your reason for the request. Be sure to provide any necessary documentation, such as a medical report if
           applicable. This will help us assess your request and find a suitable room for you, subject to availability
           and approval.
@@ -128,7 +187,7 @@ async function handleSubmit() {
       <div class="change-room-form">
         <h2>Please fill this Form</h2>
         <form @submit.prevent.once="handleSubmit">
-          <div class="maintenance-form">
+          <div class="change-room-form">
             <div class="info" v-for="(question, index) in RequestedChangeRoomQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
@@ -181,7 +240,6 @@ async function handleSubmit() {
 
 .change-room-section {
   margin: 3rem 7rem;
-  border: 2px solid #eeeeee;
   border-radius: 0 30px 30px 0;
   box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
 }
@@ -201,13 +259,13 @@ async function handleSubmit() {
 .container .description {
   flex: 30%;
   background-color: var(--primary-color);
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: 0;
 }
 
 .container .change-room-form {
   flex: 60%;
-  padding: 2.5rem;
+  padding: 1.5rem;
 }
 
 @media (max-width: 800px) {
@@ -249,7 +307,7 @@ async function handleSubmit() {
   padding: 1rem 0;
 }
 
-.maintenance-form {
+.change-room-form {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -262,14 +320,14 @@ async function handleSubmit() {
   display: block;
 }
 
-.maintenance-form .question-title {
+.change-room-form .question-title {
   font-size: 1rem;
   color: var(--primary-color);
   padding: .5rem 0;
 }
 
-.maintenance-form input,
-.maintenance-form select {
+.change-room-form input,
+.change-room-form select {
   width: 100%;
   padding: 0.5rem;
   border: 2px solid #EEEEEE;
@@ -277,7 +335,7 @@ async function handleSubmit() {
   outline: none;
 }
 
-.maintenance-form textarea {
+.change-room-form textarea {
   width: 100%;
   height: 4rem;
   max-height: 4rem;
@@ -293,25 +351,28 @@ async function handleSubmit() {
 }
 
 @media (max-width: 1200px) {
-  .maintenance-form textarea {
+  .change-room-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
 @media (max-width: 800px) {
-  .maintenance-form textarea {
+  .change-room-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
 .btn-submit {
-  margin-top: 1rem;
+  margin: 0 1.5rem ;
   padding: .5rem;
-  display: flex;
   font-size: 1rem;
-  border-radius: 1rem;
+  border-radius: .5rem;
   background-color: var(--primary-color);
   color: var(--text-light-color);
+  width: 90% ;
+  align-items: center;
+  text-align: center;
+  display: block;
 }
 
 .btn-submit:hover {
