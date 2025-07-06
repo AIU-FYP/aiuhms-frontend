@@ -64,24 +64,21 @@ async function handleSubmit() {
   if (!errors.username && !errors.password) {
     try {
       isLoading.value = true;
+
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
       });
 
-      // alert("Login successful");
-
-      console.log('Response:', response.data);
-      console.log('Token from response:', response.data.access);
-
+      // Optional: alert("Login successful");
       useCookie('token').value = response.data.access;
       useCookie('refresh_token').value = response.data.refresh;
 
       navigateTo('/admin');
-      console.log('Navigated to /admin');
+
     } catch (error) {
-      console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
+      alert(errorMessage.value);
     } finally {
       isLoading.value = false;
     }
