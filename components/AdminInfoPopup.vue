@@ -25,7 +25,7 @@ const closePopup = () => {
 };
 
 let {$axios} = useNuxtApp()
-const api = $axios()
+const api = $axios
 
 const deleteAdmin = async () => {
   if (!props.admins?.id) {
