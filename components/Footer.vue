@@ -270,7 +270,7 @@ const currentYear = new Date().getFullYear();
   height: 3rem;
   text-align: center;
   font-size: 1.5rem;
-  padding: 5px;
+  padding: 8px;
   border: 2px solid var(--text-light-color);
   border-radius: 50%;
   color: var(--text-light-color);
