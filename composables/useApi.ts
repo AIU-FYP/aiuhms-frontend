@@ -20,7 +20,7 @@ export function createApi() {
 
     const baseUrl = config.public.isDev
         ? 'http://127.0.0.1:8000/api'
-        : 'https://fypbackend-production-ed18.up.railway.app/';
+        : 'https://fypbackend-production-ed18.up.railway.app/api';
 
     return constructApi(baseUrl);
 }
