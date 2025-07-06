@@ -42,7 +42,7 @@ const isLoading = ref(false);
 const errorMessage = ref('');
 
 const {$axios} = useNuxtApp();
-const api = $axios();
+const api = $axios; 
 
 function validateField(field) {
   try {
