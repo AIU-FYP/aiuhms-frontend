@@ -1,8 +1,14 @@
 export default defineNuxtConfig({
-  ssr: false, // SPA mode
+  ssr: false,
   modules: ['@nuxt/ui'],
   app: {
     baseURL: '/',
+  },
+  nitro: {
+    preset: 'static'  // <-- this is key for `.output/public` to have index.html
+  },
+  routeRules: {
+    '/**': { static: true }
   },
   runtimeConfig: {
     public: {
