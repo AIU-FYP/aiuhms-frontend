@@ -28,71 +28,71 @@ const currentYear = new Date().getFullYear();
         </div>
       </div>
       <hr class="divider">
-      <div class="links-container">
-        <div class="links">
-          <h2>Quick Links</h2>
-          <ul>
-            <li>
-              <router-link to="/home">
-              <span>
-                <UIcon name="material-symbols-contact-page"
-                />
-              </span>Home
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/about">
-                <span class="icon"><UIcon class="bar-icon-links" name="la-university"/></span>About
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/maintenance-room-form">
-              <span>
-                <UIcon name="ph-student-bold"
-                />
-              </span>Maintenance Form
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/change-room-form">
-              <span>
-                <UIcon name="ph-student-bold"
-                />
-              </span>Change Room Form
-              </router-link>
-            </li>
-          </ul>
-        </div>
-        <div class="others-links-section">
-          <h2>Others</h2>
-          <ul>
-            <li>
-              <a href="https://aiustudenthostelleavesystem.net/leave_system/singup">
-              <span><UIcon name="la-university"/>
-              </span>
-                Hostel leave</a></li>
-            <li>
-              <router-link to="/faq">
-              <span><UIcon name="material-symbols-policy-outline"/>
-              </span>
-                Policy
-              </router-link>
-            </li>
-          </ul>
-        </div>
-        <div class="subscribe-section">
-          <h1 class="subscribe-title">Subscribe</h1>
-          <div class="container-form">
-            <div class="subscribe-input">
-              <input type="email" placeholder="Enter your email"/>
-            </div>
-            <div class="subscribe-button">
-              <button>Subscribe</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr class="divider">
+<!--      <div class="links-container">-->
+<!--        <div class="links">-->
+<!--          <h2>Quick Links</h2>-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <router-link to="/home">-->
+<!--              <span>-->
+<!--                <UIcon name="material-symbols-contact-page"-->
+<!--                />-->
+<!--              </span>Home-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <router-link to="/about">-->
+<!--                <span class="icon"><UIcon class="bar-icon-links" name="la-university"/></span>About-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <router-link to="/maintenance-room-form">-->
+<!--              <span>-->
+<!--                <UIcon name="ph-student-bold"-->
+<!--                />-->
+<!--              </span>Maintenance Form-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--              <router-link to="/change-room-form">-->
+<!--              <span>-->
+<!--                <UIcon name="ph-student-bold"-->
+<!--                />-->
+<!--              </span>Change Room Form-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--        <div class="others-links-section">-->
+<!--          <h2>Others</h2>-->
+<!--          <ul>-->
+<!--            <li>-->
+<!--              <a href="https://aiustudenthostelleavesystem.net/leave_system/singup">-->
+<!--              <span><UIcon name="la-university"/>-->
+<!--              </span>-->
+<!--                Hostel leave</a></li>-->
+<!--            <li>-->
+<!--              <router-link to="/faq">-->
+<!--              <span><UIcon name="material-symbols-policy-outline"/>-->
+<!--              </span>-->
+<!--                Policy-->
+<!--              </router-link>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--        <div class="subscribe-section">-->
+<!--          <h1 class="subscribe-title">Subscribe</h1>-->
+<!--          <div class="container-form">-->
+<!--            <div class="subscribe-input">-->
+<!--              <input type="email" placeholder="Enter your email"/>-->
+<!--            </div>-->
+<!--            <div class="subscribe-button">-->
+<!--              <button>Subscribe</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <hr class="divider">-->
       <div class="socials-section">
         <div class="socials-container">
           <div></div>
