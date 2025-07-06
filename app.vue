@@ -14,6 +14,18 @@
   --button-hover-color: #39701d;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit !important;
+}
+
+*::before,
+*::after {
+  font-family: inherit !important;
+}
+
 
 
 </style>
