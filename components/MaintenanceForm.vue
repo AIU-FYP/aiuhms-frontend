@@ -415,11 +415,14 @@ async function handleSubmit() {
 .maintenance-submit {
   margin-top: 1rem;
   padding: .5rem 2rem;
-  display: flex;
   font-size: 1rem;
-  border-radius: 1rem;
   background-color: var(--primary-color);
   color: var(--text-light-color);
+  border-radius: .5rem;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  display: block;
 }
 
 .maintenance-submit:hover {
