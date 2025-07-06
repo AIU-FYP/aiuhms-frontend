@@ -34,7 +34,7 @@ const requests = ref<StudentRequest[]>([]);
 const currentPage = ref(1);
 const pageSize = ref(10);
 const q = ref('');
-const api = $axios()
+const api = $axios
 const fetchData = async () => {
 
   isLoading.value = true;
