@@ -58,7 +58,7 @@ AdminPasswordQuestions.forEach((question) => {
 });
 
 let { $axios } = useNuxtApp()
-const api = $axios()
+const api = $axios
 
 const handleSubmit = async () => {
   try {
