@@ -96,14 +96,13 @@ onMounted(() => {
   display: inline-block;
   padding: 0.3rem;
   margin-right: 0.5rem;
-  border-radius: 0.5rem;
-  color: var(--primary-hover-color);
+  border-radius: 1rem;
+  border: 2px solid transparent;
 }
 
 .navigation-links li:hover {
-  background-color: var(--primary-hover-color);
-  color: var(--text-hover-color);
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  border: 2px solid var(--primary-hover-color);
+  color: var(--primary-hover-color);
 }
 
 @media (max-width: 1200px) {
