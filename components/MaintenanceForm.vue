@@ -289,9 +289,8 @@ async function handleSubmit() {
 
 .maintenance-room-section {
   margin: 3rem 7rem;
-  border: 2px solid var(--text-hover-color);
   border-radius: 0 30px 30px 0;
-  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  box-shadow: rgba(69, 69, 69, 0.2) 0 2px 8px 0;
 }
 
 @media (max-width: 800px) {
