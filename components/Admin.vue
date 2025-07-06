@@ -9,7 +9,7 @@ definePageMeta({
 
 let {$axios} = useNuxtApp()
 
-const api = $axios()
+const api = $axios
 const isLoading = ref(false);
 
 interface HostelStats {
