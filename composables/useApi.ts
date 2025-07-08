@@ -19,7 +19,7 @@ export function createApi() {
     const config = useRuntimeConfig();
 
     const baseUrl = config.public.isDev
-        ? 'http://127.0.0.1:8000/api'
+        ? 'http://127.0.0.1:8001/api'
         : 'https://fypbackend-production-ed18.up.railway.app/api';
 
     return constructApi(baseUrl);

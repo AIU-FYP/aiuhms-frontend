@@ -1,7 +1,7 @@
 <script setup>
 import {reactive, ref} from 'vue';
 import {z} from 'zod';
-import {navigateTo, useNuxtApp} from '#app';
+import {navigateTo, useNuxtApp, useCookie} from '#app';
 
 const previousQuestions = [
   {
@@ -20,12 +20,13 @@ const previousQuestions = [
   },
 ];
 
+// Fixed: Proper Zod validation with meaningful error messages
 const formSchema = z.object({
-  "username":
-      z.string()
-          .min("Username must start with 'AIU' followed by 8 digits"),
-  "password":
-      z.string()
+  username: z.string()
+      .min(1, "Username is required"),
+      // .regex(/^AIU\d{8}$/, "Username must start with 'AIU' followed by 8 digits"),
+  password: z.string()
+      // .min(1, "Password is required")
 });
 
 const form = reactive({
@@ -42,26 +43,32 @@ const isLoading = ref(false);
 const errorMessage = ref('');
 
 const {$axios} = useNuxtApp();
-const api = $axios; 
+const api = $axios;
 
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
     errors[field] = "";
+    return true;
   } catch (error) {
     errors[field] = error.errors ? error.errors[0].message : error.message;
+    return false;
   }
 }
 
 function validateForm() {
-  validateField("username");
-  validateField("password");
+  const usernameValid = validateField("username");
+  const passwordValid = validateField("password");
+  return usernameValid && passwordValid;
 }
 
 async function handleSubmit() {
-  validateForm();
+  // Clear previous error message
+  errorMessage.value = '';
 
-  if (!errors.username && !errors.password) {
+  const isValid = validateForm();
+
+  if (isValid) {
     try {
       isLoading.value = true;
 
@@ -70,22 +77,36 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // Optional: alert("Login successful");
-      useCookie('token').value = response.data.access;
-      useCookie('refresh_token').value = response.data.refresh;
+      // Store tokens
+      const tokenCookie = useCookie('token');
+      const refreshTokenCookie = useCookie('refresh_token');
 
-      navigateTo('/admin');
+      tokenCookie.value = response.data.access;
+      refreshTokenCookie.value = response.data.refresh;
+
+      // Navigate to admin page
+      await navigateTo('/admin');
 
     } catch (error) {
-      errorMessage.value = error.response?.data?.message || 'Login failed.';
-      alert(errorMessage.value);
+      console.error('Login error:', error);
+      errorMessage.value = error.response?.data?.message ||
+          error.response?.data?.detail ||
+          'Login failed. Please try again.';
     } finally {
       isLoading.value = false;
     }
   }
 }
 
-
+// Export the function and data for template use
+defineExpose({
+  form,
+  errors,
+  isLoading,
+  errorMessage,
+  handleSubmit,
+  previousQuestions
+});
 </script>
 
 <template>

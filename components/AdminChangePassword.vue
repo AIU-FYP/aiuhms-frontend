@@ -66,15 +66,17 @@ const handleSubmit = async () => {
 
     console.log('Success:', response.data);
     alert("Password changed successfully");
-    location.reload()
+    location.reload();
   } catch (error) {
     if (error.response) {
       console.error('Error response:', error.response.data);
+      alert("Password change failed: " + (error.response.data.detail || "Please check your input."));
     } else {
-      console.error('Error:', error.message);
+      alert("Password change failed: " + error.message);
     }
   }
 };
+
 
 definePageMeta({
   middleware: 'auth',
