@@ -68,9 +68,6 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      console.log('Response:', response.data);
-      console.log('Token from response:', response.data.access);
-
       const token = useCookie('token');
       const refreshToken = useCookie('refresh_token');
 
@@ -78,15 +75,15 @@ async function handleSubmit() {
       refreshToken.value = response.data.refresh;
 
       await navigateTo('/admin');
-      console.log('Navigated to /admin');
     } catch (error) {
-      console.error('Error during login:', error);
+      alert('Error during login: ' + (error.response?.data?.message || 'Login failed.'));
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     } finally {
       isLoading.value = false;
     }
   }
 }
+
 </script>
 
 <template>
