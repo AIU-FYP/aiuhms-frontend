@@ -1,7 +1,7 @@
 <script setup>
-import {reactive, ref} from 'vue';
-import {z} from 'zod';
-import {navigateTo, useNuxtApp, useCookie} from '#app';
+import { reactive, ref } from 'vue';
+import { z } from 'zod';
+import { navigateTo, useNuxtApp, useCookie } from '#app';
 
 const previousQuestions = [
   {
@@ -20,13 +20,12 @@ const previousQuestions = [
   },
 ];
 
-// Fixed: Proper Zod validation with meaningful error messages
 const formSchema = z.object({
   username: z.string()
       .min(1, "Username is required"),
       // .regex(/^AIU\d{8}$/, "Username must start with 'AIU' followed by 8 digits"),
   password: z.string()
-      // .min(1, "Password is required")
+      .min(1, "Password is required")
 });
 
 const form = reactive({
@@ -42,71 +41,52 @@ const errors = reactive({
 const isLoading = ref(false);
 const errorMessage = ref('');
 
-const {$axios} = useNuxtApp();
-const api = $axios;
+const { $axios } = useNuxtApp();
 
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
     errors[field] = "";
-    return true;
   } catch (error) {
     errors[field] = error.errors ? error.errors[0].message : error.message;
-    return false;
   }
 }
 
 function validateForm() {
-  const usernameValid = validateField("username");
-  const passwordValid = validateField("password");
-  return usernameValid && passwordValid;
+  validateField("username");
+  validateField("password");
 }
 
 async function handleSubmit() {
-  // Clear previous error message
-  errorMessage.value = '';
+  validateForm();
 
-  const isValid = validateForm();
-
-  if (isValid) {
+  if (!errors.username && !errors.password) {
     try {
       isLoading.value = true;
-
-      const response = await api.post('/token/', {
+      const response = await $axios.post('/token/', {
         username: form.username,
         password: form.password,
       });
 
-      // Store tokens
-      const tokenCookie = useCookie('token');
-      const refreshTokenCookie = useCookie('refresh_token');
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
 
-      tokenCookie.value = response.data.access;
-      refreshTokenCookie.value = response.data.refresh;
+      const token = useCookie('token');
+      const refreshToken = useCookie('refresh_token');
 
-      // Navigate to admin page
+      token.value = response.data.access;
+      refreshToken.value = response.data.refresh;
+
       await navigateTo('/admin');
-
+      console.log('Navigated to /admin');
     } catch (error) {
-      console.error('Login error:', error);
-      errorMessage.value = error.response?.data?.message ||
-          error.response?.data?.detail ||
-          'Login failed. Please try again.';
+      console.error('Error during login:', error);
+      errorMessage.value = error.response?.data?.message || 'Login failed.';
     } finally {
       isLoading.value = false;
     }
   }
 }
-
-// Export the function and data for template use
-defineExpose({
-  form,
-  errors,
-  isLoading,
-  errorMessage,
-  handleSubmit,
-  previousQuestions
-});
 </script>
 
 <template>
@@ -124,21 +104,23 @@ defineExpose({
           <form @submit.prevent="handleSubmit">
             <div class="login-form">
               <div class="info" v-for="(question, index) in previousQuestions" :key="index">
-                <label :for="question.label">{{ question.label }}</label>
+                <label :for="question.id">{{ question.label }}</label>
                 <input
                     :type="question.type"
                     v-model="form[question.id]"
                     :placeholder="question.placeholder"
-                    :id="question.label"
+                    :id="question.id"
                 />
                 <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
               </div>
               <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
             </div>
-            <button class="login-submit" type="submit" :disabled="isLoading">Log In</button>
+            <button class="login-submit" type="submit" :disabled="isLoading">
+              {{ isLoading ? 'Logging in...' : 'Log In' }}
+            </button>
           </form>
         </div>
-        <router-link to="/home" class="home-btn">Home Page</router-link>
+        <NuxtLink to="/home" class="home-btn">Home Page</NuxtLink>
       </div>
     </div>
   </div>

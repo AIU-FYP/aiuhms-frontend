@@ -1,30 +1,34 @@
 export default defineNuxtConfig({
-  ssr: false,
-  modules: ['@nuxt/ui'],
+    ssr: false,
 
-  app: {
-      baseURL: '/',
-  },
+    runtimeConfig: {
+        public: {
+            apiBase:
+                process.env.NODE_ENV === 'production'
+                    ? 'https://fypbackend-production-ed18.up.railway.app'
+                    : 'http://127.0.0.1:8001/api',
+        },
+    },
 
-  nitro: {
-      preset: 'static'
-  },
+    modules: ['@nuxt/ui'],
 
-  routeRules: {
-      '/**': {static: true}
-  },
+    app: {
+        baseURL: '/',
+    },
 
-  colorMode: {
-      preference: 'light',
-      fallback: 'light',
-      classSuffix: ''
-  },
+    nitro: {
+        preset: 'static',
+    },
 
-  runtimeConfig: {
-      public: {
-          apiBase: 'https://fypbackend-production-ed18.up.railway.app/'
-      }
-  },
+    routeRules: {
+        '/**': { static: true },
+    },
 
-  compatibilityDate: '2025-07-06'
-})
+    colorMode: {
+        preference: 'light',
+        fallback: 'light',
+        classSuffix: '',
+    },
+
+    compatibilityDate: '2025-07-06',
+});

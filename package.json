@@ -9,7 +9,6 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "start": "npx serve .output/public"
-
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.1.3",
