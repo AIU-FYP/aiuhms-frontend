@@ -5,7 +5,7 @@ export default defineNuxtConfig({
         public: {
             apiBase:
                 process.env.NODE_ENV === 'production'
-                    ? 'https://fypbackend-production-ed18.up.railway.app'
+                    ? 'https://fypbackend-production-ed18.up.railway.app/api'
                     : 'http://127.0.0.1:8001/api',
         },
     },
