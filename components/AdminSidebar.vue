@@ -22,6 +22,7 @@ onMounted(async () => {
     console.error('Error fetching user details:', error);
   } finally {
     isLoading.value = false;
+
   }
 });
 
