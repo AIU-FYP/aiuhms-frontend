@@ -4,9 +4,10 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             apiBase:
-                process.env.NODE_ENV === 'production'
+                process.env.NUXT_PUBLIC_API_BASE ||
+                (process.env.NODE_ENV === 'production'
                     ? 'https://fypbackend-production-ed18.up.railway.app/api'
-                    : 'http://127.0.0.1:8001/api',
+                    : 'http://127.0.0.1:8000/api'),
         },
     },
 
@@ -21,7 +22,7 @@ export default defineNuxtConfig({
     },
 
     routeRules: {
-        '/**': { static: true },
+        '/**': {static: true},
     },
 
     colorMode: {
