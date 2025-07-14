@@ -17,13 +17,11 @@ const processQueue = (error: any = null) => {
 
 export function createApi() {
     const config = useRuntimeConfig();
-
-    const baseUrl = config.public.isDev
-        ? 'http://127.0.0.1:8000/api'
-        : 'https://fypbackend-production-ed18.up.railway.app/api';
+    const baseUrl = config.public.apiBase;
 
     return constructApi(baseUrl);
 }
+
 
 function constructApi(baseUrl: string): AxiosInstance {
     const api = axios.create({

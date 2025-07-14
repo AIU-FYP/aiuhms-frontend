@@ -15,7 +15,7 @@ const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 
 onMounted(async () => {
   try {
     const {$axios} = useNuxtApp();
-    const {data} = await $axios().get('/users/me/');
+    const { data } = await $axios.get('/users/me/');
     userDetails.value = data;
     console.log('User Details:', data);
   } catch (error) {

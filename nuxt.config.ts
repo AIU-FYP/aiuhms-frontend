@@ -11,11 +11,7 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: ['@nuxt/ui'],
-
-    app: {
-        baseURL: '/',
-    },
+    modules: ['@nuxt/ui',],
 
     nitro: {
         preset: 'static',
