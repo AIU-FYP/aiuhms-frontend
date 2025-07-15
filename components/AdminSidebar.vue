@@ -14,15 +14,13 @@ const isSuperAdmin = computed(() => userDetails.value?.profile['staff_type'] == 
 
 onMounted(async () => {
   try {
-    const {$axios} = useNuxtApp();
+    const { $axios } = useNuxtApp();
     const { data } = await $axios.get('/users/me/');
     userDetails.value = data;
-    console.log('User Details:', data);
   } catch (error) {
-    console.error('Error fetching user details:', error);
+
   } finally {
     isLoading.value = false;
-
   }
 });
 
@@ -117,10 +115,6 @@ const visibleButtons = computed(() =>
 function toggleLinkVisibility(index: number) {
   visibleButtonIndex.value = visibleButtonIndex.value === index ? null : index;
 }
-
-definePageMeta({
-  middleware: 'auth',
-});
 
 </script>
 <template>
