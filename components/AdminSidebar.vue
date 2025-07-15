@@ -93,8 +93,8 @@ const navigationButtons = [
     name: "Admin",
     icon: "mdi-user",
     links: [
-      {text: "Admin", url: "/admin", target: "_self"},
-      {text: "Home ", url: "/home", target: "_blank"},
+      {text: "Manage Admin", url: "/admin-dashboard", target: "_self"},
+      {text: "New Admin ", url: "/new-admin", target: "_self"},
     ],
   },
 ];
