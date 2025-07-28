@@ -7,116 +7,106 @@ const members = [
     photo: "images/Associate-Professor-Dr.-Basheer-Riskhan-200x200.jpg",
   },
   {
-    name: "Halawati Binti Abd Jalil Safuan",
-    position: "supervisor",
+    name: "Madam Halawati Binti Abd Jalil Safuan",
+    position: "Supervisor",
     photo: "images/Halawati Binti Abd Jalil Safuan.jpg",
   },
   {
+    name: "Adnan Madi",
+    position: "Web Developer",
+    photo: "images/Adnan Madi.jpg",
+  },
+  {
+    name: "Oussama Chakeur",
+    position: "System Administrator",
+    photo: "images/oussama-chakeur.jpeg",
+  },
+  {
     name: "Mohamed Bashir",
-    position: "Data analyst",
+    position: "Data Analyst",
     photo: "./images/mohammed_Bashair.png",
   },
   {
     name: "Abdoulaye Saleh",
-    position: "Data analyst",
+    position: "Data Analyst",
     photo: "images/Abdoulaye Saleh.png",
   },
-  {
-    name: "Adnan Madi",
-    position: "Web developer",
-    photo: "images/Adnan Madi.jpg",
-  },
 ];
-
 
 </script>
 
 <template>
-  <div class="team-section">
-    <h2 class="team-developer-title">Team Developer </h2>
-    <hr class="team-developer-divider"/>
+  <section class="team-section">
+    <h2 class="section-title">Our Team</h2>
+    <div class="divider"></div>
+
     <div class="team-grid">
       <div v-for="member in members" :key="member.name" class="team-card">
-        <div class="team-photo">
-          <img :src="member.photo" :alt="member.name"/>
-        </div>
-        <div class="team-details">
-          <div class="box">
-            <h2>{{ member.name }}</h2>
-          </div>
-          <h3>{{ member.position }}</h3>
-        </div>
+        <img :src="member.photo" :alt="member.name" class="avatar" />
+        <h3 class="name">{{ member.name }}</h3>
+        <p class="role">{{ member.position }}</p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 .team-section {
-  padding: 40px;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
 
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.divider {
+  width: 60px;
+  height: 4px;
+  background-color: #3b82f6;
+  margin: 0 auto 2rem;
+  border-radius: 2px;
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   max-width: 1200px;
-  margin: 5rem auto;
+  margin: 0 auto;
 }
 
 .team-card {
-  background: var(--text-hover-color);
-  border: 3px solid #ddd;
-  border-radius: 10px;
+  background-color: #fff;
+  border-radius: 12px;
   padding: 20px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  color: var(--primary-color);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.team-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.team-photo {
-  min-height: 150px;
-}
-
-.team-photo img {
-  width: 150px;
-  height: 150px;
+.avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
   border-radius: 50%;
-  margin: 15px auto;
+  margin: 1rem auto;
+  border: 2px solid #e5e7eb;
 }
 
-.team-details .box {
-  min-height: 70px;
-}
-
-.team-details h2,
-.team-details h3 {
-  font-size: 1rem;
+.name {
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 5px;
-  text-transform: capitalize;
+  color: #111827;
+  margin: 0.25rem 0;
 }
 
-.team-developer-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  padding: 0 2rem;
-  margin: 1rem 0;
-}
-
-.team-developer-divider {
-  margin: 2rem auto;
-  border: 2px solid var(--primary-color);
-  width: 100%;
+.role {
+  font-size: 0.9rem;
+  color: #6b7280;
 }
 
 </style>
-
